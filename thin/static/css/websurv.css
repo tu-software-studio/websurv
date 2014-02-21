@@ -1,0 +1,24 @@
+breadcrumb > li + li:before {
+    content: "\3E";
+}
+
+.LI{
+    float:left;
+    font-size:1.1em;
+    vertical-align:middle;
+    text-align:center;
+    line-height:50px;
+}
+
+.user_tag{
+    vertical-align:middle;
+    text-align:center;
+    line-height:50px;
+    font-size:1.1em;
+}
+      
+
+.logo-image{
+    padding:10px;
+    float:left;
+}

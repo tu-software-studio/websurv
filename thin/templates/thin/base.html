@@ -2,39 +2,13 @@
 <html>
   <head>
     <title>Websurv</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <style type="text/css">
-      <!--Definitely move to css file later -->
-      .breadcrumb > li + li:before {
-         content: "\3E";
-      }
-
-      .LI{
-         float:left;
-         font-size:1.1em;
-         vertical-align:middle;
-         text-align:center;
-         line-height:50px;
-      }
-
-      .user_tag{
-         vertical-align:middle;
-         text-align:center;
-         line-height:50px;
-         font-size:1.1em;
-      }
-      
-
-      .logo-image{
-         padding:10px;
-         float:left;
-      }
-    </style>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/websurv.css" />
   </head>
 
   <body>
     <nav class="navbar navbar-default" role="navigation">
-	<div class="navbar-inner"
+	<div class="navbar-inner">
 	     <div class="container-fluid">
 	       <!-- Use placekitten now until logo is made -->
 		 <img class="logo-image" src="http://placekitten.com/g/50/50" />
