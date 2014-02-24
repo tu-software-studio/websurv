@@ -11,4 +11,6 @@ urlpatterns = patterns('',
 
     url(r'^$', home, name='home'),
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^dictionaries/$', dictionary_index, name='dictionary_index')
 )
