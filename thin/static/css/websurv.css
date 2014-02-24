@@ -58,7 +58,11 @@ footer .breadcrumb {
 }
 
 .breadcrumb-bar li+li:before {
-    content: "|\00a0";
+  content: "|\00a0";
+}
+
+.breadcrumb-inverse {
+  background-color: #222;
 }
 
 .copyright:after {

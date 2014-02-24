@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Websurv</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href='{{ STATIC_URL }}css/websurv.css' />
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2><img class="logo img-rounded" src="http://placehold.it/200x100&text=Logo"/>Leaders in Surving the Web</h2>
+      <nav class="navbar navbar-inverse" role="navigation">
+	<div class="navbar-header">
+	  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+	  </button>
+	  {# Use placehold.it until logo is made #}
+	  <!--<a class="navbar-brand" href="{% url 'home' %}"><img class="navbar-logo" src="http://placehold.it/80x50&text=Logo"/></a>-->
+	  <a class="navbar-brand" href="{% url 'home' %}">
+	    WebSurv
+	  </a>
+	</div>
+	<div class="collapse navbar-collapse" id="bs-navbar-collapse">
+	  <ul class="nav navbar-nav">
+	    <li class="active"><a href="{% url 'home' %}">Home</a></li>
+	    <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Project<span class="caret"></span></a>
+	      <ul class="dropdown-menu dropdown-inverse">
+		<li><a href="#">Project1</a></li>
+		<li><a href="#">Project2</a></li>
+		<li class="active"><a href="#">Project3</a></li>
+		<li><a href="#">Project4</a></li>
+	      </ul>
+	    </li>
+	  </ul>
+	  <ul class="nav navbar-nav navbar-right">
+	    <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Username <span class="caret"></span></a>
+	      <ul class="dropdown-menu dropdown-inverse">
+		<li><a href="#">Profile</a></li>
+	      </ul>
+	    </li>
+	  </ul>
+	</div>
+      </nav>
+
+      <ol class="breadcrumb breadcrumb-inverse">
+	<li>
+	  <a href="#">Projects</a>
+	</li>
+	<li>
+	  <a href="#">Dictionaries</a>
+	</li>
+	<li>
+	  <a href="#">Surveys</a>
+	</li>
+      </ol>
+      <h1>Content</h1>
+      <p>The content will be loaded in this area.</p>
+      {% block content %}
+      {% endblock %}
+    </div>
+    <footer>
+      <div class="container text-muted">
+	<ul class="pull-left breadcrumb breadcrumb-bar">
+	  <li><a href="#">Home</a></li>
+	  <li><a href="#">Project List</a></li>
+	  <li><a href="#">Help</a></li>
+	</ul>
+	<ul class="pull-right breadcrumb">
+	  <li><span class="copyright">Software Studio </span></li>
+	</ul>
+      </div>
+    </footer>
+  </body>
+</html>
