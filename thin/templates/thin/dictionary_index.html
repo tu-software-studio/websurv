@@ -1,7 +1,13 @@
 {% extends "thin/list.html" %}
 
 {% block content %}
-    <p>This is dictionary_index.html</p>
-
-    <p>{{d_list}}<\p>
+  <p>This is dictionary_index.html</p>
+  <ul>
+    {% for d in d_lst %}
+      <li><a href="/dictionaries/{{d.id}}/"> {{d.name}}</a> : <a href="/dictionaries/{{d.id}}/edit">Edit</a></li>
+<!-- Waiting on them to be created
+      <li><a href="{# url 'dictionary_detail' d.id #}"> {{d.name}} </a> : <a href "{# url 'dictionary_edit' d.id #}">Edit</a></li>
+-->
+    {% endfor %}
+</ul>
 {% endblock %}
