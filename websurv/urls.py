@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
 admin.autodiscover()
+
 from thin.views import *
 
 urlpatterns = patterns('',
@@ -13,6 +14,8 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^dictionaries/$', dictionary_index, name='dictionary_index'),
+
+    url(r'^surveys/(?P<pk>\d+)/edit/$', survey_edit, name='survey_edit'),
 
     url(r'^projects/$', project_index, name='project_index'),
     url(r'^projects/(?P<num>\d+)/$', project_detail, name='project_detail'),

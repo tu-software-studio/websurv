@@ -5,7 +5,7 @@
 <p>This is project_index.html</p>
 <ul> 
 {% for project in project_lst %}
-  <li> <a href='/projects/{{project.id}}'> {{project.name}}</a> :  <a href="/projects/{{project.id}}/edit">Edit </a></li>
+  <li> <a href="/projects/{{project.id}}"> {{project.name}}</a> :  <a href="/projects/{{project.id}}/edit">Edit </a></li>
 {% endfor %}
 </ul>
 {% endblock %}
