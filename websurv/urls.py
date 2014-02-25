@@ -16,8 +16,9 @@ urlpatterns = patterns(
     url(r'^dictionaries/$', dictionary_index, name='dictionary_index'),
     url(r'^dictionaries/(?P<id>\d+)/$', dictionary_detail, name='dictionary_detail'),
     url(r'^dictionaries/(?P<id>\d+)/edit/$', dictionary_edit, name='dictionary_edit'),
-    url(r'^surveys/$', survey_index, name='survey_index')
 
+    url(r'^surveys/$', survey_index, name='survey_index'),
+    url(r'^surveys/(?P<pk>\d+)/$', survey_detail, name='survey_detail'),
     url(r'^surveys/(?P<pk>\d+)/edit/$', survey_edit, name='survey_edit'),
 
     url(r'^projects/$', project_index, name='project_index'),
