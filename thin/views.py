@@ -2,9 +2,9 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 
 from backend.models import Dictionary, Project, Survey
+
 from forms import SurveyForm
 from thin import forms
-
 
 def home(request):
     """Render the main home page."""
@@ -19,6 +19,11 @@ def dictionary_detail(request, id):
 
 def dictionary_edit(request, id):
     pass
+
+def survey_index(request):
+    surveys_list = get_list_or_404(Variety, Variety.name != null)
+    context = {'surveys_list': surveys_list}
+    return render(request, 'survey_index.html', context)
 
 def survey_edit(request, pk):
     survey = get_object_or_404(Survey, id=pk) # TODO - Use get and handle exceptions.
