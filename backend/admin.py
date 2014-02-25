@@ -4,11 +4,11 @@ from backend.models import *
 class ProjectAdmin(admin.ModelAdmin):
       list_display = ('name',)
       search_fields = ('name',)
-      
+
 class DictionaryAdmin(admin.ModelAdmin):
       list_display = ('name','project',)
       search_fields = ('name','project',)
-      
+
 class SurveyAdmin(admin.ModelAdmin):
       list_display = ('name','title','dictionary',)
       search_fields = ('name','title','dictionary',)
@@ -44,7 +44,7 @@ class ComparisonAdmin(admin.ModelAdmin):
 class ComparisonEntryAdmin(admin.ModelAdmin):
       list_display = ('aligned_form','exclude','comparison','transcription',)
       search_fields = ('aligned_form','exclude','comparison','transcription',)
-           
+
 admin.site.register(Project,ProjectAdmin)
 admin.site.register(Dictionary,DictionaryAdmin)
 admin.site.register(PartOfSpeech,PartOfSpeechAdmin)
@@ -53,7 +53,6 @@ admin.site.register(SortOrder,SortOrderAdmin)
 admin.site.register(SortPosition,SortPositionAdmin)
 admin.site.register(Survey,SurveyAdmin)
 admin.site.register(Variety,VarietyAdmin)
-admin.site.register(Transcription,TranscriptionAdmin)      
+admin.site.register(Transcription,TranscriptionAdmin)
 admin.site.register(Comparison,ComparisonAdmin)
 admin.site.register(ComparisonEntry,ComparisonEntryAdmin)
-

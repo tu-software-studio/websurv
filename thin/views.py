@@ -1,23 +1,27 @@
-from django.shortcuts import render, get_list_or_404, get_object_or_404
+from django.contrib import messages
+from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
+
 from backend.models import Dictionary, Project, Survey
-from thin import forms
 from forms import SurveyForm
+from thin import forms
 
 
-# Create your views here.
 def home(request):
+    """Render the main home page."""
     return render(request, 'thin/base.html')
 
-
 def dictionary_index(request):
-    dictionaries = get_list_or_404(Dictionary)
-    return render(request, 'thin/dictionary_index.html', {'d_lst': dictionaries})
-    # Can't test if this'll work until the db is seeded
-    #return render(request, dictionary_index, {'d_lst': dictionaries})
+    dictionaries = Dictionary.objects.all() # TODO - only get dictionaries for current project.
+    return render(request, 'thin/dictionary_index.html', {'dict_list': dictionaries})
 
+def dictionary_detail(request, id):
+    pass
+
+def dictionary_edit(request, id):
+    pass
 
 def survey_edit(request, pk):
-    survey = get_object_or_404(Survey, id=pk)
+    survey = get_object_or_404(Survey, id=pk) # TODO - Use get and handle exceptions.
 
     if request.method == 'POST': # If the form has been submitted
         form = SurveyForm(request.POST)
@@ -28,21 +32,23 @@ def survey_edit(request, pk):
             return redirect(request, 'thin/survey_index.html', {'form': form, 'survey': survey})
     else:
         form = SurveyForm()
-            
-    return render(request, 'thin/survey_edit.html', {
-        'form': form, 'survey': survey
-    })
 
+    return render(request, 'thin/survey_edit.html',
+                  { 'form': form, 'survey': survey })
 
 def project_index(request):
-    projects = get_list_or_404(Project)
-    return render(request, 'thin/project_index.html', {'project_lst' : projects})
+    projects = get_list_or_404(Project)                                           # TODO - Use objects.all
+    return render(request, 'thin/project_index.html', {'project_lst' : projects}) # TODO - lst => list
 
 def project_detail(request, num):
-    project = get_object_or_404(Project, id=num)
+    try:
+        project = Project.objects.get(pk=num)
+    except Project.DoesNotExist:
+        messages.error(request, "Can't find selected project.")
+        return redirect('project_index')
     return render(request, 'thin/project_detail.html', {'project' : project})
 
 def project_edit(request, num):
-    project = get_object_or_404(Project, id=num)
+    project = get_object_or_404(Project, id=num) # TODO
     form = forms.ProjectForm(instance=project)
     return render(request,'thin/project_edit.html', {'form' : form})

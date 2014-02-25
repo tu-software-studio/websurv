@@ -61,6 +61,15 @@
 	  <a href="#">Surveys</a>
 	</li>
       </ol>
+
+      {% if messages %}
+      <ul class="messages">
+	{% for message in messages %}
+	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	{% endfor %}
+      </ul>
+      {% endif %}
+
       <h1>Content</h1>
       <p>The content will be loaded in this area.</p>
       {% block content %}

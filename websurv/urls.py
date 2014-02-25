@@ -5,15 +5,15 @@ admin.autodiscover()
 
 from thin.views import *
 
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'websurv.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
+urlpatterns = patterns(
+    '',
 
     url(r'^$', home, name='home'),
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^dictionaries/$', dictionary_index, name='dictionary_index'),
+    url(r'^dictionaries/(?P<id>\d+)/$', dictionary_detail, name='dictionary_detail'),
+    url(r'^dictionaries/(?P<id>\d+)/edit/$', dictionary_edit, name='dictionary_edit'),
 
     url(r'^surveys/(?P<pk>\d+)/edit/$', survey_edit, name='survey_edit'),
 

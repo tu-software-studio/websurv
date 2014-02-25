@@ -4,8 +4,9 @@
 
 <p>This is project_index.html</p>
 <ul> 
-{% for project in project_lst %}
+  {% for project in project_lst %}
+  TODO - FIX URLS
   <li> <a href="/projects/{{project.id}}"> {{project.name}}</a> :  <a href="/projects/{{project.id}}/edit">Edit </a></li>
-{% endfor %}
+  {% endfor %}
 </ul>
 {% endblock %}
