@@ -4,9 +4,11 @@
 
 <p>This is project_index.html</p>
 <ul> 
-  {% for project in project_lst %}
-  TODO - FIX URLS
-  <li> <a href="/projects/{{project.id}}"> {{project.name}}</a> :  <a href="/projects/{{project.id}}/edit">Edit </a></li>
+  {% for project in project_list %}
+  <li> 
+    <a href="{% url 'project_index' project_list %}"> {{project.name}}</a>
+    <a href="{% url 'project_edit' project.id %}">Edit </a>
+  </li>
   {% endfor %}
 </ul>
 {% endblock %}

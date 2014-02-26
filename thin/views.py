@@ -45,8 +45,8 @@ def survey_edit(request, pk):
                   { 'form': form, 'survey': survey })
 
 def project_index(request):
-    projects = get_list_or_404(Project)                                           # TODO - Use objects.all
-    return render(request, 'thin/project_index.html', {'project_lst' : projects}) # TODO - lst => list
+    projects = Project.objects.all()    
+    return render(request, 'thin/project_index.html', {'project_list' : projects})
 
 def project_detail(request, num):
     try:
@@ -57,6 +57,10 @@ def project_detail(request, num):
     return render(request, 'thin/project_detail.html', {'project' : project})
 
 def project_edit(request, num):
-    project = get_object_or_404(Project, id=num) # TODO
+    try:
+        project = Project.objects.get(pk=num)
+    except Project.DoesNotExist:
+        messages.error(request, "Can't find selected project.")
+        return redirect('project_index')
     form = forms.ProjectForm(instance=project)
     return render(request,'thin/project_edit.html', {'form' : form})

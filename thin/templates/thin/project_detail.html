@@ -2,6 +2,6 @@
 
 {% block content %}
 
-{{project.name}} : <a href="/projects/{{project.id}}/edit">Edit </a></li>
+{{project.name}} : <a href="{% url 'project_edit' project.id %}">Edit </a></li>
 
 {% endblock %}
