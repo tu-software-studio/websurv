@@ -63,4 +63,4 @@ def project_edit(request, num):
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
     form = forms.ProjectForm(instance=project)
-    return render(request,'thin/project_edit.html', {'form' : form})
+    return render(request,'thin/project_edit.html', {'form' : form, 'project' : project })

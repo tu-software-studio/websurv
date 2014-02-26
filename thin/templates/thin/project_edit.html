@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<form method="post" action="{% url %}">
+<form method="post" action="{% url 'project_detail' project.id %}">
   {{ form }}
 </form>
 

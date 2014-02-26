@@ -6,7 +6,7 @@
 <ul> 
   {% for project in project_list %}
   <li> 
-    <a href="{% url 'project_index' project_list %}"> {{project.name}}</a>
+    <a href="{% url 'project_detail' project.id %}"> {{project.name}}</a>
     <a href="{% url 'project_edit' project.id %}">Edit </a>
   </li>
   {% endfor %}
