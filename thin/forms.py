@@ -12,4 +12,4 @@ class ProjectForm(ModelForm):
 class SurveyForm(ModelForm):
     class Meta:
         model = Dictionary
-        fields = '__all__'      # TODO - Check whether this is necessary; default behavior?
+        fields = ['name','title']
