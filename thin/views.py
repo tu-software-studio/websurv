@@ -28,12 +28,19 @@ def dictionary_edit(request, id):
     pass
 
 def survey_index(request):
-    variety_list = Variety.objects.all() # TODO - only get varieties from current dictionary and survey.
-    context = {'variety_list': variety_list}
+    varieties = Variety.objects.all() # TODO - only get varieties from current dictionary and survey.
+    context = {'varieties': varieties}
     return render(request, 'thin/survey_index.html', context)
 
 def survey_detail(request, id):
-    pass
+    try:
+        survey = Survey.objects.get(pk=id)
+        varieties = Variety.objects.filter(survey=survey)
+    except Survey.DoesNotExist:
+        messages.error(request, "Can't find selected survey.")
+        return redirect('survey_index')
+    context = {'survey' : survey, 'varieties' : varieties}
+    return render(request, 'thin/survey_detail.html', context)
 
 def survey_edit(request, pk):
     survey = get_object_or_404(Survey, id=pk) # TODO - Use get and handle exceptions.

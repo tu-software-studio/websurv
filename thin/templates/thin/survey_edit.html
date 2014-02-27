@@ -1,5 +1,9 @@
 {% extends 'thin/base.html' %}
 
 {% block content %}
-<p>Future spot to edit the survey!</p>
+
+<form method="post" action="{% url 'survey_detail' survey.id %}">
+  {{ form }}
+</form>
+
 {% endblock %}
