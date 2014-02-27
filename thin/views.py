@@ -12,8 +12,6 @@ def home(request):
     dictionary = survey.dictionary
     project = dictionary.project
     breadcrumb_menu = [project,dictionary,survey]
-    url_list = ['projects','dictionaries','surveys']
-    breadcrumb_menu = zip(breadcrumb_menu,url_list)
     context = {'breadcrumb_menu':breadcrumb_menu}
     return render(request, 'thin/base.html',context)
 
@@ -33,6 +31,7 @@ def survey_index(request):
     return render(request, 'thin/survey_index.html', context)
 
 def survey_detail(request, id):
+    
     pass
 
 def survey_edit(request, pk):
