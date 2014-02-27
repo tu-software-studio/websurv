@@ -1,9 +1,27 @@
 {% extends 'thin/base.html' %}
 
-{% block content %}
+{% load bootstrap %}
 
-<form method="post" action="{% url 'project_detail' project.id %}">
-  {{ form }}
-</form>
+{% block content %}
+<div class='row'>
+
+  <form method="POST" action="{% url 'project_delete' project.id%} " class='pull-right'>
+    {% csrf_token %}
+    <input type="submit" value="Delete" class='btn btn-danger'/>
+  </form>
+
+  <div class='col-md-4'>
+
+    <form method="POST" action="">
+      {% csrf_token %}
+      {{ form|bootstrap }}
+      <input type="submit" value="Save Changes" class='btn btn-primary'/>
+    </form>
+
+  </div>
+</div>
+
+
 
 {% endblock %}
+
