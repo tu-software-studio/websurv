@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 
 class Project(models.Model):
@@ -5,6 +6,9 @@ class Project(models.Model):
 
     def __unicode__(self):
         return self.name
+    
+    def get_absolute_url(self):
+        return reverse('project_detail', args=[str(self.id)])
 
 class Dictionary(models.Model):
     name = models.CharField(max_length=100)
@@ -15,6 +19,9 @@ class Dictionary(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('dictionary_detail', args=[str(self.id)])
 
 class PartOfSpeech(models.Model):
     name = models.CharField(max_length=40)
@@ -55,11 +62,17 @@ class Survey(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('survey_detail', args=[str(self.id)])
+
 class Variety(models.Model):
     name = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('variety_detail', args=[str(self.id)])
 
 class Transcription(models.Model):
     ipa = models.CharField(max_length = 100)
@@ -69,6 +82,9 @@ class Transcription(models.Model):
     def __unicode__(self):
         return self.ipa
 
+    def get_absolute_url(self):
+        return reverse("transcription_detail", args=[str(self.id)])
+
 class Comparison(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -77,6 +93,9 @@ class Comparison(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('comparison_detail', args=[str(self.id)])
 
 class ComparisonEntry(models.Model):
     aligned_form = models.CharField(max_length=100)

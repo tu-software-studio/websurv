@@ -51,9 +51,9 @@
     <div class="container">
       <h2><img class="logo img-rounded" src="http://placehold.it/200x100&text=Logo"/>Leaders in Surving the Web</h2>
       <ol class="breadcrumb">
-	{% for item,url in breadcrumb_menu %}
+	{% for item in breadcrumb_menu %}
 	<li>
-	  <a href="{{url}}/{{item.id}}">{{item.name}}</a>
+	  <a href="{{item.get_absolute_url}}">{{item.name}}</a>
 	</li>
 	{% endfor %}
       </ol>

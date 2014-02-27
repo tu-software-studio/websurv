@@ -4,4 +4,12 @@
 
 {{project.name}} : <a href="{% url 'project_edit' project.id %}">Edit </a></li>
 
+<ul>
+{% for dictionary in dictionaries %}
+<li>
+  <a href='{% url 'dictionary_detail' dictionary.id %}'>{{dictionary.name}}</a>
+  <a href='{% url 'dictionary_edit' dictionary.id %}'>Edit</a>
+</li>
+{% endfor%}
+</ul>
 {% endblock %}
