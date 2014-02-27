@@ -64,3 +64,21 @@ def project_edit(request, num):
         return redirect('project_index')
     form = forms.ProjectForm(instance=project)
     return render(request,'thin/project_edit.html', {'form' : form, 'project' : project })
+
+def variety_index(request):
+    pass
+
+def variety_detail(request, num):
+    pass
+
+def variety_edit(request, num):
+    pass
+
+def comparison_index(request):
+    pass
+
+def comparison_detail(request, num):
+    pass
+
+def comparison_edit(request, num):
+    pass

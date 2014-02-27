@@ -25,4 +25,11 @@ urlpatterns = patterns(
     url(r'^projects/(?P<num>\d+)/$', project_detail, name='project_detail'),
     url(r'^projects/(?P<num>\d+)/edit/$', project_edit, name='project_edit'),
 
+    url(r'^varieties/$', variety_index, name='variety_index'),
+    url(r'^varieties/(?P<num>\d+)/$', variety_detail, name='variety_detail'),
+    url(r'^varieties/(?P<num>\d+)/edit/$', variety_edit, name='variety_edit'),
+
+    url(r'^comparisons/$', comparison_index, name='comparison_index'),
+    url(r'^comparisons/(?P<num>\d+)/$', comparison_detail, name='comparison_detail'),
+    url(r'^comparisons/(?P<num>\d+)/edit/$', comparison_edit, name='comparison_edit'),
 )
