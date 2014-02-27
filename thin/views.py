@@ -58,10 +58,11 @@ def project_index(request):
 def project_detail(request, num):
     try:
         project = Project.objects.get(pk=num)
+        dictionaries = Dictionary.objects.filter(project=project)
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
-    return render(request, 'thin/project_detail.html', {'project' : project})
+    return render(request, 'thin/project_detail.html', {'project' : project, 'dictionaries':dictionaries})
 
 def project_edit(request, num):
     try:
