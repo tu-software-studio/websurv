@@ -8,7 +8,14 @@ from thin import forms
 
 def home(request):
     """Render the main home page."""
-    return render(request, 'thin/base.html')
+    survey = Survey.objects.get(id=1)
+    dictionary = survey.dictionary
+    project = dictionary.project
+    breadcrumb_menu = [project,dictionary,survey]
+    url_list = ['projects','dictionaries','surveys']
+    breadcrumb_menu = zip(breadcrumb_menu,url_list)
+    context = {'breadcrumb_menu':breadcrumb_menu}
+    return render(request, 'thin/base.html',context)
 
 def dictionary_index(request):
     dictionaries = Dictionary.objects.all() # TODO - only get dictionaries for current project.
