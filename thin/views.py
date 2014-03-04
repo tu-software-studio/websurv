@@ -13,6 +13,7 @@ def home(request):
     project = dictionary.project
     breadcrumb_menu = [project,dictionary,survey]
     context = {'breadcrumb_menu':breadcrumb_menu}
+
     return render(request, 'thin/base.html',context)
 
 def dictionary_index(request):
@@ -31,7 +32,6 @@ def survey_index(request):
     return render(request, 'thin/survey_index.html', context)
 
 def survey_detail(request, id):
-    
     pass
 
 def survey_edit(request, pk):
@@ -92,6 +92,7 @@ def project_add(request):
             return redirect('project_index')
     else:
         form = forms.ProjectForm()
+        messages.error(request,"Project failed to be created")
     return render(request,'thin/project_add.html', {'form' : form})
 
 def project_delete(request,num):
