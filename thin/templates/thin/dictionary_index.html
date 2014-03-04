@@ -1,6 +1,7 @@
 {% extends "thin/list.html" %}
 
 {% block content %}
+
 <p>This is dictionary_index.html</p>
 <ul>
   {% for dict in dict_list %}
@@ -12,4 +13,5 @@
   <li>No dictionaries</li>
   {% endfor %}
 </ul>
+<a href="{% url 'dictionary_add' %}" class="btn btn-primary">Add</a>
 {% endblock %}
