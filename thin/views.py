@@ -35,7 +35,11 @@ def survey_detail(request, id):
     pass
 
 def survey_edit(request, pk):
-    survey = get_object_or_404(Survey, id=pk) # TODO - Use get and handle exceptions.
+    try:
+        Survey = Survey.objects.get(pk=pk)
+    except Survey.DoesNotExist:
+        messages.error(request, "Can't find selected survey.")
+        return redirect('survey_index')
 
     if request.method == 'POST': # If the form has been submitted
         form = SurveyForm(request.POST)
@@ -73,6 +77,7 @@ def project_edit(request, num):
         form = forms.ProjectForm(request.POST,instance=project)
         if form.is_valid():
             form.save()
+            messages.success(request,"Project has been editted successfully!")
             return redirect('project_detail',num=project.id)
     else:
         form = forms.ProjectForm(instance=project)
@@ -92,6 +97,7 @@ def project_add(request):
 def project_delete(request,num):
     project = Project.objects.get(pk=num)
     project.delete()
+    messages.success(request, "Project has been deleted!")
     return redirect('project_index')
 
 def variety_index(request):
