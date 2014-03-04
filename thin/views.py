@@ -34,9 +34,9 @@ def survey_index(request):
 def survey_detail(request, id):
     pass
 
-def survey_edit(request, pk):
+def survey_edit(request, id):
     try:
-        Survey = Survey.objects.get(pk=pk)
+        survey = Survey.objects.get(pk=id)
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
