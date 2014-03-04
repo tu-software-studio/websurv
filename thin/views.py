@@ -12,8 +12,6 @@ def home(request):
     dictionary = survey.dictionary
     project = dictionary.project
     breadcrumb_menu = [project,dictionary,survey]
-    url_list = ['projects','dictionaries','surveys']
-    breadcrumb_menu = zip(breadcrumb_menu,url_list)
     context = {'breadcrumb_menu':breadcrumb_menu}
     return render(request, 'thin/base.html',context)
 
@@ -33,6 +31,7 @@ def survey_index(request):
     return render(request, 'thin/survey_index.html', context)
 
 def survey_detail(request, id):
+    
     pass
 
 def survey_edit(request, pk):
@@ -70,8 +69,30 @@ def project_edit(request, num):
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
-    form = forms.ProjectForm(instance=project)
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.ProjectForm(request.POST,instance=project)
+        if form.is_valid():
+            form.save()
+            return redirect('project_detail',num=project.id)
+    else:
+        form = forms.ProjectForm(instance=project)
     return render(request,'thin/project_edit.html', {'form' : form, 'project' : project })
+
+def project_add(request):
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.ProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Project Added!")
+            return redirect('project_index')
+    else:
+        form = forms.ProjectForm()
+    return render(request,'thin/project_add.html', {'form' : form})
+
+def project_delete(request,num):
+    project = Project.objects.get(pk=num)
+    project.delete()
+    return redirect('project_index')
 
 def variety_index(request):
     pass

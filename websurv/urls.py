@@ -24,6 +24,8 @@ urlpatterns = patterns(
     url(r'^projects/$', project_index, name='project_index'),
     url(r'^projects/(?P<num>\d+)/$', project_detail, name='project_detail'),
     url(r'^projects/(?P<num>\d+)/edit/$', project_edit, name='project_edit'),
+    url(r'^projects/(?P<num>\d+)/delete/$', project_delete, name='project_delete'),
+    url(r'^projects/add/$', project_add, name='project_add'),
 
     url(r'^varieties/$', variety_index, name='variety_index'),
     url(r'^varieties/(?P<num>\d+)/$', variety_detail, name='variety_detail'),

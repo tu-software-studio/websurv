@@ -15,6 +15,7 @@ INSTALLED_APPS = (
 
     'backend',
     'thin',
+    'bootstrapform',
 )
 
 MIDDLEWARE_CLASSES = (
