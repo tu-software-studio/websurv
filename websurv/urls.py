@@ -8,7 +8,8 @@ from thin.views import *
 urlpatterns = patterns(
     '',
 
-    url(r'^$', home, name='home'),
+    url(r'^$', project_index, name='home'),
+    url(r'^bread/$', home, name="breadcrumbs"),
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^dictionaries/$', dictionary_index, name='dictionary_index'),

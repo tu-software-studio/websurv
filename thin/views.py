@@ -13,6 +13,7 @@ def home(request):
     project = dictionary.project
     breadcrumb_menu = [project,dictionary,survey]
     context = {'breadcrumb_menu':breadcrumb_menu}
+
     return render(request, 'thin/base.html',context)
 
 def dictionary_index(request):
@@ -33,13 +34,13 @@ def survey_index(request):
 def survey_detail(request, id):
     pass
 
-def survey_edit(request, id):
+def survey_edit(request, pk):
     try:
-        survey = Survey.objects.get(pk=id)
+        Survey = Survey.objects.get(pk=pk)
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
-        return redirect("survey_index")
-    
+        return redirect('survey_index')
+
     if request.method == 'POST': # If the form has been submitted
         form = forms.SurveyForm(request.POST, instance=survey)
         if form.is_valid():
@@ -89,6 +90,7 @@ def project_edit(request, num):
         form = forms.ProjectForm(request.POST,instance=project)
         if form.is_valid():
             form.save()
+            messages.success(request,"Project has been editted successfully!")
             return redirect('project_detail',num=project.id)
     else:
         form = forms.ProjectForm(instance=project)
@@ -103,11 +105,13 @@ def project_add(request):
             return redirect('project_index')
     else:
         form = forms.ProjectForm()
+        messages.error(request,"Project failed to be created")
     return render(request,'thin/project_add.html', {'form' : form})
 
 def project_delete(request,num):
     project = Project.objects.get(pk=num)
     project.delete()
+    messages.success(request, "Project has been deleted!")
     return redirect('project_index')
 
 def variety_index(request):
