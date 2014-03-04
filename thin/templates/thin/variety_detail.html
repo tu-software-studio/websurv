@@ -1,0 +1,12 @@
+{% extends 'thin/base.html' %}
+
+{% block content %}
+
+{{ variety.name }} : <a href="{% url 'variety_edit' variety.id %}">Edit </a>
+
+{% for transcript in transcripts %}
+   
+
+{% endfor %}
+
+{% endblock %}

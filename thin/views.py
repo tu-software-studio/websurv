@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 
-from backend.models import Dictionary, Project, Survey
+from backend.models import Dictionary, Project, Survey, Variety, Transcription, Gloss
 
 from forms import SurveyForm
 from thin import forms
@@ -101,10 +101,13 @@ def project_delete(request,num):
     return redirect('project_index')
 
 def variety_index(request):
-    pass
+    varieties = Variety.objects.all()
+    return render(request, 'thin/variety_index.html', { 'varieties':varieties})
 
 def variety_detail(request, num):
-    pass
+    variety = Variety.objects.get(pk=num)
+    transcripts = Transcription.objects.filter(variety=variety)
+    return render(request, 'thin/variety_detail.html',{ 'variety':variety, 'transcripts':transcripts})
 
 def variety_edit(request, num):
     pass
