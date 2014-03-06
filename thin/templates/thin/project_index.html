@@ -1,4 +1,4 @@
-{% extends "thin/list.html" %}
+{% extends "thin/base.html" %}
 
 {% block content %}
 
@@ -7,10 +7,10 @@
   {% for project in project_list %}
   <li> 
     <a href="{% url 'project_detail' project.id %}"> {{project.name}}</a>
-    <a href="{% url 'project_edit' project.id %}">Edit </a>
+    <a href="{% url 'project_edit' project.id %}">Edit</a>
   </li>
   {% endfor %}
 </ul>
-<a href="{% url 'project_add' %}" class'btn btn-success'>Add </a>
+<a href="{% url 'project_add' %}" class='btn btn-success'>Add</a>
 
 {% endblock %}

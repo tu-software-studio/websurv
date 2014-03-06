@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
+from django.shortcuts import render, redirect
+
 
 from backend.models import *
 
@@ -13,6 +14,7 @@ def home(request):
     project = dictionary.project
     breadcrumb_menu = [project,dictionary,survey]
     context = {'breadcrumb_menu':breadcrumb_menu}
+
     return render(request, 'thin/base.html',context)
 
 def dictionary_index(request):
@@ -42,17 +44,13 @@ def survey_detail(request, pk):
 
 def survey_edit(request,pk):
     survey = get_object_or_404(Survey, id=pk) # TODO - Use get and handle exceptions.
-
     if request.method == 'POST': # If the form has been submitted
-        form = SurveyForm(request.POST)
+        form = forms.SurveyForm(request.POST, instance=survey)
         if form.is_valid():
-            # TODO: Process the data in form.cleaned_data
-            # ...
-
-            return redirect(request, 'thin/survey_index.html', {'form': form, 'survey': survey})
+            form.save()
+            return redirect('survey_detail', id=id)
     else:
-        form = SurveyForm()
-
+        form = forms.SurveyForm(instance=survey)
     return render(request, 'thin/survey_edit.html',
                   { 'form': form, 'survey': survey })
 
@@ -69,6 +67,22 @@ def variety_detail(request, pk):
         return redirect('variety_index')
     context = {'variety' : variety}
     return render(request, 'thin/variety_detail.html', context)
+
+def survey_delete(request, id):
+    survey = Survey.objects.get(id=id)
+    survey.delete()
+    return redirect('survey_index')
+
+def survey_add(request):
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.SurveyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Survey added!")
+            return redirect('survey_index')
+    else:
+        form = forms.SurveyForm()
+    return render(request, 'thin/survey_add.html', {'form': form})
 
 def project_index(request):
     projects = Project.objects.all()    
@@ -93,6 +107,7 @@ def project_edit(request, num):
         form = forms.ProjectForm(request.POST,instance=project)
         if form.is_valid():
             form.save()
+            messages.success(request,"Project has been editted successfully!")
             return redirect('project_detail',num=project.id)
     else:
         form = forms.ProjectForm(instance=project)
@@ -107,18 +122,23 @@ def project_add(request):
             return redirect('project_index')
     else:
         form = forms.ProjectForm()
+        messages.error(request,"Project failed to be created")
     return render(request,'thin/project_add.html', {'form' : form})
 
 def project_delete(request,num):
     project = Project.objects.get(pk=num)
     project.delete()
+    messages.success(request, "Project has been deleted!")
     return redirect('project_index')
 
 def variety_index(request):
-    pass
+    varieties = Variety.objects.all()
+    return render(request, 'thin/variety_index.html', { 'varieties':varieties})
 
 def variety_detail(request, num):
-    pass
+    variety = Variety.objects.get(pk=num)
+    transcripts = Transcription.objects.filter(variety=variety)
+    return render(request, 'thin/variety_detail.html',{ 'variety':variety, 'transcripts':transcripts})
 
 def variety_edit(request, num):
     pass
