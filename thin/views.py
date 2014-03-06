@@ -48,9 +48,9 @@ def survey_index(request):
     context = {'varieties': varieties}
     return render(request, 'thin/survey_index.html', context)
 
-def survey_detail(request, pk):
+def survey_detail(request, id):
     try:
-        survey = Survey.objects.get(id=pk)
+        survey = Survey.objects.get(id=id)
         varieties = Variety.objects.filter(id=survey.id)
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
@@ -58,8 +58,8 @@ def survey_detail(request, pk):
     context = {'survey' : survey, 'varieties' : varieties}
     return render(request, 'thin/survey_detail.html', context)
 
-def survey_edit(request,pk):
-    survey = get_object_or_404(Survey, id=pk) # TODO - Use get and handle exceptions.
+def survey_edit(request,id):
+    survey = Survey.objects.get(id=id)
     if request.method == 'POST': # If the form has been submitted
         form = forms.SurveyForm(request.POST, instance=survey)
         if form.is_valid():
