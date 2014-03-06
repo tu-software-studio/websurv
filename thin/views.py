@@ -126,6 +126,14 @@ def variety_detail(request, num):
 def variety_edit(request, num):
     pass
 
+def variety_add(request):
+
+def variety_delete(request,num):
+    variety = Variety.objects.get(pk=num)
+    variety.delete()
+    messages.success(request, "Project has been deleted!")
+    return redirect('variety_index')
+
 def comparison_index(request):
     pass
 
