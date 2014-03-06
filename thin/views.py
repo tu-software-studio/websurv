@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
+from django.shortcuts import render, redirect
 
 from backend.models import Dictionary, Project, Survey, Variety, Transcription, Gloss
 
@@ -13,6 +13,7 @@ def home(request):
     project = dictionary.project
     breadcrumb_menu = [project,dictionary,survey]
     context = {'breadcrumb_menu':breadcrumb_menu}
+
     return render(request, 'thin/base.html',context)
 
 def dictionary_index(request):
@@ -31,28 +32,40 @@ def survey_index(request):
     return render(request, 'thin/survey_index.html', context)
 
 def survey_detail(request, id):
-    
     pass
 
-def survey_edit(request, pk):
+def survey_edit(request, id):
     try:
-        Survey = Survey.objects.get(pk=pk)
+        survey = Survey.objects.get(pk=id)
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
 
     if request.method == 'POST': # If the form has been submitted
-        form = SurveyForm(request.POST)
+        form = forms.SurveyForm(request.POST, instance=survey)
         if form.is_valid():
-            # TODO: Process the data in form.cleaned_data
-            # ...
-
-            return redirect(request, 'thin/survey_index.html', {'form': form, 'survey': survey})
+            form.save()
+            return redirect('survey_detail', id=id)
     else:
-        form = SurveyForm()
-
+        form = forms.SurveyForm(instance=survey)
     return render(request, 'thin/survey_edit.html',
                   { 'form': form, 'survey': survey })
+
+def survey_delete(request, id):
+    survey = Survey.objects.get(id=id)
+    survey.delete()
+    return redirect('survey_index')
+
+def survey_add(request):
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.SurveyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Survey added!")
+            return redirect('survey_index')
+    else:
+        form = forms.SurveyForm()
+    return render(request, 'thin/survey_add.html', {'form': form})
 
 def project_index(request):
     projects = Project.objects.all()    
@@ -92,6 +105,7 @@ def project_add(request):
             return redirect('project_index')
     else:
         form = forms.ProjectForm()
+        messages.error(request,"Project failed to be created")
     return render(request,'thin/project_add.html', {'form' : form})
 
 def project_delete(request,num):
