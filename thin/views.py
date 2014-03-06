@@ -1,7 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-from backend.models import Dictionary, Project, Survey, Variety, Transcription, Gloss
+
+from backend.models import *
 
 from forms import SurveyForm
 from thin import forms
@@ -43,20 +44,22 @@ def dictionary_add(request):
     return render(request, 'thin/dictionary_add.html', {'form': form})
 
 def survey_index(request):
-    variety_list = Variety.objects.all() # TODO - only get varieties from current dictionary and survey.
-    context = {'variety_list': variety_list}
+    varieties = Variety.objects.all() # TODO - only get varieties from current project, dictionary and survey.
+    context = {'varieties': varieties}
     return render(request, 'thin/survey_index.html', context)
 
-def survey_detail(request, id):
-    pass
-
-def survey_edit(request, id):
+def survey_detail(request, pk):
     try:
-        survey = Survey.objects.get(pk=id)
+        survey = Survey.objects.get(id=pk)
+        varieties = Variety.objects.filter(id=survey.id)
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
+    context = {'survey' : survey, 'varieties' : varieties}
+    return render(request, 'thin/survey_detail.html', context)
 
+def survey_edit(request,pk):
+    survey = get_object_or_404(Survey, id=pk) # TODO - Use get and handle exceptions.
     if request.method == 'POST': # If the form has been submitted
         form = forms.SurveyForm(request.POST, instance=survey)
         if form.is_valid():
@@ -66,6 +69,20 @@ def survey_edit(request, id):
         form = forms.SurveyForm(instance=survey)
     return render(request, 'thin/survey_edit.html',
                   { 'form': form, 'survey': survey })
+
+def variety_index(request):
+    varieties = Variety.objects.all() # TODO - only get varieties from current project, dictionary and variety.
+    context = {'varieties': varieties}
+    return render(request, 'thin/variety_index.html', context)
+
+def variety_detail(request, pk):
+    try:
+        variety = Variety.objects.get(id=pk)
+    except Variety.DoesNotExist:
+        messages.error(request, "Can't find selected variety.")
+        return redirect('variety_index')
+    context = {'variety' : variety}
+    return render(request, 'thin/variety_detail.html', context)
 
 def survey_delete(request, id):
     survey = Survey.objects.get(id=id)
