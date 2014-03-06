@@ -54,20 +54,6 @@ def survey_edit(request,pk):
     return render(request, 'thin/survey_edit.html',
                   { 'form': form, 'survey': survey })
 
-def variety_index(request):
-    varieties = Variety.objects.all() # TODO - only get varieties from current project, dictionary and variety.
-    context = {'varieties': varieties}
-    return render(request, 'thin/variety_index.html', context)
-
-def variety_detail(request, pk):
-    try:
-        variety = Variety.objects.get(id=pk)
-    except Variety.DoesNotExist:
-        messages.error(request, "Can't find selected variety.")
-        return redirect('variety_index')
-    context = {'variety' : variety}
-    return render(request, 'thin/variety_detail.html', context)
-
 def survey_delete(request, id):
     survey = Survey.objects.get(id=id)
     survey.delete()
@@ -144,6 +130,7 @@ def variety_edit(request, num):
     pass
 
 def variety_add(request):
+    pass
 
 def variety_delete(request,num):
     variety = Variety.objects.get(pk=num)
