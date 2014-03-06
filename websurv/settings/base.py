@@ -45,5 +45,3 @@ MESSAGE_TAGS = {
 }
 
 LOGIN_REDIRECT_URL = reverse_lazy('home')
-
-print(SECRET_KEY)
