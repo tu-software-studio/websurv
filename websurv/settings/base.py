@@ -1,6 +1,8 @@
 from django.contrib import messages
+from django.core.urlresolvers import reverse_lazy
 
 from unipath import Path
+
 PROJECT_DIR = Path(__file__).ancestor(3)
 
 SECRET_KEY = 'ea+sg5filpj)308_9t2tzuoay6u=p1cdmqt!!s@=tfsunoybf$'
@@ -41,3 +43,7 @@ STATIC_URL = '/static/'
 MESSAGE_TAGS = {
     messages.constants.ERROR: 'danger'    # Fix up for Bootstrap.
 }
+
+LOGIN_REDIRECT_URL = reverse_lazy('home')
+
+print(SECRET_KEY)
