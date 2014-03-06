@@ -21,20 +21,36 @@ def dictionary_index(request):
     dictionaries = Dictionary.objects.all() # TODO - only get dictionaries for current project.
     return render(request, 'thin/dictionary_index.html', {'dict_list': dictionaries})
 
+def dictionary_delete(request, id):
+    dictionary = Dictionary.objects.get(id=id)
+    dictionary.delete()
+    return redirect('dictionary_index')
+
 def dictionary_detail(request, id):
     pass
 
 def dictionary_edit(request, id):
     pass
 
+def dictionary_add(request):
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.DictionaryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Dictionary added!")
+            return redirect('dictionary_index')
+    else:
+        form = forms.DictionaryForm()
+    return render(request, 'thin/dictionary_add.html', {'form': form})
+
 def survey_index(request):
-    varieties = Variety.objects.all() # TODO - only get varieties from current project, dictionary and survey.
-    context = {'varieties': varieties}
+    survey_list = Survey.objects.all() # TODO - only get stuff we need
+    context = {'survey_list': survey_list}
     return render(request, 'thin/survey_index.html', context)
 
-def survey_detail(request, pk):
+def survey_detail(request, id):
     try:
-        survey = Survey.objects.get(id=pk)
+        survey = Survey.objects.get(id=id)
         varieties = Variety.objects.filter(id=survey.id)
         dictionary = survey.dictionary
         project = dictionary.project
@@ -45,8 +61,8 @@ def survey_detail(request, pk):
     context = {'survey' : survey, 'varieties' : varieties, 'breadcrumb_menu':breadcrumb_menu}
     return render(request, 'thin/survey_detail.html', context)
 
-def survey_edit(request,pk):
-    survey = get_object_or_404(Survey, id=pk) # TODO - Use get and handle exceptions.
+def survey_edit(request,id):
+    survey = Survey.objects.get(id=id)
     if request.method == 'POST': # If the form has been submitted
         form = forms.SurveyForm(request.POST, instance=survey)
         if form.is_valid():
