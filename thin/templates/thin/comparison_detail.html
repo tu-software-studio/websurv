@@ -1,0 +1,15 @@
+{% extends "thin/base.html" %}
+
+{% block content %}
+
+  {{comparison.name}} : <a href="{% url 'comparison_edit' comparison.id %}">Edit </a></li>
+
+  <ul>
+  {% for dictionary in dictionaries %}
+    <li>
+      <a href='{% url 'comparison_entry_detail' comparison_entry.id %}'>{{comparison_entry.aligned_form}}</a>
+      <a href='{% url 'comparison_entry_edit' comparison_entry.id %}'>Edit</a>
+    </li>
+  {% endfor%}
+  </ul>
+{% endblock %}
