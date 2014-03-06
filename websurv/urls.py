@@ -31,6 +31,8 @@ urlpatterns = patterns(
     url(r'^varieties/$', variety_index, name='variety_index'),
     url(r'^varieties/(?P<num>\d+)/$', variety_detail, name='variety_detail'),
     url(r'^varieties/(?P<num>\d+)/edit/$', variety_edit, name='variety_edit'),
+    url(r'^varieties/(?P<num>\d+)/delete/$', variety_delete, name='variety_delete'),
+    url(r'^varieties/add/$',variety_add,name='variety_add'),
 
     url(r'^comparisons/$', comparison_index, name='comparison_index'),
     url(r'^comparisons/(?P<num>\d+)/$', comparison_detail, name='comparison_detail'),
