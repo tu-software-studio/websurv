@@ -15,6 +15,8 @@ urlpatterns = patterns(
     url(r'^dictionaries/$', dictionary_index, name='dictionary_index'),
     url(r'^dictionaries/(?P<id>\d+)/$', dictionary_detail, name='dictionary_detail'),
     url(r'^dictionaries/(?P<id>\d+)/edit/$', dictionary_edit, name='dictionary_edit'),
+    url(r'^dictionaries/add/(?P<id>\d+)$', dictionary_add, name='dictionary_add'),
+    url(r'^dictionaries/(?P<id>\d+)/delete/$', dictionary_delete, name='dictionary_delete'),
 
     url(r'^surveys/$', survey_index, name='survey_index'),
     url(r'^surveys/(?P<id>\d+)/$', survey_detail, name='survey_detail'),
@@ -31,6 +33,8 @@ urlpatterns = patterns(
     url(r'^varieties/$', variety_index, name='variety_index'),
     url(r'^varieties/(?P<num>\d+)/$', variety_detail, name='variety_detail'),
     url(r'^varieties/(?P<num>\d+)/edit/$', variety_edit, name='variety_edit'),
+    url(r'^varieties/(?P<num>\d+)/delete/$', variety_delete, name='variety_delete'),
+    url(r'^varieties/add/$',variety_add,name='variety_add'),
 
     url(r'^comparisons/$', comparison_index, name='comparison_index'),
     url(r'^comparisons/(?P<num>\d+)/$', comparison_detail, name='comparison_detail'),

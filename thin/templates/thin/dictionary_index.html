@@ -2,17 +2,15 @@
 
 {% block content %}
 
-<p>This is dictionary_index.html</p>
 <ul>
-  {% for dict in dict_list %}
+  {% for dictionary in dictionary_list %}
   <li>
-    <a href="{% url 'dictionary_detail' dict.id %}">{{dict.name}}</a> :
-    <a href="{% url 'dictionary_edit' dict.id %}">Edit</a>
+    <a href="{% url 'dictionary_detail' dictionary.id %}">{{dictionary.name}}</a> :
+    <a href="{% url 'dictionary_edit' dictionary.id %}">Edit</a>
   </li>
   {% empty %}
   <li>No dictionaries</li>
   {% endfor %}
 </ul>
- {# TODO: make this work #}
-{# <a href="{% url 'dictionary_add' %}" class="btn btn-primary">Add</a> #}
+
 {% endblock %}

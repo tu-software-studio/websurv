@@ -1,0 +1,16 @@
+{% extends "thin/base.html" %}
+
+{% block content %}
+
+<ul>
+  {% for survey in survey_list %}
+  <li>
+    <a href="{% url 'survey_detail' survey.id %}">{{survey.name}}</a> :
+    <a href="{% url 'survey_edit' survey.id %}">Edit</a>
+  </li>
+  {% empty %}
+  <li>No surveys</li>
+  {% endfor %}
+</ul>
+<a href="{% url 'survey_add' %}" class="btn btn-primary">Add</a>
+{% endblock %}
