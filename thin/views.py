@@ -56,7 +56,7 @@ def dictionary_delete(request, id):
     messages.success(request, "Dictionary has been deleted!")
     return redirect('project_detail',num=dictionary.project_id)
 
-def dictionary_add(request,id):
+def dictionary_add(request, id ):
     if request.method == 'POST': # If the form has been submitted
         form = forms.DictionaryForm(request.POST)
         if form.is_valid():
@@ -67,17 +67,6 @@ def dictionary_add(request,id):
     else:
         form = forms.DictionaryForm()
     return render(request,'thin/project_add.html', {'form' : form })
-
-def dictionary_add(request):
-    if request.method == 'POST': # If the form has been submitted
-        form = forms.DictionaryForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Dictionary added!")
-            return redirect('dictionary_index')
-    else:
-        form = forms.DictionaryForm()
-    return render(request, 'thin/dictionary_add.html', {'form': form})
 
 def survey_index(request):
     survey_list = Survey.objects.all() # TODO - only get stuff we need
