@@ -20,11 +20,27 @@ def dictionary_index(request):
     dictionaries = Dictionary.objects.all() # TODO - only get dictionaries for current project.
     return render(request, 'thin/dictionary_index.html', {'dict_list': dictionaries})
 
+def dictionary_delete(request, id):
+    dictionary = Dictionary.objects.get(id=id)
+    dictionary.delete()
+    return redirect('dictionary_index')
+
 def dictionary_detail(request, id):
     pass
 
 def dictionary_edit(request, id):
     pass
+
+def dictionary_add(request):
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.DictionaryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Dictionary added!")
+            return redirect('dictionary_index')
+    else:
+        form = forms.DictionaryForm()
+    return render(request, 'thin/dictionary_add.html', {'form': form})
 
 def survey_index(request):
     variety_list = Variety.objects.all() # TODO - only get varieties from current dictionary and survey.

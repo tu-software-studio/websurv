@@ -1,7 +1,13 @@
 from django import forms
 from django.forms import ModelForm
 
-from backend.models import Project, Survey
+from backend.models import Dictionary, Project, Survey
+
+class DictionaryForm(ModelForm):
+    class Meta:
+        model = Dictionary
+        fields = ['name','project']
+
 
 class ProjectForm(ModelForm):
     class Meta:
