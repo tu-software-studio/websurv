@@ -44,8 +44,8 @@ def dictionary_add(request):
     return render(request, 'thin/dictionary_add.html', {'form': form})
 
 def survey_index(request):
-    varieties = Variety.objects.all() # TODO - only get varieties from current project, dictionary and survey.
-    context = {'varieties': varieties}
+    survey_list = Survey.objects.all() # TODO - only get stuff we need
+    context = {'survey_list': survey_list}
     return render(request, 'thin/survey_index.html', context)
 
 def survey_detail(request, id):
