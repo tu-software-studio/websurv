@@ -22,4 +22,4 @@ class DictionaryForm(ModelForm):
 class VarietyForm(ModelForm):
     class Meta:
         model = Variety
-        fields = ['name','title','dictionary']
+        fields = ['name']
