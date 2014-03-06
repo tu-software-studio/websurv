@@ -20,6 +20,11 @@ def dictionary_index(request):
     dictionaries = Dictionary.objects.all()
     return render(request, 'thin/dictionary_index.html', { 'dictionary_list' : dictionaries })
 
+def dictionary_delete(request, id):
+    dictionary = Dictionary.objects.get(id=id)
+    dictionary.delete()
+    return redirect('dictionary_index')
+
 def dictionary_detail(request, id):
     try:
         dictionary = Dictionary.objects.get(pk=id)
@@ -63,21 +68,37 @@ def dictionary_add(request,id):
         form = forms.DictionaryForm()
     return render(request,'thin/project_add.html', {'form' : form })
 
+def dictionary_add(request):
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.DictionaryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Dictionary added!")
+            return redirect('dictionary_index')
+    else:
+        form = forms.DictionaryForm()
+    return render(request, 'thin/dictionary_add.html', {'form': form})
+
 def survey_index(request):
-    variety_list = Variety.objects.all() # TODO - only get varieties from current dictionary and survey.
-    context = {'variety_list': variety_list}
+    survey_list = Survey.objects.all() # TODO - only get stuff we need
+    context = {'survey_list': survey_list}
     return render(request, 'thin/survey_index.html', context)
 
 def survey_detail(request, id):
-    pass
-
-def survey_edit(request, id):
     try:
-        survey = Survey.objects.get(pk=id)
+        survey = Survey.objects.get(id=id)
+        varieties = Variety.objects.filter(id=survey.id)
+        dictionary = survey.dictionary
+        project = dictionary.project
+        breadcrumb_menu = [project,dictionary,survey]
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
+    context = {'survey' : survey, 'varieties' : varieties, 'breadcrumb_menu':breadcrumb_menu}
+    return render(request, 'thin/survey_detail.html', context)
 
+def survey_edit(request,id):
+    survey = Survey.objects.get(id=id)
     if request.method == 'POST': # If the form has been submitted
         form = forms.SurveyForm(request.POST, instance=survey)
         if form.is_valid():
@@ -112,10 +133,11 @@ def project_detail(request, num):
     try:
         project = Project.objects.get(pk=num)
         dictionaries = Dictionary.objects.filter(project=project)
+        breadcrumb_menu = [project]
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
-    return render(request, 'thin/project_detail.html', {'project' : project, 'dictionaries':dictionaries})
+    return render(request, 'thin/project_detail.html', {'project' : project, 'dictionaries':dictionaries,'breadcrumb_menu':breadcrumb_menu })
 
 def project_edit(request, num):
     try:
@@ -160,7 +182,38 @@ def variety_detail(request, num):
     return render(request, 'thin/variety_detail.html',{ 'variety':variety, 'transcripts':transcripts})
 
 def variety_edit(request, num):
-    pass
+    try:
+        variety = Variety.objects.get(pk=num)
+    except Variety.DoesNotExist:
+        messages.error(request, "Can't find selected variety.")
+        return redirect('variety_index')
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.VarietyForm(request.POST,instance=variety)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Variety has been editted successfully!")
+            return redirect('variety_detail',num=variety.id)
+    else:
+        form = forms.VarietyForm(instance=variety)
+    return render(request,'thin/variety_edit.html', {'form' : form, 'variety' : variety })
+
+def variety_add(request):
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.VarietyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Variety Added!")
+            return redirect('project_index')
+    else:
+        form = forms.VarietyForm()
+        messages.error(request,"Variety failed to be created")
+    return render(request,'thin/variety_add.html', {'form' : form})
+
+def variety_delete(request,num):
+    variety = Variety.objects.get(pk=num)
+    variety.delete()
+    messages.success(request, "Variety has been deleted!")
+    return redirect('variety_index')
 
 def comparison_index(request):
     pass

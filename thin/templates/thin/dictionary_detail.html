@@ -1,0 +1,15 @@
+{# Dictionary Detail #}
+{% extends "thin/base.html" %}
+
+{% block content %}
+
+<p>
+Dictionary's project: <a href="{% url 'project_detail' dictionary.project.id %}">{{dictionary.project}}</a>
+</p>
+
+{{dictionary.name}} : <a href="{% url 'dictionary_edit' dictionary.id %}">Edit </a></li>
+
+<p> add list of dictionary's varieties</p>
+</br></br><a href='#' class='btn btn-primary' >Add Variety?</a>
+
+{% endblock %}

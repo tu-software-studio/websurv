@@ -4,9 +4,11 @@
 
 {{ variety.name }} : <a href="{% url 'variety_edit' variety.id %}">Edit </a>
 
+<ul>
 {% for transcript in transcripts %}
-   
+   <li>{{ transcript.gloss }} | {{ transcript.ipa }}</li>
 
 {% endfor %}
+</ul>
 
 {% endblock %}
