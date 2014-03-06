@@ -114,6 +114,21 @@ def project_delete(request,num):
     messages.success(request, "Project has been deleted!")
     return redirect('project_index')
 
+def login_user(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            messages.success(request, "Welcome!")
+    else:
+        messages.error(request, "Invalid username or password.")
+
+def logout(request):
+    logout(request)
+    messages.success(request, "Succssfully logged out!")
+
 def variety_index(request):
     pass
 

@@ -1,0 +1,14 @@
+{% extends "thin/base.html" %}
+
+{% load bootstrap %}
+
+{% block content %}
+
+<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+<% csrf_token %>
+
+
+
+</form>
+
+{% endblock %}
