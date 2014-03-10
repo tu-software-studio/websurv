@@ -41,6 +41,6 @@ urlpatterns = patterns(
     url(r'^comparisons/(?P<num>\d+)/edit/$', comparison_edit, name='comparison_edit'),
 
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name' : 'thin/login.html'}, name='login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page' : project_index},  name='logout'),
 
 )

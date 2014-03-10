@@ -45,3 +45,4 @@ MESSAGE_TAGS = {
 }
 
 LOGIN_REDIRECT_URL = reverse_lazy('home')
+LOGOUT_REDIRECT_URL = reverse_lazy('home')
