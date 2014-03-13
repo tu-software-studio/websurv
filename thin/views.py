@@ -26,7 +26,7 @@ def dictionary_add(request, id):
             return redirect('project_detail', num=id)
     else:
         form = forms.DictionaryForm()
-    return render(request,'thin/project_add.html', {'form' : form })
+    return render(request,'thin/dictionary_add.html', {'form' : form })
 
 def dictionary_delete(request, id):
     try:
