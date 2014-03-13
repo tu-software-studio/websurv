@@ -67,7 +67,7 @@
     "model": "backend.partofspeech",
     "pk": 9,
     "fields": {
-      "name": "interjection"
+      "name": "Interjection"
     }
   }
 ]
