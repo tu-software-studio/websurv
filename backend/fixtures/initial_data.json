@@ -1,0 +1,73 @@
+[
+  {
+    "model": "backend.partofspeech",
+    "pk": 1,
+    "fields": {
+      "name": "Noun"
+    }
+  },
+
+  {
+    "model": "backend.partofspeech",
+    "pk": 2,
+    "fields": {
+      "name": "Pronoun"
+    }
+  },
+
+  {
+    "model": "backend.partofspeech",
+    "pk": 3,
+    "fields": {
+      "name": "Verb"
+    }
+  },
+
+  {
+    "model": "backend.partofspeech",
+    "pk": 4,
+    "fields": {
+      "name": "Adjective"
+    }
+  },
+
+  {
+    "model": "backend.partofspeech",
+    "pk": 5,
+    "fields": {
+      "name": "Article"
+    }
+  },
+
+  {
+    "model": "backend.partofspeech",
+    "pk": 6,
+    "fields": {
+      "name": "Adverb"
+    }
+  },
+
+  {
+    "model": "backend.partofspeech",
+    "pk": 7,
+    "fields": {
+      "name": "Preposition"
+    }
+  },
+
+  {
+    "model": "backend.partofspeech",
+    "pk": 8,
+    "fields": {
+      "name": "Conjunction"
+    }
+  },
+
+  {
+    "model": "backend.partofspeech",
+    "pk": 9,
+    "fields": {
+      "name": "Interjection"
+    }
+  }
+]
