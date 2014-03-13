@@ -3,10 +3,6 @@
 
 {% block content %}
 
-<p>
-Dictionary's project: <a href="{% url 'project_detail' dictionary.project.id %}">{{dictionary.project}}</a>
-</p>
-
 {{dictionary.name}} : <a href="{% url 'dictionary_edit' dictionary.id %}">Edit </a></li>
 
 <ul>
