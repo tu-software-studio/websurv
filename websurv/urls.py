@@ -15,7 +15,7 @@ urlpatterns = patterns(
     url(r'^dictionaries/$', dictionary_index, name='dictionary_index'),
     url(r'^dictionaries/(?P<id>\d+)/$', dictionary_detail, name='dictionary_detail'),
     url(r'^dictionaries/(?P<id>\d+)/edit/$', dictionary_edit, name='dictionary_edit'),
-    url(r'^dictionaries/add/(?P<id>\d+)$', dictionary_add, name='dictionary_add'),
+    url(r'^dictionaries/add/(?P<id>\d+)/$', dictionary_add, name='dictionary_add'),
     url(r'^dictionaries/(?P<id>\d+)/delete/$', dictionary_delete, name='dictionary_delete'),
 
     url(r'^surveys/$', survey_index, name='survey_index'),

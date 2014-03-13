@@ -7,15 +7,38 @@ from backend.models import Dictionary, Project
 # Create your tests here.
 class DictionaryIndexTestCase(TestCase):
     def setUp(self):
-        Project.objects.create(name="project_1")
-        Dictionary.objects.create(name="dictionary_1", project="project_1")
+        self.client = Client()
+        self.project = Project.objects.create(name="project")
+        self.instance = Dictionary.objects.create(name="dictionary_1", project=self.project)
 
-    def test_index_contains_dictionary(self):
-        client = Client()
-        response = client.get('dictionary_index')
-        
+    def test_dictionary_add_exists(self):
+        response = self.client.get('/dictionaries/add/'+ str(self.project.id) + '/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['dictionaries']), 1)
+
+    def test_dictionary_delete_exists(self):
+        response = self.client.post('/dictionaries/1/delete')
+        # Status code should be 301 since we want a redirect
+        self.assertEqual(response.status_code, 301)
+        
+    def test_dictionary_delete_removes_dictionary(self):
+        response = self.client.post('/dictionaries/1/delete')
+        response = self.client.get('/dictionaries/')
+        # TODO: get this working...
+        self.assertEqual(len(response.context['dictionary_list']), len(self.project.dictionaries.count) - 1)
+        
+    def test_dictionary_detail_exists(self):
+        response = self.client.get('/dictionaries/' + str(self.instance.id) + '/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_dictionary_index_exists(self):
+        response = self.client.get('/dictionaries/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_dictionary_index_contains_dictionary(self):
+        Dictionary.objects.create(name="dictionary_2", project=self.project)
+        response = self.client.get('/dictionaries/')
+        self.assertEqual(len(response.context['dictionary_list']), 2)
+
 
 class ProjectTestCase(TestCase):
     def setUp(self):

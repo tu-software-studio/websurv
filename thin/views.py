@@ -27,12 +27,21 @@ def dictionary_add(request, id ):
         else:
             form = forms.DictionaryForm()
             return render(request,'thin/project_add.html', {'form' : form })
+    else:
+#        form = forms.DictionaryForm(instance=dictionary)
+#        return render(request,'thin/dictionary_edit.html', {'form' : form, 'dictionary' : dictionary })
+        form = forms.DictionaryForm()
+        return render(request,'thin/dictionary_add.html', {'form' : form})
 
 def dictionary_delete(request, id):
-    dictionary = Dictionary.objects.get(pk=id)
+    try:
+        dictionary = Dictionary.objects.get(pk=id)
+    except Dictionary.DoesNotExist:
+        messages.error(request, "Can't find the selected dictionary")
+        return redirect('dictionary_index')
     dictionary.delete()
     messages.success(request, "Dictionary has been deleted!")
-    return redirect('project_detail',num=dictionary.project_id)
+    return redirect('project_detail', num=dictionary.project_id)
 
 def dictionary_detail(request, id):
     try:
