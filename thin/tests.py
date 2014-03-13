@@ -21,11 +21,11 @@ class DictionaryTestCase(TestCase):
         self.assertEqual(response.status_code, 301)
         
     def test_dictionary_delete_removes_dictionary(self):
-        response = self.client.delete('/dictionaries/1/delete')
-        # response = self.client.get('/dictionaries/')
-        # TODO: get this working...
-        # self.assertEqual(len(response.context['dictionary_list']), len(self.project.dictionaries.count) - 1)
-        self.assertEqual(len(response.context['dictionary_list']), 0)
+        """ Tests that the dictionary_delete view deletes a dicionary. """
+        num_dicts = self.project.dictionaries.count()
+        self.client.post('/dictionaries/' + str(self.instance.id) + '/delete/')
+        response = self.client.get('/dictionaries/')
+        self.assertEqual(len(response.context['dictionary_list']), num_dicts - 1)
 
     def test_dictionary_detail_exists(self):
         response = self.client.get('/dictionaries/' + str(self.instance.id) + '/')
