@@ -5,7 +5,7 @@ from django.utils import unittest
 from backend.models import Dictionary, Project
 
 # Create your tests here.
-class DictionaryIndexTestCase(TestCase):
+class DictionaryTestCase(TestCase):
     def setUp(self):
         self.client = Client()
         self.project = Project.objects.create(name="project")
@@ -21,11 +21,12 @@ class DictionaryIndexTestCase(TestCase):
         self.assertEqual(response.status_code, 301)
         
     def test_dictionary_delete_removes_dictionary(self):
-        response = self.client.post('/dictionaries/1/delete')
-        response = self.client.get('/dictionaries/')
+        response = self.client.delete('/dictionaries/1/delete')
+        # response = self.client.get('/dictionaries/')
         # TODO: get this working...
-        self.assertEqual(len(response.context['dictionary_list']), len(self.project.dictionaries.count) - 1)
-        
+        # self.assertEqual(len(response.context['dictionary_list']), len(self.project.dictionaries.count) - 1)
+        self.assertEqual(len(response.context['dictionary_list']), 0)
+
     def test_dictionary_detail_exists(self):
         response = self.client.get('/dictionaries/' + str(self.instance.id) + '/')
         self.assertEqual(response.status_code, 200)

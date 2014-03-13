@@ -24,14 +24,9 @@ def dictionary_add(request, id ):
             form.save()
             messages.success(request, "Dictionary Added!")
             return redirect('project_detail', num=id)
-        else:
-            form = forms.DictionaryForm()
-            return render(request,'thin/project_add.html', {'form' : form })
     else:
-#        form = forms.DictionaryForm(instance=dictionary)
-#        return render(request,'thin/dictionary_edit.html', {'form' : form, 'dictionary' : dictionary })
         form = forms.DictionaryForm()
-        return render(request,'thin/dictionary_add.html', {'form' : form})
+    return render(request,'thin/project_add.html', {'form' : form })
 
 def dictionary_delete(request, id):
     try:
@@ -79,9 +74,9 @@ def project_add(request):
             form.save()
             messages.success(request, "Project Added!")
             return redirect('project_index')
-        else:
-            form = forms.ProjectForm()
-            return render(request,'thin/project_add.html', {'form' : form})
+    else:
+        form = forms.ProjectForm()
+    return render(request,'thin/project_add.html', {'form' : form})
 
 def project_delete(request,num):
     project = Project.objects.get(pk=num)
@@ -97,7 +92,8 @@ def project_detail(request, num):
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
-        return render(request, 'thin/project_detail.html', {'project' : project, 'dictionaries':dictionaries,'breadcrumb_menu':breadcrumb_menu })
+    context = {'project' : project, 'dictionaries':dictionaries,'breadcrumb_menu':breadcrumb_menu }
+    return render(request, 'thin/project_detail.html', context)
 
 def project_edit(request, num):
     try:
@@ -105,15 +101,16 @@ def project_edit(request, num):
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
-        if request.method == 'POST': # If the form has been submitted
-            form = forms.ProjectForm(request.POST,instance=project)
-            if form.is_valid():
-                form.save()
-                messages.success(request,"Project has been editted successfully!")
-                return redirect('project_detail',num=project.id)
-            else:
-                form = forms.ProjectForm(instance=project)
-                return render(request,'thin/project_edit.html', {'form' : form, 'project' : project })
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.ProjectForm(request.POST,instance=project)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Project has been editted successfully!")
+            return redirect('project_detail',num=project.id)
+    else:
+        form = forms.ProjectForm(instance=project)
+    context = {'form' : form, 'project' : project}
+    return render(request,'thin/project_edit.html', context)
 
 def project_index(request):
     projects = Project.objects.all()    
@@ -126,9 +123,9 @@ def survey_add(request):
             form.save()
             messages.success(request, "Survey added!")
             return redirect('survey_index')
-        else:
-            form = forms.SurveyForm()
-            return render(request, 'thin/survey_add.html', {'form': form})
+    else:
+        form = forms.SurveyForm()
+    return render(request, 'thin/survey_add.html', {'form': form})
 
 def survey_delete(request, id):
     survey = Survey.objects.get(id=id)
@@ -145,8 +142,8 @@ def survey_detail(request, id):
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
-        context = {'survey' : survey, 'varieties' : varieties, 'breadcrumb_menu':breadcrumb_menu}
-        return render(request, 'thin/survey_detail.html', context)
+    context = {'survey' : survey, 'varieties' : varieties, 'breadcrumb_menu':breadcrumb_menu}
+    return render(request, 'thin/survey_detail.html', context)
 
 def survey_edit(request,id):
     survey = Survey.objects.get(id=id)
@@ -155,10 +152,10 @@ def survey_edit(request,id):
         if form.is_valid():
             form.save()
             return redirect('survey_detail', id=id)
-        else:
-            form = forms.SurveyForm(instance=survey)
-            return render(request, 'thin/survey_edit.html',
-                          { 'form': form, 'survey': survey })
+    else:
+        form = forms.SurveyForm(instance=survey)
+    return render(request, 'thin/survey_edit.html',
+                  { 'form': form, 'survey': survey })
 
 def survey_index(request):
     survey_list = Survey.objects.all() # TODO - only get stuff we need
@@ -172,10 +169,10 @@ def variety_add(request):
             form.save()
             messages.success(request, "Variety Added!")
             return redirect('project_index')
-        else:
-            form = forms.VarietyForm()
-            messages.error(request,"Variety failed to be created")
-            return render(request,'thin/variety_add.html', {'form' : form})
+    else:
+        form = forms.VarietyForm()
+        messages.error(request,"Variety failed to be created")
+    return render(request,'thin/variety_add.html', {'form' : form})
 
 def variety_delete(request,num):
     variety = Variety.objects.get(pk=num)
