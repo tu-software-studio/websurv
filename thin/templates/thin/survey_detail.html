@@ -1,0 +1,15 @@
+{% extends 'thin/base.html' %}
+
+{% block content %}
+
+<ul>
+{% for variety in varieties %}
+
+<li>
+  {{ variety.name }}
+</li>
+
+{% endfor %}
+<ul>
+
+{% endblock %}
