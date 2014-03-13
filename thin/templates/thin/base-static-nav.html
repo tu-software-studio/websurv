@@ -3,7 +3,7 @@
   <head>
     <title>Websurv</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href='{{ STATIC_URL }}css/websurv.css' />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/websurv.css" />
     <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   </head>
@@ -30,10 +30,9 @@
 	    <li class="dropdown">
 	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Project<span class="caret"></span></a>
 	      <ul class="dropdown-menu dropdown-inverse">
-		<li><a href="#">Project1</a></li>
-		<li><a href="#">Project2</a></li>
-		<li class="active"><a href="#">Project3</a></li>
-		<li><a href="#">Project4</a></li>
+		{% for project in projects %}
+		  <li><a href="{{ project.get_absolute_url }}" class="active">{{ project.name }}</a></li>
+		{% endfor %}
 	      </ul>
 	    </li>
 	  </ul>
@@ -60,7 +59,7 @@
       <ol class="breadcrumb">
 	{% for item in breadcrumb_menu %}
 	<li>
-	  <a href="{{item.get_absolute_url}}">{{item.name}}</a>
+	  <a href="{{ item.get_absolute_url }}">{{item.name}}</a>
 	</li>
 	{% endfor %}
       </ol>
@@ -69,8 +68,10 @@
       {% if messages %}
       <div class="messages">
 	{% for message in messages %}
-	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-	<p{% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissable"{% endif %}>{{ message }}</p>
+	  <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissable" {% endif %}>
+	    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	    {{ message }}
+	  </div>
 	{% endfor %}
       </div>
       {% endif %}

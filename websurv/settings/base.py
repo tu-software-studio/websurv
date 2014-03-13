@@ -7,6 +7,16 @@ PROJECT_DIR = Path(__file__).ancestor(3)
 
 SECRET_KEY = 'ea+sg5filpj)308_9t2tzuoay6u=p1cdmqt!!s@=tfsunoybf$'
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+        "websurv.context_processors.ProjectList",
+        "django.contrib.auth.context_processors.auth",
+        "django.core.context_processors.debug",
+        "django.core.context_processors.i18n",
+        "django.core.context_processors.media",
+        "django.core.context_processors.static",
+        "django.contrib.messages.context_processors.messages",
+        )
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',

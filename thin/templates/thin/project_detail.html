@@ -1,17 +1,24 @@
 {% extends "thin/base.html" %}
 
+{% load utils %}
 {% block content %}
-
-{{project.name}} : <a href="{% url 'project_edit' project.id %}">Edit </a></li>
-
-<ul>
-{% for dictionary in dictionaries %}
-<li>
-  <a href='{% url 'dictionary_detail' dictionary.id %}'>{{dictionary.name}}</a>
-  <a href='{% url 'dictionary_edit' dictionary.id %}'>Edit</a>
-</li>
-{% endfor%}
-</ul>
-<a href="{% url 'dictionary_add' project.id %}" class="btn btn-primary">Add</a>
+    <p>
+        {{ project.name }} :
+        {% url 'project_edit' project.id as project_edit_path %}
+        {% blink_to project_edit_path "Edit" "btn-warning btn-xs" %}
+    </p>
+    <div class="well well-sm">
+        Dictionaries in this project:
+        <ul>
+            {% for dictionary in dictionaries %}
+                <li>
+                    <a href="{{ dictionary.get_absolute_url }}">{{ dictionary.name }}</a>
+                    {% url 'dictionary_edit' dictionary.id as dictionary_edit_path %}
+                    {% blink_to dictionary_edit_path "Edit" "btn-warning btn-xs" %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% url 'dictionary_add' project.id as dictionary_add_path %}
+        {% blink_to dictionary_add_path "Add" "btn-primary btn-xs" %}
+    </div>
 {% endblock %}
-
