@@ -9,7 +9,15 @@ Dictionary's project: <a href="{% url 'project_detail' dictionary.project.id %}"
 
 {{dictionary.name}} : <a href="{% url 'dictionary_edit' dictionary.id %}">Edit </a></li>
 
-<p> add list of dictionary's varieties</p>
-</br></br><a href='#' class='btn btn-primary' >Add Variety?</a>
+<ul>
+{% for survey in surveys %}
+
+<li>
+  <a href='{% url 'survey_detail' survey.id %}'>{{ survey.name }}</a>
+  <a href='{% url 'survey_edit' survey.id %}'>Edit</a>
+</li>
+
+{% endfor %}
+</ul>
 
 {% endblock %}

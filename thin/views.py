@@ -1,9 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-from backend.models import *
+from backend.models import Dictionary, Project, Survey, Variety
 
-from forms import *
 from thin import forms
 
 def home(request):
@@ -16,7 +15,8 @@ def home(request):
 
     return render(request, 'thin/base.html',context)
 
-def dictionary_add(request, id ):
+def dictionary_add(request, id):
+    """  """
     if request.method == 'POST': # If the form has been submitted
         form = forms.DictionaryForm(request.POST)
         if form.is_valid():
@@ -42,12 +42,13 @@ def dictionary_detail(request, id):
     try:
         dictionary = Dictionary.objects.get(pk=id)
         project = dictionary.project
+        surveys = Survey.objects.filter(dictionary=dictionary)
         breadcrumb_menu = [project,dictionary]
         #varieties = Variety.objects.filter(dictionary=dictionary)
     except Dictionary.DoesNotExist:
         messages.error(request, "Can't find selected dictionary.")
         return redirect('dictionary_index')
-    return render(request, 'thin/dictionary_detail.html', {'dictionary' : dictionary, 'breadcrumb_menu':breadcrumb_menu })
+    return render(request, 'thin/dictionary_detail.html', {'dictionary' : dictionary, 'breadcrumb_menu':breadcrumb_menu, 'surveys':surveys })
 
 def dictionary_edit(request, id):
     try:
@@ -132,6 +133,7 @@ def survey_add(request):
 def survey_delete(request, id):
     survey = Survey.objects.get(id=id)
     survey.delete()
+    messages.success(request,"Survey has been deleted!")
     return redirect('survey_index')
 
 def survey_detail(request, id):
@@ -185,7 +187,7 @@ def variety_delete(request,num):
 def variety_detail(request, num):
     variety = Variety.objects.get(pk=num)
     transcripts = Transcription.objects.filter(variety=variety)
-    return render(request, 'thin/variety_detail.html',{ 'variety':variety, 'transcripts':transcripts})
+    return render(request, 'thin/variety_detail.html',{'variety':variety, 'transcripts' : transcripts})
 
 def variety_edit(request, num):
     try:
@@ -194,18 +196,18 @@ def variety_edit(request, num):
         messages.error(request, "Can't find selected variety.")
         return redirect('variety_index')
     if request.method == 'POST': # If the form has been submitted
-        form = forms.VarietyForm(request.POST,instance=variety)
+        form = forms.VarietyForm(request.POST, instance=variety)
         if form.is_valid():
             form.save()
             messages.success(request,"Variety has been editted successfully!")
-            return redirect('variety_detail',num=variety.id)
+            return redirect('variety_detail', num=variety.id)
     else:
         form = forms.VarietyForm(instance=variety)
     return render(request,'thin/variety_edit.html', {'form' : form, 'variety' : variety })
 
 def variety_index(request):
     varieties = Variety.objects.all()
-    return render(request, 'thin/variety_index.html', { 'varieties':varieties})
+    return render(request, 'thin/variety_index.html', {'varieties' : varieties})
 
 def comparison_index(request):
     pass
