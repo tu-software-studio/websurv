@@ -185,9 +185,17 @@ def variety_delete(request,num):
     return redirect('variety_index')
 
 def variety_detail(request, num):
-    variety = Variety.objects.get(pk=num)
-    transcripts = Transcription.objects.filter(variety=variety)
-    return render(request, 'thin/variety_detail.html',{'variety':variety, 'transcripts' : transcripts})
+    try:
+        variety = Variety.objects.get(pk=num)
+        transcripts = Transcription.objects.filter(variety=variety)
+        survey = variety.survey
+        dictionary = survey.dictionary
+        project = dictionary.project
+        breadcrumb_menu = [project,dictionary,survey,variety]
+    except Survey.DoesNotExist:
+        messages.error(request, "Can't find selected variety.")
+        return redirect('variety_index')
+    return render(request, 'thin/variety_detail.html',{'variety':variety, 'transcripts' : transcripts, 'breadcrumb_menu':breadcrumb_menu})
 
 def variety_edit(request, num):
     try:
