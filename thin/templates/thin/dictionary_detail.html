@@ -6,6 +6,16 @@
 {{dictionary.name}} : <a href="{% url 'dictionary_edit' dictionary.id %}">Edit </a></li>
 
 <ul>
+{% for gloss in glosses %}
+
+<li>
+  {{ gloss.primary }}
+</li>
+
+{% endfor %}
+</ul>
+
+<ul>
 {% for survey in surveys %}
 
 <li>

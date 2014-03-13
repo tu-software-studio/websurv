@@ -6,7 +6,8 @@
 {% for variety in varieties %}
 
 <li>
-  {{ variety.name }}
+  <a href='{% url 'variety_detail' variety.id %}'>{{ variety.name }}</a>
+  <a href='{% url 'variety_edit' variety.id %}'>Edit</a>
 </li>
 
 {% endfor %}
