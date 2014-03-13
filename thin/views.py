@@ -41,11 +41,13 @@ def dictionary_delete(request, id):
 def dictionary_detail(request, id):
     try:
         dictionary = Dictionary.objects.get(pk=id)
+        project = dictionary.project
+        breadcrumb_menu = [project,dictionary]
         #varieties = Variety.objects.filter(dictionary=dictionary)
     except Dictionary.DoesNotExist:
         messages.error(request, "Can't find selected dictionary.")
         return redirect('dictionary_index')
-    return render(request, 'thin/dictionary_detail.html', {'dictionary' : dictionary })
+    return render(request, 'thin/dictionary_detail.html', {'dictionary' : dictionary, 'breadcrumb_menu':breadcrumb_menu })
 
 def dictionary_edit(request, id):
     try:
