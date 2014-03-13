@@ -42,12 +42,13 @@ def dictionary_detail(request, id):
     try:
         dictionary = Dictionary.objects.get(pk=id)
         project = dictionary.project
+        surveys = Survey.objects.filter(dictionary=dictionary)
         breadcrumb_menu = [project,dictionary]
         #varieties = Variety.objects.filter(dictionary=dictionary)
     except Dictionary.DoesNotExist:
         messages.error(request, "Can't find selected dictionary.")
         return redirect('dictionary_index')
-    return render(request, 'thin/dictionary_detail.html', {'dictionary' : dictionary, 'breadcrumb_menu':breadcrumb_menu })
+    return render(request, 'thin/dictionary_detail.html', {'dictionary' : dictionary, 'breadcrumb_menu':breadcrumb_menu, 'surveys':surveys })
 
 def dictionary_edit(request, id):
     try:
@@ -132,6 +133,7 @@ def survey_add(request):
 def survey_delete(request, id):
     survey = Survey.objects.get(id=id)
     survey.delete()
+    messages.success(request,"Survey has been deleted!")
     return redirect('survey_index')
 
 def survey_detail(request, id):
