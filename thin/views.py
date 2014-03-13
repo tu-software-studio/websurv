@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-from backend.models import Dictionary, Project, Survey, Variety
+from backend.models import Dictionary, Project, Survey, Variety, Transcription, Gloss
 
 from thin import forms
 
@@ -25,7 +25,7 @@ def dictionary_detail(request, id):
         project = dictionary.project
         surveys = Survey.objects.filter(dictionary=dictionary)
         breadcrumb_menu = [project,dictionary]
-        #varieties = Variety.objects.filter(dictionary=dictionary)
+        glosses = Gloss.objects.filter(dictionary=dictionary)
     except Dictionary.DoesNotExist:
         messages.error(request, "Can't find selected dictionary.")
         return redirect('dictionary_index')
