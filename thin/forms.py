@@ -8,7 +8,6 @@ class ProjectForm(ModelForm):
         model = Project
         fields = ['name']
 
-
 class SurveyForm(ModelForm):
     class Meta:
         model = Survey
@@ -23,3 +22,8 @@ class VarietyForm(ModelForm):
     class Meta:
         model = Variety
         fields = ['name']
+
+class GlossForm(ModelForm):
+    class Meta:
+        model = Gloss
+        fields = ['primary','secondary','pos','field_tip','comment_tip']
