@@ -71,6 +71,7 @@ class Migration(SchemaMigration):
         db.create_table(u'backend_variety', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('survey', self.gf('django.db.models.fields.related.ForeignKey')(related_name='varieties', to=orm['backend.Survey'])),
         ))
         db.send_create_signal(u'backend', ['Variety'])
 
@@ -211,7 +212,8 @@ class Migration(SchemaMigration):
         u'backend.variety': {
             'Meta': {'object_name': 'Variety'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'survey': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'varieties'", 'to': u"orm['backend.Survey']"})
         }
     }
 
