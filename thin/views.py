@@ -1,9 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-from backend.models import *
+from backend.models import Dictionary, Project, Survey, Variety
 
-from forms import *
 from thin import forms
 
 def home(request):
@@ -16,7 +15,8 @@ def home(request):
 
     return render(request, 'thin/base.html',context)
 
-def dictionary_add(request, id ):
+def dictionary_add(request, id):
+    """  """
     if request.method == 'POST': # If the form has been submitted
         form = forms.DictionaryForm(request.POST)
         if form.is_valid():
@@ -185,7 +185,7 @@ def variety_delete(request,num):
 def variety_detail(request, num):
     variety = Variety.objects.get(pk=num)
     transcripts = Transcription.objects.filter(variety=variety)
-    return render(request, 'thin/variety_detail.html',{ 'variety':variety, 'transcripts':transcripts})
+    return render(request, 'thin/variety_detail.html',{'variety':variety, 'transcripts' : transcripts})
 
 def variety_edit(request, num):
     try:
@@ -194,18 +194,18 @@ def variety_edit(request, num):
         messages.error(request, "Can't find selected variety.")
         return redirect('variety_index')
     if request.method == 'POST': # If the form has been submitted
-        form = forms.VarietyForm(request.POST,instance=variety)
+        form = forms.VarietyForm(request.POST, instance=variety)
         if form.is_valid():
             form.save()
             messages.success(request,"Variety has been editted successfully!")
-            return redirect('variety_detail',num=variety.id)
+            return redirect('variety_detail', num=variety.id)
     else:
         form = forms.VarietyForm(instance=variety)
     return render(request,'thin/variety_edit.html', {'form' : form, 'variety' : variety })
 
 def variety_index(request):
     varieties = Variety.objects.all()
-    return render(request, 'thin/variety_index.html', { 'varieties':varieties})
+    return render(request, 'thin/variety_index.html', {'varieties' : varieties})
 
 def comparison_index(request):
     pass
