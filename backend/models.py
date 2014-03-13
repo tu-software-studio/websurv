@@ -67,6 +67,7 @@ class Survey(models.Model):
 
 class Variety(models.Model):
     name = models.CharField(max_length=100)
+    survey = models.ForeignKey(Survey, related_name='varieties')
 
     def __unicode__(self):
         return self.name
