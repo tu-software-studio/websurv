@@ -15,7 +15,7 @@ class Dictionary(models.Model):
     project = models.ForeignKey(Project, related_name='dictionaries')
 
     class Meta:
-        verbose_name_plural = 'dictionaries'
+        verbose_name_plural = 'Dictionaries'
 
     def __unicode__(self):
         return self.name
@@ -25,6 +25,9 @@ class Dictionary(models.Model):
 
 class PartOfSpeech(models.Model):
     name = models.CharField(max_length=40)
+
+    class Meta:
+        verbose_name_plural = 'Parts of Speech'
 
     def __unicode__(self):
         return self.name
@@ -37,6 +40,9 @@ class Gloss(models.Model):
     field_tip = models.TextField()
     comment_tip = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Glosses'
 
     def __unicode__(self):
         return self.primary
@@ -68,6 +74,9 @@ class Survey(models.Model):
 class Variety(models.Model):
     name = models.CharField(max_length=100)
     survey = models.ForeignKey(Survey, related_name='varieties')
+
+    class Meta:
+        verbose_name_plural = 'Varieties'
 
     def __unicode__(self):
         return self.name
@@ -103,6 +112,9 @@ class ComparisonEntry(models.Model):
     exclude = models.BooleanField()
     comparison = models.ForeignKey(Comparison, related_name='entries')
     transcription = models.ForeignKey(Transcription, related_name='comparison_entries')
+
+    class Meta:
+        verbose_name_plural = 'Comaparison Entries'
 
     def __unicode__(self):
         return self.aligned_form
