@@ -1,0 +1,15 @@
+{# Gloss Detail #}
+{% extends "thin/base.html" %}
+
+{% block content %}
+
+<p>
+Gloss' project: <a href="{% url 'dictionary_detail' gloss.dictionary.id %}">{{gloss.dictionary}}</a>
+</p>
+
+{{gloss.primary}} : <a href="{% url 'gloss_edit' gloss.id %}">Edit</a></li>
+<li> {{gloss.secondary}} </li>
+<li> {{gloss.field_tip}} </li>
+<li> {{gloss.comment_tip}} </li>
+
+{% endblock %}

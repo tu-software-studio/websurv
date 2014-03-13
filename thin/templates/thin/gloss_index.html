@@ -1,0 +1,16 @@
+{% extends "thin/base.html" %}
+
+{% block content %}
+
+<ul>
+  {% for gloss in gloss_list %}
+  <li>
+    <a href="{% url 'gloss_detail' gloss.id %}">{{gloss.primary}}</a> :
+    <a href="{% url 'gloss_edit' gloss.id %}">Edit</a>
+  </li>
+  {% empty %}
+  <li>No Glosses</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
