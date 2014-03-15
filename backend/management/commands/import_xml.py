@@ -30,6 +30,8 @@ class Command(BaseCommand):
                     with open("export.json",'w') as f:
                         f.write(json_dump)
                         f.close()
+            else:
+                self.stdout("Must be an xml file!")
 
     def get_data(self, node):
         if node.hasChildNodes():
