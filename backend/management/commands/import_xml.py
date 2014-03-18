@@ -6,6 +6,7 @@ from xml.etree import ElementTree as XML_Parser
 from xml.dom import minidom as XML_Parser
 import json
 
+
 class Command(BaseCommand):
     args = '<[export].xml>'
     help = 'Imports xml from WordSurv6 into the database'
@@ -15,7 +16,7 @@ class Command(BaseCommand):
             self.stdout.write('You must have a single argument')
         else:
             file_name = args[0]
-            if file_name[file_name.rfind('.')+1:] == 'xml':
+            if file_name[file_name.rfind('.') + 1:] == 'xml':
                 self.stdout.write('Running import_xml')
                 root = XML_Parser.parse(file_name)
                 if root.documentElement.tagName == "survey":
@@ -25,9 +26,9 @@ class Command(BaseCommand):
                         #     elements[child.nodeName] = []
                         elements = self.get_data(child)
                     # self.stdout.write(str(elements))
-                    json_dump = json.dumps(elements,indent=2)
+                    json_dump = json.dumps(elements, indent=2)
                     self.stdout.write(json_dump)
-                    with open("export.json",'w') as f:
+                    with open("export.json", 'w') as f:
                         f.write(json_dump)
                         f.close()
             else:
@@ -35,25 +36,25 @@ class Command(BaseCommand):
 
     def get_data(self, node):
         if node.hasChildNodes():
-            l={}
+            node_dictionary = {}
             for child in node.childNodes:
                 if child.attributes:
-                    # l[node.nodeName] = {"attributes": {x:y for x,y in child.attributes.items()}}
-                    l[node.nodeName] = {x:y for x,y in child.attributes.items()}
+                    # node_dictionary[node.nodeName] = {"attributes": {x:y for x,y in child.attributes.items()}}
+                    node_dictionary[node.nodeName] = {x: y for x, y in child.attributes.items()}
                 data = self.get_data(child)
                 if data:
-                    if node.nodeName not in l:
-                        l[node.nodeName] = {}
-                    if "data" in l[node.nodeName]:
-                        # self.stdout.write("+++++++++"+node.nodeName+str(l[node.nodeName])+"::"+str(data))
-                        l[node.nodeName]["data"].update(data)
-                        # self.stdout.write("---------"+node.nodeName+str(l[node.nodeName])+"::"+str(data))
+                    if node.nodeName not in node_dictionary:
+                        node_dictionary[node.nodeName] = {}
+                    if "data" in node_dictionary[node.nodeName]:
+                        # self.stdout.write("+++++++++"+node.nodeName+str(node_dictionary[node.nodeName])+"::"+str(data))
+                        node_dictionary[node.nodeName]["data"].update(data)
+                        # self.stdout.write("---------"+node.nodeName+str(node_dictionary[node.nodeName])+"::"+str(data))
                     else:
                         if type(data) != dict:
-                            l[node.nodeName] = data
+                            node_dictionary[node.nodeName] = data
                         else:
-                            l[node.nodeName]["data"] = data
-            return l
+                            node_dictionary[node.nodeName]["data"] = data
+            return node_dictionary
         else:
             if node.nodeValue and node.nodeValue.strip() != "":
                 return node.nodeValue
