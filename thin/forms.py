@@ -11,7 +11,7 @@ class ProjectForm(ModelForm):
 class SurveyForm(ModelForm):
     class Meta:
         model = Survey
-        fields = ['name','title']
+        fields = ['name','full_title']
 
 class DictionaryForm(ModelForm):
     class Meta:
