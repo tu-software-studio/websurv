@@ -26,4 +26,4 @@ class VarietyForm(ModelForm):
 class GlossForm(ModelForm):
     class Meta:
         model = Gloss
-        fields = ['primary','secondary','pos','field_tip','comment_tip']
+        fields = ['primary','secondary','part_of_speech','field_tip','comment_tip']

@@ -28,8 +28,8 @@ class PartOfSpeechAdmin(admin.ModelAdmin):
 
 
 class GlossAdmin(admin.ModelAdmin):
-    list_display = ('primary', 'secondary', 'pos', 'dictionary', 'created_at',)
-    search_fields = ('primary', 'secondary', 'pos', 'dictionary', 'created_at',)
+    list_display = ('primary', 'secondary', 'part_of_speech', 'dictionary', 'created_at',)
+    search_fields = ('primary', 'secondary', 'part_of_speech', 'dictionary', 'created_at',)
 
 
 class SortOrderAdmin(admin.ModelAdmin):

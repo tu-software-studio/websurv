@@ -45,7 +45,7 @@ class PartOfSpeech(models.Model):
 class Gloss(models.Model):
     primary = models.CharField(max_length=50)
     secondary = models.CharField(max_length=50, blank=True, null=True)
-    pos = models.ForeignKey(PartOfSpeech)
+    part_of_speech = models.ForeignKey(PartOfSpeech)
     dictionary = models.ForeignKey(Dictionary, related_name='glosses')
     field_tip = models.TextField(blank=True, null=True)
     comment_tip = models.TextField(blank=True, null=True)
