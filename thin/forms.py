@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import ModelForm
+from django.forms.models import modelformset_factory
 
 from backend.models import *
 
@@ -27,3 +28,4 @@ class GlossForm(ModelForm):
     class Meta:
         model = Gloss
         fields = ['primary','secondary','pos','field_tip','comment_tip']
+
