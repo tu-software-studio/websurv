@@ -52,9 +52,9 @@ def dictionary_edit(request, id):
             form.save()
             messages.success(request,"Dictionary has been editted successfully!")
             return redirect('dictionary_detail', id=dictionary.id)
-        else:
-            form = forms.DictionaryForm(instance=dictionary)
-            return render(request,'thin/dictionary_edit.html', {'form' : form, 'dictionary' : dictionary })
+    else:
+        form = forms.DictionaryForm(instance=dictionary)
+    return render(request,'thin/dictionary_edit.html', {'form' : form, 'dictionary' : dictionary })
 
 def dictionary_add(request, id):
     """  """
@@ -104,10 +104,10 @@ def survey_edit(request,id):
         if form.is_valid():
             form.save()
             return redirect('survey_detail', id=id)
-        else:
-            form = forms.SurveyForm(instance=survey)
-            return render(request, 'thin/survey_edit.html',
-                          { 'form': form, 'survey': survey })
+    else:
+        form = forms.SurveyForm(instance=survey)
+    return render(request, 'thin/survey_edit.html',
+                      { 'form': form, 'survey': survey })
 
 def survey_add(request):
     if request.method == 'POST': # If the form has been submitted
@@ -152,9 +152,9 @@ def project_edit(request, num):
             form.save()
             messages.success(request,"Project has been editted successfully!")
             return redirect('project_detail',num=project.id)
-        else:
-            form = forms.ProjectForm(instance=project)
-            return render(request,'thin/project_edit.html', {'form' : form, 'project' : project })
+    else:
+        form = forms.ProjectForm(instance=project)
+    return render(request,'thin/project_edit.html', {'form' : form, 'project' : project })
 
 def project_add(request):
     if request.method == 'POST': # If the form has been submitted
@@ -202,9 +202,9 @@ def variety_edit(request, num):
             form.save()
             messages.success(request,"Variety has been editted successfully!")
             return redirect('variety_detail', num=variety.id)
-        else:
-            form = forms.VarietyForm(instance=variety)
-            return render(request,'thin/variety_edit.html', {'form' : form, 'variety' : variety })
+    else:
+        form = forms.VarietyForm(instance=variety)
+    return render(request,'thin/variety_edit.html', {'form' : form, 'variety' : variety })
 
 def variety_add(request):
     if request.method == 'POST': # If the form has been submitted
@@ -263,9 +263,9 @@ def gloss_edit(request, id):
             form.save()
             messages.success(request, "Gloss has been updated!")
             return redirect('gloss_detail', id=gloss.id)
-        else:
-            form = forms.GlossForm(instance=gloss)
-            return render(request, 'thin/gloss_edit.html', {'form' : form, 'gloss' : gloss})
+    else:
+        form = forms.GlossForm(instance=gloss)
+    return render(request, 'thin/gloss_edit.html', {'form' : form, 'gloss' : gloss})
 
 def gloss_add(request, id):
     form = forms.GlossForm()
