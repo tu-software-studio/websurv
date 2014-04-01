@@ -38,7 +38,7 @@ def dictionary_detail(request, id):
     except Dictionary.DoesNotExist:
         messages.error(request, "Can't find selected dictionary.")
         return redirect('dictionary_index')
-        return render(request, 'thin/dictionary_detail.html', {'dictionary' : dictionary, 'breadcrumb_menu':breadcrumb_menu, 'surveys':surveys })
+    return render(request, 'thin/dictionary_detail.html', {'dictionary' : dictionary, 'breadcrumb_menu':breadcrumb_menu, 'surveys':surveys })
 
 def dictionary_edit(request, id):
     try:
@@ -46,15 +46,15 @@ def dictionary_edit(request, id):
     except Dictionary.DoesNotExist:
         messages.error(request, "Can't find selected Dictionary.")
         return redirect('dictionary_index')
-        if request.method == 'POST': # If the form has been submitted
-            form = forms.DictionaryForm(request.POST,instance=dictionary)
-            if form.is_valid():
-                form.save()
-                messages.success(request,"Dictionary has been editted successfully!")
-                return redirect('dictionary_detail', id=dictionary.id)
-            else:
-                form = forms.DictionaryForm(instance=dictionary)
-                return render(request,'thin/dictionary_edit.html', {'form' : form, 'dictionary' : dictionary })
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.DictionaryForm(request.POST,instance=dictionary)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Dictionary has been editted successfully!")
+            return redirect('dictionary_detail', id=dictionary.id)
+        else:
+            form = forms.DictionaryForm(instance=dictionary)
+            return render(request,'thin/dictionary_edit.html', {'form' : form, 'dictionary' : dictionary })
 
 def dictionary_add(request, id):
     """  """
@@ -75,9 +75,9 @@ def dictionary_delete(request, id):
     except Dictionary.DoesNotExist:
         messages.error(request, "Can't find the selected dictionary")
         return redirect('dictionary_index')
-        dictionary.delete()
-        messages.success(request, "Dictionary has been deleted!")
-        return redirect('project_detail', num=dictionary.project_id)
+    dictionary.delete()
+    messages.success(request, "Dictionary has been deleted!")
+    return redirect('project_detail', num=dictionary.project_id)
 
 def survey_index(request):
     survey_list = Survey.objects.all() # TODO - only get stuff we need
@@ -94,8 +94,8 @@ def survey_detail(request, id):
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
-        context = {'survey' : survey, 'varieties' : varieties, 'breadcrumb_menu':breadcrumb_menu}
-        return render(request, 'thin/survey_detail.html', context)
+    context = {'survey' : survey, 'varieties' : varieties, 'breadcrumb_menu':breadcrumb_menu}
+    return render(request, 'thin/survey_detail.html', context)
 
 def survey_edit(request,id):
     survey = Survey.objects.get(id=id)
@@ -138,7 +138,7 @@ def project_detail(request, num):
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
-        return render(request, 'thin/project_detail.html', {'project' : project, 'dictionaries':dictionaries,'breadcrumb_menu':breadcrumb_menu })
+    return render(request, 'thin/project_detail.html', {'project' : project, 'dictionaries':dictionaries,'breadcrumb_menu':breadcrumb_menu })
 
 def project_edit(request, num):
     try:
@@ -146,15 +146,15 @@ def project_edit(request, num):
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
-        if request.method == 'POST': # If the form has been submitted
-            form = forms.ProjectForm(request.POST,instance=project)
-            if form.is_valid():
-                form.save()
-                messages.success(request,"Project has been editted successfully!")
-                return redirect('project_detail',num=project.id)
-            else:
-                form = forms.ProjectForm(instance=project)
-                return render(request,'thin/project_edit.html', {'form' : form, 'project' : project })
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.ProjectForm(request.POST,instance=project)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Project has been editted successfully!")
+            return redirect('project_detail',num=project.id)
+        else:
+            form = forms.ProjectForm(instance=project)
+            return render(request,'thin/project_edit.html', {'form' : form, 'project' : project })
 
 def project_add(request):
     if request.method == 'POST': # If the form has been submitted
@@ -188,7 +188,7 @@ def variety_detail(request, num):
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected variety.")
         return redirect('variety_index')
-        return render(request, 'thin/variety_detail.html',{'variety':variety, 'transcripts' : transcripts, 'breadcrumb_menu':breadcrumb_menu})
+    return render(request, 'thin/variety_detail.html',{'variety':variety, 'transcripts' : transcripts, 'breadcrumb_menu':breadcrumb_menu})
 
 def variety_edit(request, num):
     try:
@@ -196,15 +196,15 @@ def variety_edit(request, num):
     except Variety.DoesNotExist:
         messages.error(request, "Can't find selected variety.")
         return redirect('variety_index')
-        if request.method == 'POST': # If the form has been submitted
-            form = forms.VarietyForm(request.POST, instance=variety)
-            if form.is_valid():
-                form.save()
-                messages.success(request,"Variety has been editted successfully!")
-                return redirect('variety_detail', num=variety.id)
-            else:
-                form = forms.VarietyForm(instance=variety)
-                return render(request,'thin/variety_edit.html', {'form' : form, 'variety' : variety })
+    if request.method == 'POST': # If the form has been submitted
+        form = forms.VarietyForm(request.POST, instance=variety)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Variety has been editted successfully!")
+            return redirect('variety_detail', num=variety.id)
+        else:
+            form = forms.VarietyForm(instance=variety)
+            return render(request,'thin/variety_edit.html', {'form' : form, 'variety' : variety })
 
 def variety_add(request):
     if request.method == 'POST': # If the form has been submitted
@@ -249,7 +249,7 @@ def gloss_detail(request, id):
     except Gloss.DoesNotExist:
         messages.error(request, "Can't find selected gloss.")
         return redirect('gloss_index')
-        return render(request, 'thin/gloss_detail.html', {'gloss' : gloss})
+    return render(request, 'thin/gloss_detail.html', {'gloss' : gloss})
 
 def gloss_edit(request, id):
     try:
@@ -257,15 +257,15 @@ def gloss_edit(request, id):
     except:
         messages.error(request, "Couldn't find the selected gloss.")
         return redirect('gloss_index')
-        if request.method == "POST":
-            form = forms.GlossForm(request.POST, instance=gloss)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Gloss has been updated!")
-                return redirect('gloss_detail', id=gloss.id)
-            else:
-                form = forms.GlossForm(instance=gloss)
-                return render(request, 'thin/gloss_edit.html', {'form' : form, 'gloss' : gloss})
+    if request.method == "POST":
+        form = forms.GlossForm(request.POST, instance=gloss)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Gloss has been updated!")
+            return redirect('gloss_detail', id=gloss.id)
+        else:
+            form = forms.GlossForm(instance=gloss)
+            return render(request, 'thin/gloss_edit.html', {'form' : form, 'gloss' : gloss})
 
 def gloss_add(request, id):
     form = forms.GlossForm()
