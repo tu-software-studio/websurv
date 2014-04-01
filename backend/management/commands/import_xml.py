@@ -11,16 +11,18 @@ from backend.models import Project, Dictionary, Gloss, Survey, Variety, Transcri
 
 
 class Command(BaseCommand):
-    args = '<project_to_import_to> <[file_to_import].xml> <[file_to_export_to].json>'
+    args = '<project_to_import_to> <[file_to_import].xml>'
     help = 'Imports xml from WordSurv6 into the database'
 
     def handle(self, *args, **options):
-        if not args or len(args) != 3:
+        """
+        This will import data from an xml export from wordsurv6.
+        """
+        if not args or len(args) != 2:
             self.stdout.write('You must have all arguments')
         else:
             project_name = args[0]
             import_file_name = args[1]
-            export_file_name = args[2]
             if import_file_name[import_file_name.rfind('.') + 1:] == 'xml':
                 self.stdout.write('Running import_xml')
                 root_node = XML_Parser.parse(import_file_name)
@@ -29,14 +31,17 @@ class Command(BaseCommand):
                 with open("debug_xml_to_dict.json", 'w') as f:
                     f.write(json.dumps(xml_dict, indent=2))
                     f.close()
-                fixture = self.json_to_db(project_name, xml_dict)
-                with open(export_file_name, 'w') as f:
-                    f.write(json.dumps(fixture, indent=2))
-                    f.close()
+                self.dict_to_db(project_name, xml_dict)
             else:
                 self.stdout("Must be an xml file!")
 
     def fix_dict(self, dic):
+        """
+        Names the entries the correct things to match the database. Removes unnecessary levels.
+
+        :param dic: The dictionary from xmltodict
+        :type dic: dict
+        """
         dic['gloss'] = dic['glosses']['gloss']
         dic['variety'] = dic['word_lists']['word_list']
         del dic['glosses']
@@ -47,17 +52,20 @@ class Command(BaseCommand):
             gloss['transcription'] = gloss['transcriptions']['transcription']
             del gloss['transcriptions']
 
-    def json_to_db(self, project_name, dic):
-        # print dic['survey']
-        self.list_to_add = []
-        # self.add_to_list("survey", dic)
+    def dict_to_db(self, project_name, dic):
+        """
+        Adds the dictionary from xmltodict to the database
 
+        :param project_name: Name of the project you wish to add the info to. If it doesn't exist, it will be created.
+        :type project_name: str
+        :param dic:  The dictionary from xmltodict
+        :type dic: dict
+        """
         project = Project.objects.filter(name=project_name)
         if len(project) > 0:
             p_id = project[0].id
         else:
             p_id = self.create_project(project_name)
-        print(p_id)
         dict_id = self.create_dictionary('imported_dictionary', p_id)
         survey_id = self.create_survey(dic['name'], dic['description'], dict_id)
         variety_id = self.create_variety(dic['variety']['name'], survey_id)
@@ -68,8 +76,6 @@ class Command(BaseCommand):
             for transcription in gloss['transcription']:
                 self.create_transcription(transcription['name'], gloss_id, variety_id)
 
-        return self.list_to_add
-
     def create_project(self, name):
         return self.add_obj_to_db(Project, {'name': name})
 
@@ -77,7 +83,7 @@ class Command(BaseCommand):
         entry = {
             'name': name,
             'project_id': project_id,
-            'language_id': 0
+            'language_id': 1
         }
         return self.add_obj_to_db(Dictionary, entry)
 
@@ -98,7 +104,7 @@ class Command(BaseCommand):
         }
         return self.add_obj_to_db(Survey, entry)
 
-    def create_variety(self, name, survey_id): # TODO will need to change this to reflect the new variety attributes
+    def create_variety(self, name, survey_id):  # TODO will need to change this to reflect the new variety attributes
         entry = {
             'name': name,
             'survey_id': survey_id
@@ -118,14 +124,6 @@ class Command(BaseCommand):
         obj = model(**data)
         obj.save()
         return obj.id
-
-    def add_to_list(self, item, data):
-        entry = {
-            "pk": None,
-            "model": "backend.{}".format(item),
-            "fields": {name: value for name, value in data.iteritems() if
-                       type(value) is not OrderedDict and type(value) is not list}}
-        self.list_to_add.append(entry)
 
     def rename_key(self, dic, from_key, to_key):
         dic[to_key] = dic[from_key]
