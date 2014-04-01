@@ -8,7 +8,9 @@
 
     <form method="POST" action="">
       {% csrf_token %}
-      {{ form|bootstrap }}
+      {% for form in formset %}
+          {{form}}
+      {% endfor %}
       <input type="submit" value="Create Project" class='btn btn-primary'/>
     </form>
 

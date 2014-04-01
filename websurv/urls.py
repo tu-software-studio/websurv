@@ -40,6 +40,7 @@ urlpatterns = patterns(
     url(r'^glosses/(?P<id>\d+)/$', gloss_detail, name='gloss_detail'),
     url(r'^glosses/(?P<id>\d+)/edit/$', gloss_edit, name='gloss_edit'),
     url(r'^glosses/add/(?P<id>\d+)/$', gloss_add, name='gloss_add'),
+    url(r'^glosses/add/(?P<id>\d+)/submit$', gloss_add_with_ajax, name='gloss_add_with_ajax'),
     url(r'^glosses/(?P<id>\d+)/delete/$', gloss_delete, name='gloss_delete'),
 
     url(r'^comparisons/$', comparison_index, name='comparison_index'),
