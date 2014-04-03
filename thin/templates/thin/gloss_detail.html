@@ -8,8 +8,8 @@ Gloss' project: <a href="{% url 'dictionary_detail' gloss.dictionary.id %}">{{gl
 </p>
 
 {{gloss.primary}} : <a href="{% url 'gloss_edit' gloss.id %}">Edit</a></li>
-<li> {{gloss.secondary}} </li>
-<li> {{gloss.field_tip}} </li>
-<li> {{gloss.comment_tip}} </li>
+<li>Secondary: {{gloss.secondary}} </li>
+<li>Field Tip:  {{gloss.field_tip}} </li>
+<li>Comment Tip: {{gloss.comment_tip}} </li>
 
 {% endblock %}

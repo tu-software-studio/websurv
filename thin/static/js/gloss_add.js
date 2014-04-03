@@ -1,17 +1,18 @@
 var count = 1
 
 $( "#add" ).click(function() {
-    $( "#form1").clone().attr('id', 'form'+(++count) ).insertAfter("#form1")
-    $("#form2").find("tr")[0] = count;
-    $("#form2").find("th").remove();
-    submitForm("#form1");
+    $("#formrow"+count).clone().attr('id', 'formrow'+(++count)).insertAfter("#formrow"+(count-1))
+    $( "#formrow"+count ).find("td")[0].innerHTML=count
+    $( "#formrow"+count ).find("form").attr('id', "form"+count)
+    submitForm( $("#form"+(count-1)));
 });
 
 function submitForm( $form_id ){
-    var $form = $( $form_id );
+    //var $form = $( $form_id );
+    alert($form_id)
     $.ajax({
         url: window.glossUrl,
-        data: $form.serialize(), 
+        data: $form_id.serialize(),
         dataType: "json",
         type: "POST",
         success: function(data, jqXHR){
@@ -22,3 +23,18 @@ function submitForm( $form_id ){
 	}
     });
 }
+
+function textify( $form ){
+    var form = document.getElementById("form1").children;
+    console.log(form);
+    for(var i=1;i<form.length;i++)
+    {
+	var element = $(form[i]);
+	console.log(element[0].value);
+	element.replaceWith( $("<div class='form-control'>"+element[0].value+'</div>') );
+
+    }
+
+};
+
+//element.replaceWith($('<lmn id="'+element.attr('id')+'">'+element.html()+'</lmn>'));
