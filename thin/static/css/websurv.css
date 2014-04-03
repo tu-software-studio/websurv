@@ -68,3 +68,9 @@ footer .breadcrumb {
 .copyright:after {
   content: "\00a9"
 }
+
+td > textarea {
+    height: 24px;
+    width: 300px;
+    resize: none;
+}

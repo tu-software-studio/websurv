@@ -1,18 +1,46 @@
 {% extends "thin/base.html" %}
 
+{% load static from staticfiles %}
 {% load bootstrap %}
 
 {% block content %}
-<div class="row">
-  <div class="col-md-4">
 
-    <form method="POST" action="">
-      {% csrf_token %}
-      {{ form|bootstrap }}
-      <input type="submit" value="Create Gloss" class="btn btn-primary"/>
-    </form>
+{# jquery to send form to the post gloss function or add a new form entry #}
 
-  </div>
+<div class="formdiv" >
+  <form method="post" action="{% url 'gloss_add_with_ajax' id %}" id='form1'>
+    {% csrf_token %}
+    <table class="table table-striped" id='table'>
+      {{ form.non_field_errors }}
+      <thead>
+	<th>#</th>
+	<th>Primary</th>
+	<th>Secondary</th>
+	<th>POS</th>
+	<th>Field Tip</th>
+	<th>Comment Tip</th>
+      </thead>
+      <tbody >
+        <tr>
+	  <td>1</td>
+	  <td>{{ form.primary }}</td>
+	  <td>{{ form.secondary }}</td>
+	  <td>{{ form.part_of_speech }}</td>
+	  <td>{{ form.field_tip }}</td>
+	  <td>{{ form.comment_tip }}</td>
+	</tr>
+
+    </table>
+
+    <input type="submit" value="Submit" class='btn btn-primary'/>
+  </form>
 </div>
+
+
+<p><a id='add' href='#'> Add another gloss</a></p>
+<script>
+window.glossUrl = "{% url 'gloss_add_with_ajax' id %}";
+</script>
+<script src="{% static 'js/gloss_add.js' %}" ></script>
 
 {% endblock %}
