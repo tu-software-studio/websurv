@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.test.client import Client
 from django.utils import unittest
 
-from backend.models import Dictionary, Gloss, PartOfSpeech, Project, Survey, Variety
+from backend.models import Comparison, Dictionary, Gloss, PartOfSpeech, Project, Survey, Variety
 
 class SessionsTestCase(TestCase):
     def setUp(self):
@@ -17,7 +17,48 @@ class SessionsTestCase(TestCase):
         response = self.client.get('/logout/')
         self.assertEquals(response.status_code, 302)
 
-        
+
+class AdminTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_admin_page_exists(self):
+        """ 
+        Tests that the page exists. We'll assume everything 
+        on it is correct since it's django's stuff.
+        """
+        response = self.client.get('/admin/')
+        self.assertEqual(response.status_code, 200)
+
+
+class ComparisonTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.project = Project.objects.create(name="project")
+        self.dictionary = Dictionary.objects.create(name="dictionary_1", project=self.project)
+        self.survey = Survey.objects.create(name="survey_1", title="Title", dictionary=self.dictionary)
+
+#        self.gloss = Gloss(""" TODO """)
+#        self.transcription = Transcription(ipa='ipa', gloss=self.gloss,)
+        self.instance = Comparison.objects.create(
+            name='comparison_1',
+            description='testing',
+            survey = self.survey
+        )
+
+    def test_comparison_index_exists(self):
+        response = self.client.get('/comparisons/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_comparison_detail_exists(self):
+        response = self.client.get('/comparisons/' + str(self.instance.id) + '/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_comparison_edit_exists(self):
+        response = self.client.get('/comparisons/' + str(self.instance.id) + '/edit/')
+        self.assertEqual(response.status_code, 200)
+
+
 class DictionaryTestCase(TestCase):
     def setUp(self):
         self.client = Client()
@@ -42,6 +83,10 @@ class DictionaryTestCase(TestCase):
 
     def test_dictionary_detail_exists(self):
         response = self.client.get('/dictionaries/' + str(self.instance.id) + '/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_dictionary_edit_exists(self):
+        response = self.client.get('/dictionaries/' + str(self.instance.id) + '/edit/')
         self.assertEqual(response.status_code, 200)
 
     def test_dictionary_index_exists(self):
@@ -116,8 +161,8 @@ class ProjectTestCase(TestCase):
         response = self.client.post('/projects/' + str(self.instance.id) + '/')
         self.assertEqual(response.status_code, 200)
 
-    def test_project_edit_exists(self):
-        response = self.client.post('/projects/' + str(self.instance.id) + '/edit/')
+    def test_project_edit_exist(self):
+        response = self.client.get('/projects/' + str(self.instance.id) + '/edit/')
         self.assertEqual(response.status_code, 200)
 
     def test_edit_project_name(self):
