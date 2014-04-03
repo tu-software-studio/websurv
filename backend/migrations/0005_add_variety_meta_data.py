@@ -10,72 +10,72 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'Variety.description'
         db.add_column(u'backend_variety', 'description',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True),
+                      self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True),
                       keep_default=False)
 
         # Adding field 'Variety.start_date'
         db.add_column(u'backend_variety', 'start_date',
-                      self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now),
+                      self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2014, 4, 3, 0, 0)),
                       keep_default=False)
 
         # Adding field 'Variety.end_date'
         db.add_column(u'backend_variety', 'end_date',
-                      self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now),
+                      self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2014, 4, 3, 0, 0)),
                       keep_default=False)
 
         # Adding field 'Variety.surveyors'
         db.add_column(u'backend_variety', 'surveyors',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True),
+                      self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True),
                       keep_default=False)
 
         # Adding field 'Variety.consultants'
         db.add_column(u'backend_variety', 'consultants',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True),
+                      self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True),
                       keep_default=False)
 
         # Adding field 'Variety.language_helper'
         db.add_column(u'backend_variety', 'language_helper',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=30, blank=True),
+                      self.gf('django.db.models.fields.CharField')(max_length=30, null=True, blank=True),
                       keep_default=False)
 
         # Adding field 'Variety.language_helper_age'
         db.add_column(u'backend_variety', 'language_helper_age',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=3, blank=True),
+                      self.gf('django.db.models.fields.CharField')(max_length=3, null=True, blank=True),
                       keep_default=False)
 
         # Adding field 'Variety.reliability'
         db.add_column(u'backend_variety', 'reliability',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True),
+                      self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True),
                       keep_default=False)
 
         # Adding field 'Variety.village'
         db.add_column(u'backend_variety', 'village',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True),
+                      self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True),
                       keep_default=False)
 
         # Adding field 'Variety.province_state'
         db.add_column(u'backend_variety', 'province_state',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True),
+                      self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True),
                       keep_default=False)
 
         # Adding field 'Variety.district'
         db.add_column(u'backend_variety', 'district',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True),
+                      self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True),
                       keep_default=False)
 
         # Adding field 'Variety.subdistrict'
         db.add_column(u'backend_variety', 'subdistrict',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True),
+                      self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True),
                       keep_default=False)
 
         # Adding field 'Variety.country'
         db.add_column(u'backend_variety', 'country',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True),
+                      self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True),
                       keep_default=False)
 
         # Adding field 'Variety.coordinates'
         db.add_column(u'backend_variety', 'coordinates',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True),
+                      self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True),
                       keep_default=False)
 
 
@@ -201,23 +201,23 @@ class Migration(SchemaMigration):
         },
         u'backend.variety': {
             'Meta': {'object_name': 'Variety'},
-            'consultants': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'coordinates': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'country': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'description': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'district': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'end_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'consultants': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'coordinates': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'country': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'district': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'end_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2014, 4, 3, 0, 0)'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'language_helper': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'language_helper_age': ('django.db.models.fields.CharField', [], {'max_length': '3', 'blank': 'True'}),
+            'language_helper': ('django.db.models.fields.CharField', [], {'max_length': '30', 'null': 'True', 'blank': 'True'}),
+            'language_helper_age': ('django.db.models.fields.CharField', [], {'max_length': '3', 'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'province_state': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'reliability': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'start_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'subdistrict': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'province_state': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'reliability': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'start_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2014, 4, 3, 0, 0)'}),
+            'subdistrict': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'survey': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'varieties'", 'to': u"orm['backend.Survey']"}),
-            'surveyors': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'village': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'})
+            'surveyors': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'village': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
         }
     }
 
