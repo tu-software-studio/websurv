@@ -87,10 +87,49 @@ class Survey(models.Model):
     def get_absolute_url(self):
         return reverse('survey_detail', args=[str(self.id)])
 
+def get_time():
+    from datetime import datetime
+    import pytz
+    return pytz.timezone('UTC').localize(datetime.utcnow())
 
 class Variety(models.Model):
     name = models.CharField(max_length=100)
+    description = models.CharField(max_length=100, blank=True)
+    start_date = models.DateTimeField(default=get_time)
+    end_date = models.DateTimeField(default=get_time)
+    surveyors = models.CharField(max_length=100, blank=True)
+    consultants = models.CharField(max_length=100, blank=True)
+    language_helper = models.CharField(max_length=30, blank=True)
+    language_helper_age = models.CharField(max_length=3, blank=True)
+    reliability = models.CharField(max_length=100, blank=True)
+    village = models.CharField(max_length=100, blank=True)
+    province_state = models.CharField(max_length=100, blank=True)
+    district = models.CharField(max_length=100, blank=True)
+    subdistrict = models.CharField(max_length=100, blank=True)
+    country = models.CharField(max_length=100, blank=True)
+    coordinates = models.CharField(max_length=100, blank=True)
+
     survey = models.ForeignKey(Survey, related_name='varieties')
+
+    """
+    <name>variety1</name>
+    <description>variety1</description>
+    <start_date>3/15/2014 3:46:55 AM</start_date>
+    <end_date>3/15/2014 3:46:55 AM</end_date>
+    <surveyors>Adam Keenan</surveyors>
+    <consultants>Adam Keenan</consultants>
+    <language_helper>Justin Southworth</language_helper>
+    <language_helper_age>20</language_helper_age>
+    <language_helper_gender>Male</language_helper_gender>
+    <reliability>Superb</reliability>
+    <language>English</language>
+    <village>Upland</village>
+    <province_state>Indiana</province_state>
+    <subdistrict/>
+    <district/>
+    <country>USA</country>
+    <coordinates/>
+    """
 
     class Meta:
         verbose_name_plural = 'Varieties'
