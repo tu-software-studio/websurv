@@ -7,3 +7,4 @@ django-debug-toolbar==1.0.1
 sqlparse==0.1.11
 wsgiref==0.1.2
 xmltodict==0.8.6
+
