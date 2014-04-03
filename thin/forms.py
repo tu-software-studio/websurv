@@ -17,7 +17,7 @@ class SurveyForm(ModelForm):
 class DictionaryForm(ModelForm):
     class Meta:
         model = Dictionary
-        fields = ['name']
+        fields = ['name', 'language']
 
 class VarietyForm(ModelForm):
     class Meta:

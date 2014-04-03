@@ -2,9 +2,14 @@ from django.contrib import admin
 from backend.models import *
 
 
+class DictionaryAdminInline(admin.TabularInline):
+    model = Dictionary
+
+
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
+    inlines = (DictionaryAdminInline,)
 
 
 class LanguageAdmin(admin.ModelAdmin):
@@ -13,13 +18,13 @@ class LanguageAdmin(admin.ModelAdmin):
 
 
 class DictionaryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'project',)
-    search_fields = ('name', 'project',)
+    list_display = ('name',)
+    search_fields = ('name', 'project')
 
 
 class SurveyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'full_title', 'dictionary',)
-    search_fields = ('name', 'full_title', 'dictionary',)
+    list_display = ('name', 'full_title', 'dictionary')
+    search_fields = ('name', 'full_title', 'dictionary')
 
 
 class PartOfSpeechAdmin(admin.ModelAdmin):
@@ -28,13 +33,13 @@ class PartOfSpeechAdmin(admin.ModelAdmin):
 
 
 class GlossAdmin(admin.ModelAdmin):
-    list_display = ('primary', 'secondary', 'part_of_speech', 'dictionary', 'created_at',)
-    search_fields = ('primary', 'secondary', 'part_of_speech', 'dictionary', 'created_at',)
+    list_display = ('primary', 'secondary', 'part_of_speech', 'dictionary', 'created_at')
+    search_fields = ('primary', 'secondary', 'part_of_speech', 'dictionary', 'created_at')
 
 
 class SortOrderAdmin(admin.ModelAdmin):
-    list_display = ('name', 'dictionary',)
-    search_fields = ('name', 'dictionary',)
+    list_display = ('name', 'dictionary')
+    search_fields = ('name', 'dictionary')
 
 
 class SortPositionAdmin(admin.ModelAdmin):
@@ -48,18 +53,18 @@ class VarietyAdmin(admin.ModelAdmin):
 
 
 class TranscriptionAdmin(admin.ModelAdmin):
-    list_display = ('ipa', 'gloss', 'variety',)
-    search_fields = ('ipa', 'gloss', 'variety',)
+    list_display = ('ipa', 'gloss', 'variety')
+    search_fields = ('ipa', 'gloss', 'variety')
 
 
 class ComparisonAdmin(admin.ModelAdmin):
-    list_display = ('name', 'survey',)
-    search_fields = ('name', 'survey',)
+    list_display = ('name', 'survey')
+    search_fields = ('name', 'survey')
 
 
 class ComparisonEntryAdmin(admin.ModelAdmin):
-    list_display = ('aligned_form', 'exclude', 'comparison', 'transcription',)
-    search_fields = ('aligned_form', 'exclude', 'comparison', 'transcription',)
+    list_display = ('aligned_form', 'exclude', 'comparison', 'transcription')
+    search_fields = ('aligned_form', 'exclude', 'comparison', 'transcription')
 
 
 admin.site.register(Project, ProjectAdmin)
