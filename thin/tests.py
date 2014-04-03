@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.test.client import Client
 from django.utils import unittest
 
+from . import factories
 from backend.models import Comparison, Dictionary, Gloss, PartOfSpeech, Project, Survey, Variety
 
 class SessionsTestCase(TestCase):
@@ -59,8 +60,12 @@ class ComparisonTestCase(TestCase):
 
 class DictionaryTestCase(TestCase):
     def setUp(self):
+        """
         self.project = Project.objects.create(name="project")
         self.instance = Dictionary.objects.create(name="dictionary_1", project=self.project)
+        """
+        self.project = factories.ProjectFactory()
+        self.instance = factories.DictionaryFactory(project=self.project)
 
     def test_dictionary_add_exists(self):
         response = self.client.get('/dictionaries/add/'+ str(self.project.id) + '/')
@@ -92,7 +97,8 @@ class DictionaryTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_dictionary_index_contains_dictionary(self):
-        Dictionary.objects.create(name="dictionary_2", project=self.project)
+        # Dictionary.objects.create(name="dictionary_2", project=self.project)
+        factories.DictionaryFactory()
         response = self.client.get('/dictionaries/')
         self.assertEqual(len(response.context['dictionary_list']), 2)
 
@@ -136,7 +142,8 @@ class GlossTestCase(TestCase):
         
 class ProjectTestCase(TestCase):
     def setUp(self):
-        self.instance = Project.objects.create(name="project_1")
+        # self.instance = Project.objects.create(name="project_1")
+        self.instance = factories.ProjectFactory()
 
     def test_project_add_exists(self):
         response = self.client.post('/projects/add/')
