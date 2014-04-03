@@ -6,9 +6,6 @@ from django.utils import unittest
 from backend.models import Comparison, Dictionary, Gloss, PartOfSpeech, Project, Survey, Variety
 
 class SessionsTestCase(TestCase):
-    def setUp(self):
-        self.client = Client()
-
     def test_sessions_login_exists(self):
         response = self.client.get('/login/')
         self.assertEquals(response.status_code, 200)
@@ -16,6 +13,7 @@ class SessionsTestCase(TestCase):
     def test_sessions_logout_exists(self):
         response = self.client.get('/logout/')
         self.assertEquals(response.status_code, 302)
+        self.assertEquals(response['Location'], 'http://testserver/projects/')
 
 
 class AdminTestCase(TestCase):
@@ -61,7 +59,6 @@ class ComparisonTestCase(TestCase):
 
 class DictionaryTestCase(TestCase):
     def setUp(self):
-        self.client = Client()
         self.project = Project.objects.create(name="project")
         self.instance = Dictionary.objects.create(name="dictionary_1", project=self.project)
 
@@ -73,6 +70,7 @@ class DictionaryTestCase(TestCase):
         response = self.client.post('/dictionaries/1/delete')
         # Status code should be 301 since we want a redirect
         self.assertEqual(response.status_code, 301)
+        self.assertEqual(response['Location'], 'http://testserver/dictionaries/1/delete/')
         
     def test_dictionary_delete_removes_dictionary(self):
         """ Tests that the dictionary_delete view deletes a dicionary. """
@@ -101,7 +99,6 @@ class DictionaryTestCase(TestCase):
 
 class GlossTestCase(TestCase):
     def setUp(self):
-        self.client = Client()
         self.pos = PartOfSpeech.objects.create(name='noun')
         self.project = Project.objects.create(name="project_1")
         self.dictionary = Dictionary.objects.create(name='dictionary_1', project=self.project)
@@ -122,6 +119,7 @@ class GlossTestCase(TestCase):
     def test_gloss_delete_exists(self):
         response = self.client.post('/glosses/' + str(self.instance.id) + '/delete/')
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], 'http://testserver/dictionaries/1/')
 
     def test_gloss_detail_exists(self):
         response = self.client.get('/glosses/' + str(self.instance.id) + '/')
@@ -138,7 +136,6 @@ class GlossTestCase(TestCase):
         
 class ProjectTestCase(TestCase):
     def setUp(self):
-        self.client = Client()
         self.instance = Project.objects.create(name="project_1")
 
     def test_project_add_exists(self):
@@ -182,7 +179,6 @@ class ProjectTestCase(TestCase):
 
 class SurveyTestCase(TestCase):
     def setUp(self):
-        self.client = Client()
         self.project = Project.objects.create(name="project")
         self.dictionary = Dictionary.objects.create(name="dictionary_1", project=self.project)
         self.instance = Survey.objects.create(name="survey_1", title="Title", dictionary=self.dictionary)
@@ -194,6 +190,7 @@ class SurveyTestCase(TestCase):
     def test_survey_delete_exists(self):
         response = self.client.post('/surveys/' + str(self.instance.id) + '/delete/')
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], 'http://testserver/surveys/')
 
     def test_survey_detail_exists(self):
         response = self.client.get('/surveys/' + str(self.instance.id) + '/')
@@ -210,7 +207,6 @@ class SurveyTestCase(TestCase):
 
 class VarietyTestCase(TestCase):
     def setUp(self):
-        self.client = Client()
         self.project = Project.objects.create(name="project")
         self.dictionary = Dictionary.objects.create(name="dictionary_1", project=self.project)
         self.survey = Survey.objects.create(name="survey_1", title="Title", dictionary=self.dictionary)
@@ -223,6 +219,7 @@ class VarietyTestCase(TestCase):
     def test_variety_delete_exists(self):
         response = self.client.post('/varieties/' + str(self.instance.id) + '/delete/')
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], 'http://testserver/varieties/')
 
     def test_variety_detail_exists(self):
         response = self.client.get('/varieties/' + str(self.instance.id) + '/')
