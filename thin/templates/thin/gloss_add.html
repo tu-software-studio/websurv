@@ -8,7 +8,7 @@
 {# jquery to send form to the post gloss function or add a new form entry #}
 
 <div>
-
+<div id="messages"></div>
   <table class="table table-striped" id='table'>
     <thead>
       <tr>
@@ -35,14 +35,15 @@
 	  </form>
 	</td>
       </tr>
+     
     </tbody>
 
   </table>
-
+ <a id='add' href='#' class="btn btn-primary pull-right">Save</a>
 </div>
 
 
-<p><a id='add' href='#'> Add another gloss</a></p>
+
 <script>
   window.glossUrl = "{% url 'gloss_add_with_ajax' id %}";
 </script>
