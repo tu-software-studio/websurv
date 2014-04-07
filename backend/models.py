@@ -88,8 +88,30 @@ class Survey(models.Model):
         return reverse('survey_detail', args=[str(self.id)])
 
 
+def get_time():
+    from datetime import datetime
+    import pytz
+
+    return pytz.utc.localize(datetime.utcnow())
+
+
 class Variety(models.Model):
     name = models.CharField(max_length=100)
+    description = models.CharField(max_length=100, blank=True, null=True)
+    start_date = models.DateTimeField(default=get_time)
+    end_date = models.DateTimeField(default=get_time)
+    surveyors = models.CharField(max_length=100, blank=True, null=True)
+    consultants = models.CharField(max_length=100, blank=True, null=True)
+    language_helper = models.CharField(max_length=30, blank=True, null=True)
+    language_helper_age = models.CharField(max_length=3, blank=True, null=True)
+    reliability = models.CharField(max_length=100, blank=True, null=True)
+    village = models.CharField(max_length=100, blank=True, null=True)
+    province_state = models.CharField(max_length=100, blank=True, null=True)
+    district = models.CharField(max_length=100, blank=True, null=True)
+    subdistrict = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
+    coordinates = models.CharField(max_length=100, blank=True, null=True)
+
     survey = models.ForeignKey(Survey, related_name='varieties')
 
     class Meta:
