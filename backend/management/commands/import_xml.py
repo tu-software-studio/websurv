@@ -141,11 +141,7 @@ class Command(BaseCommand):
         return self.add_obj_to_db(Transcription, entry)
 
     def add_obj_to_db(self, model, data):
-        print "Creating new {} with data: {}".format(model.__name__, data)
+        self.stdout.write("Creating new {} with data: {}".format(model.__name__, data))
         obj = model(**data)
         obj.save()
         return obj.id
-
-    def rename_key(self, dic, from_key, to_key):
-        dic[to_key] = dic[from_key]
-        del dic[from_key]
