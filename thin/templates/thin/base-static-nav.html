@@ -10,89 +10,92 @@
 
 <body>
 {% url 'home' as home_path %}
-<nav class="navbar navbar-static-top navbar-inverse" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      {# Use placehold.it until logo is made #}
-      <!--<a class="navbar-brand" href="{{ home_path }}"><img class="navbar-logo" src="http://placehold.it/80x50&text=Logo"/></a>-->
-      <a class="navbar-brand" href="{{ home_path }}">
-        WebSurv
-      </a>
-    </div>
-    <div class="collapse navbar-collapse" id="bs-navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li {% if request.path == home_path %}class="active"{% endif %}><a href="{{ home_path }}">Home</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Project<span class="caret"></span></a>
-          <ul class="dropdown-menu dropdown-inverse">
-            {% for project in projects %}
-              <li {% if request.path == project.get_absolute_url %}class="active"{% endif %}>
-                <a href="{{ project.get_absolute_url }}">{{ project.name }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        {% if user.is_authenticated %}
+<div id="everything">
+  <nav class="navbar navbar-static-top navbar-inverse" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        {# Use placehold.it until logo is made #}
+        <!--<a class="navbar-brand" href="{{ home_path }}"><img class="navbar-logo" src="http://placehold.it/80x50&text=Logo"/></a>-->
+        <a class="navbar-brand" href="{{ home_path }}">
+          WebSurv
+        </a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li {% if request.path == home_path %}class="active"{% endif %}><a href="{{ home_path }}">Home</a></li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ user.username }} <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Project<span class="caret"></span></a>
             <ul class="dropdown-menu dropdown-inverse">
-              <li><a href="{% url 'logout' %}">Logout</a></li>
+              {% for project in projects %}
+                <li {% if request.path == project.get_absolute_url %}class="active"{% endif %}>
+                  <a href="{{ project.get_absolute_url }}">{{ project.name }}</a>
+                </li>
+              {% endfor %}
             </ul>
           </li>
-        {% else %}
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          {% if user.is_authenticated %}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ user.username }} <span
+                  class="caret"></span></a>
+              <ul class="dropdown-menu dropdown-inverse">
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+              </ul>
+            </li>
+          {% else %}
+            <li>
+              <a href="{% url 'login' %}">Login</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div id="body" class="container">
+    <h2><img class="logo img-rounded" src="http://placehold.it/200x100&text=Logo"/>Leaders in Surving the Web</h2>
+    {% if breadcrumb_menu %}
+      <ol class="breadcrumb">
+        {% for item in breadcrumb_menu %}
           <li>
-            <a href="{% url 'login' %}">Login</a>
+            <a href="{{ item.get_absolute_url }}">{{ item.name }}</a>
           </li>
-        {% endif %}
+        {% endfor %}
+      </ol>
+    {% endif %}
+
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissable" {% endif %}>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+  </div>
+  <footer>
+    <div class="container text-muted">
+      <ul class="pull-left breadcrumb breadcrumb-bar">
+        <li><a href="#">Home</a></li>
+        <li><a href="{% url "project_index" %}">Project List</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+      <ul class="pull-right breadcrumb">
+        <li><span class="copyright">Software Studio </span></li>
       </ul>
     </div>
-  </div>
-</nav>
-<div class="container">
-  <h2><img class="logo img-rounded" src="http://placehold.it/200x100&text=Logo"/>Leaders in Surving the Web</h2>
-  {% if breadcrumb_menu %}
-    <ol class="breadcrumb">
-      {% for item in breadcrumb_menu %}
-        <li>
-          <a href="{{ item.get_absolute_url }}">{{ item.name }}</a>
-        </li>
-      {% endfor %}
-    </ol>
-  {% endif %}
-
-  {% if messages %}
-    <div class="messages">
-      {% for message in messages %}
-        <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissable" {% endif %}>
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          {{ message }}
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  {% block content %}
-  {% endblock %}
+  </footer>
 </div>
-<footer>
-  <div class="container text-muted">
-    <ul class="pull-left breadcrumb breadcrumb-bar">
-      <li><a href="#">Home</a></li>
-      <li><a href="{% url "project_index" %}">Project List</a></li>
-      <li><a href="#">Help</a></li>
-    </ul>
-    <ul class="pull-right breadcrumb">
-      <li><span class="copyright">Software Studio </span></li>
-    </ul>
-  </div>
-</footer>
 </body>
 </html>
