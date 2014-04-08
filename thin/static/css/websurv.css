@@ -1,72 +1,80 @@
-/*
-breadcrumb > li + li:before {
-  content: "\3E";
-}
-*/
-
-.user_tag{
-  vertical-align:middle;
-  text-align:center;
-  line-height:50px;
-  font-size:1.1em;
+html, body {
+    height: 100%;
 }
 
-.logo-image{
-  padding:10px;
+.user_tag {
+    vertical-align: middle;
+    text-align: center;
+    line-height: 50px;
+    font-size: 1.1em;
 }
 
-.dropdown-inverse{
-  background-color: #222;
-  border-color: #080808;
-  &>li>a{
-    color: #999;
-    &:hover{
-      color: #fff;
-      background-color: #000;
+.logo-image {
+    padding: 10px;
+}
+
+.dropdown-inverse {
+    background-color: #222;
+    border-color: #080808;
+    & > li > a {
+        color: #999;
+        &:hover {
+            color: #fff;
+            background-color: #000;
+        }
     }
-  }
 }
 
-.dropdown-inverse >li > a {
-  color: #999;
+.dropdown-inverse > li > a {
+    color: #999;
 }
 
 .dropdown-inverse > li > a:hover, .dropdown-inverse > li > a:focus {
-  color: white;
-  background-color: #428bca; /*$primary-color*/
+    color: white;
+    background-color: #428bca; /*$primary-color*/
 }
 
 .navbar-logo {
-  margin-top: -15px;
+    margin-top: -15px;
 }
 
 .logo {
-  vertical-align: bottom;
-  margin-right: 10px;
+    vertical-align: bottom;
+    margin-right: 10px;
+}
+
+#everything {
+    min-height: 100%;
+    position: relative;
+}
+
+#body {
+    padding-bottom: 35px;
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background-color: #222;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    #height: 38px;
+    background-color: #222;
 }
 
 footer .breadcrumb {
-  margin: 0;
-  background-color: #222;
+    margin: 0;
+    background-color: #222;
 }
 
-.breadcrumb-bar li+li:before {
-  content: "|\00a0";
+.breadcrumb-bar li + li:before {
+    content: "|\00a0";
 }
 
 .breadcrumb-inverse {
-  background-color: #222;
+    background-color: #222;
 }
 
 .copyright:after {
-  content: "\00a9"
+    content: "\00a9"
 }
 
 td > textarea {
