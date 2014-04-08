@@ -3,7 +3,7 @@
 
 {% block content %}
 
-{{dictionary.name}} : <a href="{% url 'dictionary_edit' dictionary.id %}">Edit </a></li>
+{{dictionary.name}} : <a href="{% url 'dictionary_edit' dictionary.id %}">Edit</a></li>
 <p>Glosses</p>
 <ul>
   <table class="table table-striped" id='table'>
@@ -24,9 +24,14 @@
          <td>{{ gloss.part_of_speech }}</td>
          <td>{{ gloss.field_tip }}</td>
          <td>{{ gloss.comment_tip }}</td>
-         <td><a href="{% url 'gloss_detail' gloss.id %}">Edit</a></td>
+         <td><a href="{% url 'gloss_edit' gloss.id %}">Edit</a></td>
       </tr>
       {% endfor %}
+    <tr>
+        <td>
+            <a href="{% url 'gloss_add' dictionary.id %}" class="btn btn-primary">Add New Glosses</a>
+        </td>
+    </tr>
     </tbody>
 
   </table>
