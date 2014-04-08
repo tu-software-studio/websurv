@@ -7,7 +7,6 @@ django-debug-toolbar==1.0.1
 django-extensions==1.3.3
 django-widget-tweaks==1.3
 djangorestframework==2.3.13
-pygraphviz==1.2
 pyparsing==2.0.1
 pytz==2014.2
 six==1.6.1
