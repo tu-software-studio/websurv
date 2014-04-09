@@ -68,7 +68,7 @@ class Command(BaseCommand):
             p_id = self.create_project(project_name)
         dict_id = self.create_dictionary('imported_dictionary', p_id)
         survey_id = self.create_survey(dic['name'], dic['description'], dict_id)
-        variety_id = self.create_variety(dic['variety']['name'], survey_id)
+        variety_id = self.create_variety(dic['variety'], survey_id)
         for gloss in dic['gloss']:
             gloss_id = self.create_gloss(gloss['name'], gloss['definition'], gloss['part_of_speech'], dict_id)
             if type(gloss['transcription']) is not list:
@@ -104,10 +104,31 @@ class Command(BaseCommand):
         }
         return self.add_obj_to_db(Survey, entry)
 
-    def create_variety(self, name, survey_id):  # TODO will need to change this to reflect the new variety attributes
+    def convert_time(self, str):
+        from dateutil.parser import parse
+        from dateutil.tz import tzlocal
+        from pytz import utc
+
+        return parse(str, tzinfos=tzlocal).astimezone(utc)
+
+    def create_variety(self, variety, survey_id):
         entry = {
-            'name': name,
-            'survey_id': survey_id
+            'name': variety['name'],
+            'description': variety['description'],
+            'start_date': self.convert_time(variety['start_date']),
+            'end_date': self.convert_time(variety['end_date']),
+            'surveyors': variety['surveyors'],
+            'consultants': variety['consultants'],
+            'language_helper': variety['language_helper'],
+            'language_helper_age': variety['language_helper_age'],
+            'reliability': variety['reliability'],
+            'village': variety['village'],
+            'province_state': variety['province_state'],
+            'district': variety['district'],
+            'subdistrict': variety['subdistrict'],
+            'country': variety['country'],
+            'coordinates': variety['coordinates'],
+            'survey_id': survey_id,
         }
         return self.add_obj_to_db(Variety, entry)
 
@@ -120,11 +141,7 @@ class Command(BaseCommand):
         return self.add_obj_to_db(Transcription, entry)
 
     def add_obj_to_db(self, model, data):
-        print "Creating new {} with data: {}".format(model.__name__, data)
+        self.stdout.write("Creating new {} with data: {}".format(model.__name__, data))
         obj = model(**data)
         obj.save()
         return obj.id
-
-    def rename_key(self, dic, from_key, to_key):
-        dic[to_key] = dic[from_key]
-        del dic[from_key]

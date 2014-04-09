@@ -4,42 +4,48 @@
 {% load bootstrap %}
 
 {% block content %}
-
+{% load widget_tweaks %}
 {# jquery to send form to the post gloss function or add a new form entry #}
 
-<div class="formdiv" >
-  <form method="post" action="{% url 'gloss_add_with_ajax' id %}" id='form1'>
-    {% csrf_token %}
-    <table class="table table-striped" id='table'>
-      {{ form.non_field_errors }}
-      <thead>
-	<th>#</th>
-	<th>Primary</th>
-	<th>Secondary</th>
-	<th>POS</th>
-	<th>Field Tip</th>
-	<th>Comment Tip</th>
-      </thead>
-      <tbody >
-        <tr>
-	  <td>1</td>
-	  <td>{{ form.primary }}</td>
-	  <td>{{ form.secondary }}</td>
-	  <td>{{ form.part_of_speech }}</td>
-	  <td>{{ form.field_tip }}</td>
-	  <td>{{ form.comment_tip }}</td>
-	</tr>
+<div>
+<div id="messages"></div>
+  <table class="table table-striped" id='table'>
+    <thead>
+      <tr>
+      <th>#</th>
+      <th>Primary</th>
+      <th>Secondary</th>
+      <th>POS</th>
+      <th>Field Tip</th>
+      <th>Comment Tip</th>
+      </tr>
+    </thead>
+    <tbody >
+      <tr id="formrow1">
+	<td id="rownum">1</td>
+	<td colspan="5">
+	  <form method="post" action="{% url 'gloss_add_with_ajax' id %}" id="form1" class="form form-inline">
+	    {% csrf_token %}
+	    {{ form.non_field_errors }}
+	    {{ form.primary|add_class:"form-control" }}
+	    {{ form.secondary|add_class:"form-control" }}
+	    {{ form.part_of_speech|add_class:"form-control" }}
+	    {{ form.field_tip|add_class:"form-control"|attr:"cols:20"|attr:"rows:2"|attr:"style:resize:vertical" }}
+	    {{ form.comment_tip|add_class:"form-control"|attr:"cols:20"|attr:"rows:2"|attr:"style:resize:vertical" }}
+	  </form>
+	</td>
+      </tr>
+     
+    </tbody>
 
-    </table>
-
-    <input type="submit" value="Submit" class='btn btn-primary'/>
-  </form>
+  </table>
+ <a id='add' href='#' class="btn btn-primary pull-right">Save</a>
 </div>
 
 
-<p><a id='add' href='#'> Add another gloss</a></p>
+
 <script>
-window.glossUrl = "{% url 'gloss_add_with_ajax' id %}";
+  window.glossUrl = "{% url 'gloss_add_with_ajax' id %}";
 </script>
 <script src="{% static 'js/gloss_add.js' %}" ></script>
 

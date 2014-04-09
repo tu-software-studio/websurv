@@ -33,8 +33,8 @@ class PartOfSpeechAdmin(admin.ModelAdmin):
 
 
 class GlossAdmin(admin.ModelAdmin):
-    list_display = ('primary', 'secondary', 'part_of_speech', 'dictionary', 'created_at')
-    search_fields = ('primary', 'secondary', 'part_of_speech', 'dictionary', 'created_at')
+    list_display = ('primary', 'secondary', 'part_of_speech', 'dictionary', 'created_at',)
+    search_fields = ('primary', 'secondary', 'part_of_speech', 'dictionary', 'created_at',)
 
 
 class SortOrderAdmin(admin.ModelAdmin):
@@ -68,14 +68,14 @@ class ComparisonEntryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Project, ProjectAdmin)
-admin.site.register(Dictionary, DictionaryAdmin)
-admin.site.register(Language, LanguageAdmin)
-admin.site.register(PartOfSpeech, PartOfSpeechAdmin)
-admin.site.register(Gloss, GlossAdmin)
-admin.site.register(SortOrder, SortOrderAdmin)
-admin.site.register(SortPosition, SortPositionAdmin)
-admin.site.register(Survey, SurveyAdmin)
-admin.site.register(Variety, VarietyAdmin)
-admin.site.register(Transcription, TranscriptionAdmin)
-admin.site.register(Comparison, ComparisonAdmin)
-admin.site.register(ComparisonEntry, ComparisonEntryAdmin)
+admin.site.register(Dictionary)
+admin.site.register(Language)
+admin.site.register(PartOfSpeech)
+admin.site.register(Gloss)
+admin.site.register(SortOrder)
+admin.site.register(SortPosition)
+admin.site.register(Survey)
+admin.site.register(Variety)
+admin.site.register(Transcription)
+admin.site.register(Comparison)
+admin.site.register(ComparisonEntry)

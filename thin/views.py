@@ -42,7 +42,7 @@ def dictionary_detail(request, id):
         messages.error(request, "Can't find selected dictionary.")
         return redirect('dictionary_index')
     return render(request, 'thin/dictionary_detail.html',
-                  {'dictionary': dictionary, 'breadcrumb_menu': breadcrumb_menu, 'surveys': surveys})
+                  {'dictionary': dictionary, 'breadcrumb_menu': breadcrumb_menu, 'surveys': surveys, 'glosses': glosses})
 
 
 def dictionary_edit(request, id):
@@ -341,4 +341,8 @@ def gloss_add_with_ajax(request, id):
         serializer.object.dictionary = Dictionary.objects.get(pk=id)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        #for x in serializer.errors:
+            #print x+" : "+ str(serializer.errors[x][0])
+            #messages.error(request, x + " : " + str(serializer.errors[x][0]))
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
