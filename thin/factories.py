@@ -24,3 +24,43 @@ class DictionaryFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence(lambda n: 'Test Dictionary {0}'.format(n))
     project = factory.SubFactory(ProjectFactory)
     language = factory.SubFactory(LanguageFactory)
+
+
+class SurveyFactory(factory.django.DjangoModelFactory):
+    FACTORY_FOR = models.Survey
+
+    name = factory.Sequence(lambda n: 'Test Survey {0}'.format(n))
+    full_title = factory.LazyAttribute(lambda a: 'Full Title For {0}'.format(a.name))
+    dictionary = factory.SubFactory(DictionaryFactory)
+
+
+class VarietyFactory(factory.django.DjangoModelFactory):
+    FACTORY_FOR = models.Variety
+
+    name = factory.Sequence(lambda n: 'Test Variety {0}'.format(n))
+    survey = factory.SubFactory(SurveyFactory)
+
+
+class ComparisonFactory(factory.django.DjangoModelFactory):
+    FACTORY_FOR = models.Comparison
+
+    name = factory.Sequence(lambda n: 'Test Comparison {0}'.format(n))
+    description = factory.LazyAttribute(lambda a: 'Description for {0}'.format(a.name))
+    survey = factory.SubFactory(SurveyFactory)
+
+
+class PartOfSpeechFactory(factory.django.DjangoModelFactory):
+    FACTORY_FOR = models.PartOfSpeech
+
+    name = 'noun'
+
+
+class GlossFactory(factory.django.DjangoModelFactory):
+    FACTORY_FOR = models.Gloss
+
+    primary = factory.Sequence(lambda n: 'primary {0}'.format(n))
+    secondary = factory.Sequence(lambda n: 'secondary {0}'.format(n))
+    part_of_speech = factory.SubFactory(PartOfSpeechFactory)
+    dictionary = factory.SubFactory(DictionaryFactory)
+    field_tip = factory.Sequence(lambda n: 'field tip {0}'.format(n))
+    comment_tip = factory.Sequence(lambda n: 'comment tip {0}'.format(n))

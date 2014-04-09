@@ -271,14 +271,6 @@ def comparison_edit(request, id):
     return render(request, 'thin/comparison_edit.html', {'comparison' : comparison})
 
 
-def comparison_detail(request, num):
-    pass
-
-
-def comparison_edit(request, num):
-    pass
-
-
 def gloss_index(request):
     glosses = Gloss.objects.all()
     return render(request, 'thin/gloss_index.html', {'gloss_list': glosses})

@@ -18,9 +18,6 @@ class SessionsTestCase(TestCase):
 
 
 class AdminTestCase(TestCase):
-    def setUp(self):
-        self.client = Client()
-
     def test_admin_page_exists(self):
         """ 
         Tests that the page exists. We'll assume everything 
@@ -32,18 +29,7 @@ class AdminTestCase(TestCase):
 
 class ComparisonTestCase(TestCase):
     def setUp(self):
-        self.client = Client()
-        self.project = Project.objects.create(name="project")
-        self.dictionary = Dictionary.objects.create(name="dictionary_1", project=self.project)
-        self.survey = Survey.objects.create(name="survey_1", title="Title", dictionary=self.dictionary)
-
-#        self.gloss = Gloss(""" TODO """)
-#        self.transcription = Transcription(ipa='ipa', gloss=self.gloss,)
-        self.instance = Comparison.objects.create(
-            name='comparison_1',
-            description='testing',
-            survey = self.survey
-        )
+        self.instance = factories.ComparisonFactory()
 
     def test_comparison_index_exists(self):
         response = self.client.get('/comparisons/')
@@ -60,10 +46,6 @@ class ComparisonTestCase(TestCase):
 
 class DictionaryTestCase(TestCase):
     def setUp(self):
-        """
-        self.project = Project.objects.create(name="project")
-        self.instance = Dictionary.objects.create(name="dictionary_1", project=self.project)
-        """
         self.project = factories.ProjectFactory()
         self.instance = factories.DictionaryFactory(project=self.project)
 
@@ -97,29 +79,17 @@ class DictionaryTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_dictionary_index_contains_dictionary(self):
-        # Dictionary.objects.create(name="dictionary_2", project=self.project)
-        factories.DictionaryFactory()
+        factories.DictionaryFactory(project=self.project)
         response = self.client.get('/dictionaries/')
         self.assertEqual(len(response.context['dictionary_list']), 2)
 
 
 class GlossTestCase(TestCase):
     def setUp(self):
-        self.pos = PartOfSpeech.objects.create(name='noun')
-        self.project = Project.objects.create(name="project_1")
-        self.dictionary = Dictionary.objects.create(name='dictionary_1', project=self.project)
-        self.instance = Gloss.objects.create(
-            primary="primary_1",
-            secondary="secondary_1",
-            pos=self.pos,
-            dictionary=self.dictionary,
-            field_tip="field_tip_1",
-            comment_tip="comment_tip_1",
-            created_at = models.DateTimeField(auto_now_add=True)
-        )
+        self.instance = factories.GlossFactory()
 
     def test_gloss_add_exists(self):
-        response = self.client.get('/glosses/add/' + str(self.dictionary.id) + '/')
+        response = self.client.get('/glosses/add/' + str(self.instance.dictionary.id) + '/')
         self.assertEqual(response.status_code, 200)
 
     def test_gloss_delete_exists(self):
@@ -142,7 +112,6 @@ class GlossTestCase(TestCase):
         
 class ProjectTestCase(TestCase):
     def setUp(self):
-        # self.instance = Project.objects.create(name="project_1")
         self.instance = factories.ProjectFactory()
 
     def test_project_add_exists(self):
@@ -179,16 +148,14 @@ class ProjectTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         
     def test_project_index_contains_project(self):
-        Project.objects.create(name='project_2')
+        project_2 = factories.ProjectFactory()
         response = self.client.get('/projects/')
         self.assertEqual(len(response.context['project_list']), 2)
 
 
 class SurveyTestCase(TestCase):
     def setUp(self):
-        self.project = Project.objects.create(name="project")
-        self.dictionary = Dictionary.objects.create(name="dictionary_1", project=self.project)
-        self.instance = Survey.objects.create(name="survey_1", title="Title", dictionary=self.dictionary)
+        self.instance = factories.SurveyFactory()
 
     def test_survey_add_exists(self):
         response = self.client.get('/surveys/add/')
@@ -214,10 +181,7 @@ class SurveyTestCase(TestCase):
 
 class VarietyTestCase(TestCase):
     def setUp(self):
-        self.project = Project.objects.create(name="project")
-        self.dictionary = Dictionary.objects.create(name="dictionary_1", project=self.project)
-        self.survey = Survey.objects.create(name="survey_1", title="Title", dictionary=self.dictionary)
-        self.instance = Variety.objects.create(name='variety_1', survey=self.survey)
+        self.instance = factories.VarietyFactory()
 
     def test_variety_add_exists(self):
         response = self.client.get('/varieties/add/')
