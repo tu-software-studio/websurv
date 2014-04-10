@@ -22,7 +22,7 @@ urlpatterns = patterns(
     url(r'^surveys/(?P<id>\d+)/$', survey_detail, name='survey_detail'),
     url(r'^surveys/(?P<id>\d+)/edit/$', survey_edit, name='survey_edit'),
     url(r'^surveys/(?P<id>\d+)/delete/$', survey_delete, name='survey_delete'),
-    url(r'^surveys/add/$', survey_add, name='survey_add'),
+    url(r'^surveys/add/(?P<id>\d+)$', survey_add, name='survey_add'),
 
     url(r'^projects/$', project_index, name='project_index'),
     url(r'^projects/(?P<num>\d+)/$', project_detail, name='project_detail'),
@@ -35,6 +35,13 @@ urlpatterns = patterns(
     url(r'^varieties/(?P<num>\d+)/edit/$', variety_edit, name='variety_edit'),
     url(r'^varieties/(?P<num>\d+)/delete/$', variety_delete, name='variety_delete'),
     url(r'^varieties/add/$',variety_add,name='variety_add'),
+    
+    url(r'^glosses/$', gloss_index, name='gloss_index'),
+    url(r'^glosses/(?P<id>\d+)/$', gloss_detail, name='gloss_detail'),
+    url(r'^glosses/(?P<id>\d+)/edit/$', gloss_edit, name='gloss_edit'),
+    url(r'^glosses/add/(?P<id>\d+)/$', gloss_add, name='gloss_add'),
+    url(r'^glosses/add/(?P<id>\d+)/submit$', gloss_add_with_ajax, name='gloss_add_with_ajax'),
+    url(r'^glosses/(?P<id>\d+)/delete/$', gloss_delete, name='gloss_delete'),
 
     url(r'^comparisons/$', comparison_index, name='comparison_index'),
     url(r'^comparisons/(?P<num>\d+)/$', comparison_detail, name='comparison_detail'),

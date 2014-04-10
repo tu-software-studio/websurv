@@ -1,0 +1,63 @@
+{% extends "thin/base.html" %}
+
+{% load static from staticfiles %}
+{% load bootstrap %}
+
+{% block content %}
+{% load widget_tweaks %}
+{# jquery to send form to the post gloss function or add a new form entry #}
+
+<div>
+    <div id="messages"></div>
+    <div class="row gloss-row">
+        <div class="col-sm-1">
+            <strong>#<strong>
+        </div>
+        <div class="col-sm-2">
+            <strong>Primary</strong>
+        </div>
+        <div class="col-sm-2">
+            <strong>Secondary</strong>
+        </div>
+        <div class="col-sm-2">
+            <strong>POS</strong>
+        </div>
+        <div class="col-sm-2">
+            <strong>Field Tip</strong>
+        </div>
+        <div class="col-sm-3">
+            <strong>Comment Tip</strong>
+        </div>
+    </div>
+    <div class="row gloss-row" id="formrow1">
+        <div class="col-sm-1" id="rownum">1</div>
+        <form method="post" action="{% url 'gloss_add_with_ajax' id %}" id="form1" class="form ">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="col-sm-2">
+                {{ form.primary | add_class:"form-control" }}
+            </div>
+            <div class="col-sm-2">
+                {{ form.secondary| add_class:"form-control" }}
+            </div>
+            <div class="col-sm-2">
+                {{ form.part_of_speech| add_class:"form-control" }}
+            </div>
+            <div class="col-sm-2">
+                {{ form.field_tip| add_class:"form-control" | attr:"cols:20"|attr:"rows:2" }}
+            </div>
+            <div class="col-sm-3">
+                {{ form.comment_tip| add_class:"form-control" | attr:"cols:20"|attr:"rows:2" }}
+            </div>
+        </form>
+    </div>
+    <a id='add' href='#' class="btn btn-primary pull-right">Save</a>
+</div>
+
+
+<script>
+    window.glossUrl = "{% url 'gloss_add_with_ajax' id %}";
+</script>
+<script src="{% static 'js/gloss_add.js' %}"></script>
+
+{% endblock %}

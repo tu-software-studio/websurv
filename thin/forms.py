@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import ModelForm
+from django.forms.models import modelformset_factory
 
 from backend.models import *
 
@@ -8,18 +9,23 @@ class ProjectForm(ModelForm):
         model = Project
         fields = ['name']
 
-
 class SurveyForm(ModelForm):
     class Meta:
         model = Survey
-        fields = ['name','title']
+        fields = ['name','full_title']
 
 class DictionaryForm(ModelForm):
     class Meta:
         model = Dictionary
-        fields = ['name']
+        fields = ['name', 'language']
 
 class VarietyForm(ModelForm):
     class Meta:
         model = Variety
         fields = ['name']
+
+class GlossForm(ModelForm):
+    class Meta:
+        model = Gloss
+        fields = ['primary','secondary','part_of_speech','field_tip','comment_tip']
+

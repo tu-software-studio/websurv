@@ -7,6 +7,16 @@ PROJECT_DIR = Path(__file__).ancestor(3)
 
 SECRET_KEY = 'ea+sg5filpj)308_9t2tzuoay6u=p1cdmqt!!s@=tfsunoybf$'
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+        "websurv.context_processors.ProjectList",
+        "django.contrib.auth.context_processors.auth",
+        "django.core.context_processors.debug",
+        "django.core.context_processors.i18n",
+        "django.core.context_processors.media",
+        "django.core.context_processors.static",
+        "django.contrib.messages.context_processors.messages",
+        )
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -14,10 +24,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 
     'backend',
     'thin',
     'bootstrapform',
+    'south',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -33,7 +45,7 @@ ROOT_URLCONF = 'websurv.urls'
 WSGI_APPLICATION = 'websurv.wsgi.application'
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'EST'
+TIME_ZONE = 'America/New_York'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True

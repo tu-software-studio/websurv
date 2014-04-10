@@ -1,0 +1,89 @@
+[
+{
+  "pk": 1, 
+  "model": "backend.language", 
+  "fields": {
+    "iso_code": "en", 
+    "name": "english"
+  }
+},
+{
+  "pk": 2, 
+  "model": "backend.language", 
+  "fields": {
+    "iso_code": "de", 
+    "name": "german"
+  }
+},
+{
+  "pk": 3, 
+  "model": "backend.language", 
+  "fields": {
+    "iso_code": "es", 
+    "name": "spanish"
+  }
+},
+{
+  "pk": 1, 
+  "model": "backend.partofspeech", 
+  "fields": {
+    "name": "noun"
+  }
+},
+{
+  "pk": 2, 
+  "model": "backend.partofspeech", 
+  "fields": {
+    "name": "pronoun"
+  }
+},
+{
+  "pk": 3, 
+  "model": "backend.partofspeech", 
+  "fields": {
+    "name": "verb"
+  }
+},
+{
+  "pk": 4, 
+  "model": "backend.partofspeech", 
+  "fields": {
+    "name": "adjective"
+  }
+},
+{
+  "pk": 5, 
+  "model": "backend.partofspeech", 
+  "fields": {
+    "name": "article"
+  }
+},
+{
+  "pk": 6, 
+  "model": "backend.partofspeech", 
+  "fields": {
+    "name": "adverb"
+  }
+},
+{
+  "pk": 7, 
+  "model": "backend.partofspeech", 
+  "fields": {
+    "name": "preposition"
+  }
+},
+{
+  "pk": 8, 
+  "model": "backend.partofspeech", 
+  "fields": {
+    "name": "conjunction"
+  }
+},
+{
+  "pk": 9, 
+  "model": "backend.partofspeech", 
+  "fields": {
+    "name": "interjection"
+  }
+}
+]

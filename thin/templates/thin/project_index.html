@@ -1,15 +1,15 @@
 {% extends "thin/base.html" %}
-
+{% load utils %}
 {% block content %}
 
-<ul> 
-  {% for project in project_list %}
-  <li> 
-    <a href="{% url 'project_detail' project.id %}"> {{project.name}}</a>
-    <a href="{% url 'project_edit' project.id %}">Edit</a>
-  </li>
-  {% endfor %}
+<ul>
+    {% for project in project_list %}
+    <li>
+        <a href="{% url 'project_detail' project.id %}">{{ project.name }}</a>
+        {% url 'project_edit' project.id as project_edit_path %}{% blink_to project_edit_path "Edit" "btn-warning btn-xs" %}
+    </li>
+    {% endfor %}
 </ul>
-<a href="{% url 'project_add' %}" class='btn btn-success'>Add</a>
+{% url 'project_add' as project_add_path %}{% blink_to project_add_path "New Project" "btn-primary" %}
 
 {% endblock %}
