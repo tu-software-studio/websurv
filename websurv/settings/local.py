@@ -11,5 +11,4 @@ DATABASES = {
     }
 }
 
-INSTALLED_APPS += ('debug_toolbar','widget_tweaks')
-#INSTALLED_APPS += ('debug_toolbar', 'django_extensions')
+INSTALLED_APPS += ('debug_toolbar','widget_tweaks', 'django_extensions')
