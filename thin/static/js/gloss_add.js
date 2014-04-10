@@ -32,7 +32,7 @@ function submitForm( $form_id ){
 
 function newForm(){
     $("#formrow"+count).clone().attr('id', 'formrow'+(++count)).insertAfter("#formrow"+(count-1))
-    $( "#formrow"+count ).find("td")[0].innerHTML=count
+    $( "#formrow"+count ).find("div")[0].innerHTML=count
     $( "#formrow"+count ).find("form").attr('id', "form"+count)
 };
 
