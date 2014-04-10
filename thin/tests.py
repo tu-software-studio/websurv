@@ -112,24 +112,32 @@ class GlossTestCase(TestCase):
         
 class ProjectTestCase(TestCase):
     def setUp(self):
+        """ Set up for ProjectTestCase test cases """
         self.instance = factories.ProjectFactory()
 
     def test_project_add_exists(self):
-        response = self.client.post('/projects/add/')
+        """ Test that a GET request works on /project/add/ """
+        response = self.client.get('/projects/add/')
         self.assertEqual(response.status_code, 200)
 
     def test_project_add(self):
-        self.client.post('/projects/add/', {'name' : 'minombre'})
-        response = self.client.get('/projects/2/')
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response,'minombre')
+        """ Test that project add creates project """
+        response = self.client.post('/projects/add/', {'name' : 'new_name'})
+        try:
+            new_instance = Project.objects.get(name='new_name')
+        except Project.DoesNotExist:
+            # Tested, and this happens if the object is not created.
+            self.fail("Project was not created")
+        self.assertEqual(new_instance.name, 'new_name')
               
     def test_project_delete_works(self):
-        self.client.post('/projects/1/delete/')
-        response = self.client.get('/projects/')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['project_list']),0)
+        """ Test that project delete removes project """
+        response = self.client.post('/projects/' + str(self.instance.id) + '/delete/')
+        self.assertEqual(response.status_code, 302)
+        # Make sure the project has been deleted by looking for the id.
+        self.assertFalse(Project.objects.filter(id=self.instance.id).exists())
 
+    # TODO: Here
     def test_project_detail_exists(self):
         response = self.client.post('/projects/' + str(self.instance.id) + '/')
         self.assertEqual(response.status_code, 200)
