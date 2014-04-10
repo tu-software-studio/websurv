@@ -67,7 +67,7 @@ class Command(BaseCommand):
         else:
             p_id = self.create_project(project_name)
         dict_id = self.create_dictionary('imported_dictionary', p_id)
-        survey_id = self.create_survey(dic['name'], dic['description'], dict_id)
+        survey_id = self.create_survey(dic['name'], dic['description'], p_id)
         variety_id = self.create_variety(dic['variety'], survey_id)
         for gloss in dic['gloss']:
             gloss_id = self.create_gloss(gloss['name'], gloss['definition'], gloss['part_of_speech'], dict_id)
@@ -96,11 +96,11 @@ class Command(BaseCommand):
         }
         return self.add_obj_to_db(Gloss, entry)
 
-    def create_survey(self, name, description, dict_id):
+    def create_survey(self, name, description, project_id):
         entry = {
             'name': name,
             'full_title': description,
-            'dictionary_id': dict_id
+            'project_id': project_id
         }
         return self.add_obj_to_db(Survey, entry)
 
