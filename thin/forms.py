@@ -29,3 +29,7 @@ class GlossForm(ModelForm):
         model = Gloss
         fields = ['primary','secondary','part_of_speech','field_tip','comment_tip']
 
+class TranscriptionForm(ModelForm):
+    class Meta:
+        model = Transcription
+        fields = ['ipa', 'variety']

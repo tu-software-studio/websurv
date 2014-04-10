@@ -332,7 +332,63 @@ def gloss_add_with_ajax(request, id):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     else:
-        #for x in serializer.errors:
-            #print x+" : "+ str(serializer.errors[x][0])
-            #messages.error(request, x + " : " + str(serializer.errors[x][0]))
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+####################################################################################################
+# #Transcription CRUD
+def transcription_index(request):
+    transcriptions = Transcription.objects.all()
+    return render(request, 'thin/transcription_index.html', {'transcription_list': transcriptions})
+
+
+def transcription_delete(request, id):
+    transcription = Transcription.objects.get(id=id)
+    transcription.delete()
+    messages.success(request, "Transcription has been deleted!")
+    return redirect('dictionary_detail', id=transcription.dictionary_id)
+
+
+def transcription_detail(request, id):
+    try:
+        transcription = Transcription.objects.get(pk=id)
+    except Transcription.DoesNotExist:
+        messages.error(request, "Can't find selected transcription.")
+        return redirect('transcription_index')
+    return render(request, 'thin/transcription_detail.html', {'transcription': transcription})
+
+
+def transcription_edit(request, id):
+    try:
+        transcription = Transcription.objects.get(pk=id)
+    except:
+        messages.error(request, "Couldn't find the selected transcription.")
+        return redirect('transcription_index')
+    if request.method == "POST":
+        form = forms.TranscriptionForm(request.POST, instance=transcription)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Transcription has been updated!")
+            return redirect('transcription_detail', id=transcription.id)
+    else:
+        form = forms.TranscriptionForm(instance=transcription)
+    return render(request, 'thin/transcription_edit.html', {'form': form, 'transcription': transcription})
+
+
+def transcription_add(request, id):
+    gloss_list=Gloss.objects.all()
+    form = forms.TranscriptionForm()
+    return render(request, 'thin/transcription_add.html', {'form': form, 'id': id, 'gloss_list' : gloss_list})
+
+#import ipdb
+
+@api_view(['POST'])
+def transcription_add_with_ajax(request, id):
+    serializer = TranscriptionSerializer(data=request.DATA)
+    if serializer.is_valid():
+        serializer.object.dictionary = Dictionary.objects.get(pk=id)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

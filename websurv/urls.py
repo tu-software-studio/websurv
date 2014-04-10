@@ -43,6 +43,13 @@ urlpatterns = patterns(
     url(r'^glosses/add/(?P<id>\d+)/submit$', gloss_add_with_ajax, name='gloss_add_with_ajax'),
     url(r'^glosses/(?P<id>\d+)/delete/$', gloss_delete, name='gloss_delete'),
 
+    url(r'^transcriptions/$', transcription_index, name='transcription_index'),
+    url(r'^transcriptions/(?P<id>\d+)/$', transcription_detail, name='transcription_detail'),
+    url(r'^transcriptions/(?P<id>\d+)/edit/$', transcription_edit, name='transcription_edit'),
+    url(r'^transcriptions/add/(?P<id>\d+)/$', transcription_add, name='transcription_add'),
+    url(r'^transcriptions/add/(?P<id>\d+)/submit$', transcription_add_with_ajax, name='transcription_add_with_ajax'),
+    url(r'^transcriptions/(?P<id>\d+)/delete/$', transcription_delete, name='transcription_delete'),
+
     url(r'^comparisons/$', comparison_index, name='comparison_index'),
     url(r'^comparisons/(?P<num>\d+)/$', comparison_detail, name='comparison_detail'),
     url(r'^comparisons/(?P<num>\d+)/edit/$', comparison_edit, name='comparison_edit'),
