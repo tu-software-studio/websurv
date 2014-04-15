@@ -6,29 +6,56 @@
 
 (function() {
   $(function() {
-    var button, button_div, button_divs, input_box, _i, _len, _results;
-    input_box = $("#ipa_input").eq(0);
-    console.log("Adding listeners to buttons...");
-    button_divs = $("div.buttons");
-    _results = [];
-    for (_i = 0, _len = button_divs.length; _i < _len; _i++) {
-      button_div = button_divs[_i];
-      _results.push((function() {
-        var _j, _len1, _ref, _results1;
-        _ref = $(button_div).find("button");
-        _results1 = [];
-        for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-          button = _ref[_j];
-          button = $(button);
-          _results1.push(button.click(function(e) {
-            input_box.val(input_box.val() + $.trim(e.target.innerHTML));
-            return input_box.focus();
+    var ipa_controller;
+    ipa_controller = {
+      current_input: null,
+      set_up_buttons: function() {
+        var button, button_div, button_divs, _i, _len, _results;
+        console.log("Adding listeners to buttons...");
+        button_divs = $("div.buttons");
+        _results = [];
+        for (_i = 0, _len = button_divs.length; _i < _len; _i++) {
+          button_div = button_divs[_i];
+          _results.push((function() {
+            var _j, _len1, _ref, _results1;
+            _ref = $(button_div).find("button");
+            _results1 = [];
+            for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+              button = _ref[_j];
+              button = $(button);
+              _results1.push(button.click(function(e) {
+                if (ipa_controller.current_input != null) {
+                  ipa_controller.current_input.val(ipa_controller.current_input.val() + $.trim(e.target.innerHTML));
+                  return ipa_controller.current_input.focus();
+                } else {
+                  return alert("No input set. Click on an text box to set the input.");
+                }
+              }));
+            }
+            return _results1;
+          })());
+        }
+        return _results;
+      },
+      set_up_inputs: function() {
+        var input, inputs, _i, _len, _results;
+        console.log("Adding listeners to inputs...");
+        inputs = $("input:text");
+        _results = [];
+        for (_i = 0, _len = inputs.length; _i < _len; _i++) {
+          input = inputs[_i];
+          input = $(input);
+          _results.push(input.focus(function(e) {
+            console.log("setting input to: " + e.target.name);
+            return ipa_controller.current_input = $(e.target);
           }));
         }
-        return _results1;
-      })());
-    }
-    return _results;
+        return _results;
+      }
+    };
+    ipa_controller.set_up_buttons();
+    ipa_controller.set_up_inputs();
+    return $(".draggable").draggable();
   });
 
 }).call(this);
