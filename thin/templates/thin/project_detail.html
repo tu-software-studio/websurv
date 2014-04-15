@@ -2,6 +2,7 @@
 
 {% load utils %}
 {% block content %}
+
     <p>
         {{ project.name }} :
         {% url 'project_edit' project.id as project_edit_path %}
@@ -16,6 +17,8 @@
                     {% url 'dictionary_edit' dictionary.id as dictionary_edit_path %}
                     {% blink_to dictionary_edit_path "Edit" "btn-warning btn-xs" %}
                 </li>
+	    {% empty %}
+	        <li>There are currently no dictionaries for this project.</li>
             {% endfor %}
         </ul>
         {% url 'dictionary_add' project.id as dictionary_add_path %}

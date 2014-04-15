@@ -138,9 +138,31 @@ class ProjectTestCase(TestCase):
         self.assertFalse(Project.objects.filter(id=self.instance.id).exists())
 
     # TODO: Here
-    def test_project_detail_exists(self):
+    def test_project_detail(self):
         response = self.client.post('/projects/' + str(self.instance.id) + '/')
         self.assertEqual(response.status_code, 200)
+
+        # Test response includes project.name
+        self.assertContains(response, self.instance.name)
+
+        # Test for edit link
+        # TODO: find how to test for a link...
+        print()
+        print("href='/projects/" + str(self.instance.id) + "/edit/'")
+        self.assertContains(response, "href='/projects/" + str(self.instance.id) + "/edit/'")
+
+        ## Test that all dictionaries in the project show up
+        # If no dictionaries, tell the user
+        self.assertContains(response, 'There are currently no dictionaries for this project.')
+
+        # Now try it with some dictionaries
+        for i in range(3):
+            factories.DictionaryFactory(project=self.instance)
+
+        dictionaries = Dictionary.objects.filter(project=self.instance)
+        response = self.client.post('/projects/' + str(self.instance.id) + '/')
+        for dictionary in dictionaries:
+            self.assertContains(response, dictionary.id)
 
     def test_project_edit_exist(self):
         response = self.client.get('/projects/' + str(self.instance.id) + '/edit/')
