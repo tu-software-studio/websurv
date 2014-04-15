@@ -127,7 +127,7 @@ def survey_add(request, id):
             form.instance.dictionary = Dictionary.objects.get(id=id)
             form.save()
             messages.success(request, "Survey added!")
-            return redirect('survey_detail', id=id)
+            return redirect('survey_detail', id=form.instance.id)
     else:
         form = forms.SurveyForm()
     return render(request, 'thin/survey_add.html', {'form': form})
