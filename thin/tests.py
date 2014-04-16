@@ -57,6 +57,7 @@ class DictionaryTestCase(TestCase):
         response = self.client.post('/dictionaries/1/delete')
         # Status code should be 301 since we want a redirect
         self.assertEqual(response.status_code, 301)
+        # TODO: Change all of these to the assertRedirects
         self.assertEqual(response['Location'], 'http://testserver/dictionaries/1/delete/')
         
     def test_dictionary_delete_removes_dictionary(self):
@@ -129,6 +130,8 @@ class ProjectTestCase(TestCase):
             # Tested, and this happens if the object is not created.
             self.fail("Project was not created")
         self.assertEqual(new_instance.name, 'new_name')
+        # TODO: My idea conflicts with current setup. Edit (if necessary) when decided.
+        self.assertRedirects(response, '/projects/' + str(new_instance.id) + '/')
               
     def test_project_delete_works(self):
         """ Test that project delete removes project """
@@ -137,8 +140,8 @@ class ProjectTestCase(TestCase):
         # Make sure the project has been deleted by looking for the id.
         self.assertFalse(Project.objects.filter(id=self.instance.id).exists())
 
-    # TODO: Here
     def test_project_detail(self):
+        """ Test project detail properly displays project """
         response = self.client.post('/projects/' + str(self.instance.id) + '/')
         self.assertEqual(response.status_code, 200)
 
@@ -146,17 +149,14 @@ class ProjectTestCase(TestCase):
         self.assertContains(response, self.instance.name)
 
         # Test for edit link
-        # TODO: find how to test for a link...
-        print()
-        print("href='/projects/" + str(self.instance.id) + "/edit/'")
+        # TODO: find how to better test for a link.
         self.assertContains(response, "href='/projects/" + str(self.instance.id) + "/edit/'")
 
-        ## Test that all dictionaries in the project show up
         # If no dictionaries, tell the user
         self.assertContains(response, 'There are currently no dictionaries for this project.')
 
-        # Now try it with some dictionaries
-        for i in range(3):
+        # Test that all dictionaries in the project show up
+        for i in range(15): # Use high number because we're just searching for the number in the html
             factories.DictionaryFactory(project=self.instance)
 
         dictionaries = Dictionary.objects.filter(project=self.instance)
@@ -164,23 +164,42 @@ class ProjectTestCase(TestCase):
         for dictionary in dictionaries:
             self.assertContains(response, dictionary.id)
 
+        # Test for dictionary/add link
+        self.assertContains(response, "<a href='/dictionaries/add/" + str(self.instance.id)+ "/")
+
     def test_project_edit_exist(self):
+        """ Test project edit link exists for GET request """
         response = self.client.get('/projects/' + str(self.instance.id) + '/edit/')
         self.assertEqual(response.status_code, 200)
 
-    def test_edit_project_name(self):
-        self.client.post('/projects/1/edit/', {'name' : 'new_name'})
-        response = self.client.get('/projects/1/')
-        self.assertContains(response, 'new_name')
+    def test_project_edit(self):
+        """ Test project edit actually edits the project """
+        self.client.post('/projects/' + str(self.instance.id) + '/edit/', {'name' : 'new_name'})
+        try:
+            project = Project.objects.filter(name='new_name')
+        except Project.DoesNotExist:
+            self.fail("Project edit should change project name.")
+        self.assertEqual(project[0].name, 'new_name')
 
-    def test_project_index_exists(self):
+    def test_project_index(self):
+        """ Test project index displays properly """
+        # First test with no projects, even though this will almost never be true
+        self.instance.delete()
         response = self.client.get('/projects/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context['project_list']), 0)
+        self.assertContains(response, 'There are currently no projects.')
+
+        # Now add some projects and test for stuff
+        num_projects = 15
+        for i in range(num_projects):
+            factories.ProjectFactory()
         
-    def test_project_index_contains_project(self):
-        project_2 = factories.ProjectFactory()
         response = self.client.get('/projects/')
-        self.assertEqual(len(response.context['project_list']), 2)
+        self.assertEqual(len(response.context['project_list']), num_projects)
+        for project in Project.objects.all():
+            # Check for project detail and edit links for each existing project
+            self.assertContains(response, "<a href='/projects/" + str(project.id) + "/")
+            self.assertContains(response, "<a href='/projects/" + str(project.id) + "/edit/")
 
 
 class SurveyTestCase(TestCase):
