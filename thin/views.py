@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 import json
 
-from backend.models import Dictionary, Project, Survey, Variety, Transcription, Gloss
+from backend.models import Comparison, Dictionary, Project, Survey, Variety, Transcription, Gloss
 
 from thin import forms
 
@@ -251,15 +251,25 @@ def variety_delete(request, num):
 
 
 def comparison_index(request):
-    pass
+    return render(request, 'thin/comparison_index.html')
 
 
-def comparison_detail(request, num):
-    pass
+def comparison_detail(request, id):
+    try:
+        comparison = Comparison.objects.get(pk=id)
+    except Comparison.DoesNotExist:
+        messages.error(request, "Can't find selected comparison.")
+        return redirect('comparison_index')
+    return render(request, 'thin/comparison_detail.html', {'comparison' : comparison})
 
 
-def comparison_edit(request, num):
-    pass
+def comparison_edit(request, id):
+    try:
+        comparison = Comparison.objects.get(pk=id)
+    except Comparison.DoesNotExist:
+        messages.error(request, "Can't find the selected comparison.")
+        return redirect('comparison_index')
+    return render(request, 'thin/comparison_edit.html', {'comparison' : comparison})
 
 
 def gloss_index(request):
