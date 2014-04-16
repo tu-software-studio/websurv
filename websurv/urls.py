@@ -22,7 +22,7 @@ urlpatterns = patterns(
     url(r'^surveys/(?P<id>\d+)/$', survey_detail, name='survey_detail'),
     url(r'^surveys/(?P<id>\d+)/edit/$', survey_edit, name='survey_edit'),
     url(r'^surveys/(?P<id>\d+)/delete/$', survey_delete, name='survey_delete'),
-    url(r'^surveys/add/$', survey_add, name='survey_add'),
+    url(r'^surveys/add/(?P<id>\d+)$', survey_add, name='survey_add'),
 
     url(r'^projects/$', project_index, name='project_index'),
     url(r'^projects/(?P<num>\d+)/$', project_detail, name='project_detail'),
@@ -50,8 +50,8 @@ urlpatterns = patterns(
     url(r'^transcriptions/(?P<id>\d+)/delete/$', transcription_delete, name='transcription_delete'),
 
     url(r'^comparisons/$', comparison_index, name='comparison_index'),
-    url(r'^comparisons/(?P<num>\d+)/$', comparison_detail, name='comparison_detail'),
-    url(r'^comparisons/(?P<num>\d+)/edit/$', comparison_edit, name='comparison_edit'),
+    url(r'^comparisons/(?P<id>\d+)/$', comparison_detail, name='comparison_detail'),
+    url(r'^comparisons/(?P<id>\d+)/edit/$', comparison_edit, name='comparison_edit'),
 
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name' : 'thin/login.html'}, name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page' : project_index},  name='logout'),
