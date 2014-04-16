@@ -47,7 +47,6 @@ urlpatterns = patterns(
     url(r'^transcriptions/(?P<id>\d+)/$', transcription_detail, name='transcription_detail'),
     url(r'^transcriptions/(?P<id>\d+)/edit/$', transcription_edit, name='transcription_edit'),
     url(r'^transcriptions/add/(?P<id>\d+)/$', transcription_add, name='transcription_add'),
-    url(r'^transcriptions/add/(?P<id>\d+)/submit$', transcription_add_with_ajax, name='transcription_add_with_ajax'),
     url(r'^transcriptions/(?P<id>\d+)/delete/$', transcription_delete, name='transcription_delete'),
 
     url(r'^comparisons/$', comparison_index, name='comparison_index'),

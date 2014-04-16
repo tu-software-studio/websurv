@@ -32,4 +32,4 @@ class GlossForm(ModelForm):
 class TranscriptionForm(ModelForm):
     class Meta:
         model = Transcription
-        fields = ['ipa', 'variety']
+        fields = ['ipa']

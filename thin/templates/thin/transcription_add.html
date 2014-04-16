@@ -1,0 +1,30 @@
+{% extends "thin/base.html" %}
+
+{% load static from staticfiles %}
+{% load bootstrap %}
+
+
+{% block content %}
+{% load widget_tweaks %}
+{% load multifor %}
+
+<form method="post" action="">
+  {{formset.management_form}}
+  {% csrf_token %}
+  <div>
+      {% for form in formset; gloss in gloss_list %}
+      
+      {% for transcription in form %}
+      
+     
+      <p> {{forloop.parentloop.counter}} {{ gloss }} : {{transcription}} </p>
+
+      {% endfor %}
+      
+      {% endfor %}
+  </div>
+  <button>Save</button>
+</form>
+
+
+{% endblock%}
