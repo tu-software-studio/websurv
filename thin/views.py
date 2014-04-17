@@ -55,7 +55,7 @@ def dictionary_edit(request, id):
         form = forms.DictionaryForm(request.POST, instance=dictionary)
         if form.is_valid():
             form.save()
-            messages.success(request, "Dictionary has been editted successfully!")
+            messages.success(request, "Dictionary has been edited successfully!")
             return redirect('dictionary_detail', id=dictionary.id)
     else:
         form = forms.DictionaryForm(instance=dictionary)
@@ -63,7 +63,6 @@ def dictionary_edit(request, id):
 
 
 def dictionary_add(request, id):
-    """  """
     if request.method == 'POST':  # If the form has been submitted
         form = forms.DictionaryForm(request.POST)
         if form.is_valid():
@@ -167,7 +166,7 @@ def project_edit(request, num):
         form = forms.ProjectForm(request.POST, instance=project)
         if form.is_valid():
             form.save()
-            messages.success(request, "Project has been editted successfully!")
+            messages.success(request, "Project has been edited successfully!")
             return redirect('project_detail', num=project.id)
     else:
         form = forms.ProjectForm(instance=project)
@@ -178,9 +177,10 @@ def project_add(request):
     if request.method == 'POST':  # If the form has been submitted
         form = forms.ProjectForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_project = form.save()
             messages.success(request, "Project Added!")
-            return redirect('project_index')
+            #return redirect('project_index')
+            return redirect('project_detail', num=new_project.id)
     else:
         form = forms.ProjectForm()
     return render(request, 'thin/project_add.html', {'form': form})
@@ -223,7 +223,7 @@ def variety_edit(request, num):
         form = forms.VarietyForm(request.POST, instance=variety)
         if form.is_valid():
             form.save()
-            messages.success(request, "Variety has been editted successfully!")
+            messages.success(request, "Variety has been edited successfully!")
             return redirect('variety_detail', num=variety.id)
     else:
         form = forms.VarietyForm(instance=variety)

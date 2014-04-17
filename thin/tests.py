@@ -127,10 +127,9 @@ class ProjectTestCase(TestCase):
         try:
             new_instance = Project.objects.get(name='new_name')
         except Project.DoesNotExist:
-            # Tested, and this happens if the object is not created.
+            # Tested, and this code runs if the object is not created.
             self.fail("Project was not created")
         self.assertEqual(new_instance.name, 'new_name')
-        # TODO: My idea conflicts with current setup. Edit (if necessary) when decided.
         self.assertRedirects(response, '/projects/' + str(new_instance.id) + '/')
               
     def test_project_delete_works(self):
