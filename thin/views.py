@@ -36,14 +36,13 @@ def dictionary_detail(request, id):
     try:
         dictionary = Dictionary.objects.get(pk=id)
         project = dictionary.project
-        surveys = Survey.objects.filter(dictionary=dictionary)
         breadcrumb_menu = [project, dictionary]
         glosses = Gloss.objects.filter(dictionary=dictionary)
     except Dictionary.DoesNotExist:
         messages.error(request, "Can't find selected dictionary.")
         return redirect('dictionary_index')
     return render(request, 'thin/dictionary_detail.html',
-                  {'dictionary': dictionary, 'breadcrumb_menu': breadcrumb_menu, 'surveys': surveys, 'glosses': glosses})
+                  {'dictionary': dictionary, 'breadcrumb_menu': breadcrumb_menu, 'glosses': glosses})
 
 
 def dictionary_edit(request, id):
@@ -98,9 +97,8 @@ def survey_detail(request, id):
     try:
         survey = Survey.objects.get(id=id)
         varieties = Variety.objects.filter(survey=survey)
-        dictionary = survey.dictionary
-        project = dictionary.project
-        breadcrumb_menu = [project, dictionary, survey]
+        project = survey.project
+        breadcrumb_menu = [project, survey]
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
@@ -150,12 +148,13 @@ def project_detail(request, num):
     try:
         project = Project.objects.get(pk=num)
         dictionaries = Dictionary.objects.filter(project=project)
+        surveys = Survey.objects.filter(project=project)
         breadcrumb_menu = [project]
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
     return render(request, 'thin/project_detail.html',
-                  {'project': project, 'dictionaries': dictionaries, 'breadcrumb_menu': breadcrumb_menu})
+                  {'project': project, 'dictionaries': dictionaries, 'surveys':surveys, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def project_edit(request, num):
@@ -204,9 +203,8 @@ def variety_detail(request, num):
         variety = Variety.objects.get(pk=num)
         transcripts = Transcription.objects.filter(variety=variety)
         survey = variety.survey
-        dictionary = survey.dictionary
-        project = dictionary.project
-        breadcrumb_menu = [project, dictionary, survey, variety]
+        project = survey.project
+        breadcrumb_menu = [project, survey, variety]
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected variety.")
         return redirect('variety_index')
