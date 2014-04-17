@@ -207,7 +207,7 @@ class SurveyTestCase(TestCase):
         self.instance = factories.SurveyFactory()
 
     def test_survey_add_exists(self):
-        response = self.client.get('/surveys/add/')
+        response = self.client.get('/surveys/add/' + str(self.instance.dictionary.id) + '/')
         self.assertEqual(response.status_code, 200)
 
     def test_survey_delete_exists(self):

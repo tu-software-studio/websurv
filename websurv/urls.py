@@ -22,7 +22,7 @@ urlpatterns = patterns(
     url(r'^surveys/(?P<id>\d+)/$', survey_detail, name='survey_detail'),
     url(r'^surveys/(?P<id>\d+)/edit/$', survey_edit, name='survey_edit'),
     url(r'^surveys/(?P<id>\d+)/delete/$', survey_delete, name='survey_delete'),
-    url(r'^surveys/add/(?P<id>\d+)$', survey_add, name='survey_add'),
+    url(r'^surveys/add/(?P<id>\d+)/$', survey_add, name='survey_add'),
 
     url(r'^projects/$', project_index, name='project_index'),
     url(r'^projects/(?P<num>\d+)/$', project_detail, name='project_detail'),
