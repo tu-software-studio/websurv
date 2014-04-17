@@ -38,24 +38,19 @@
         return _results;
       },
       set_up_inputs: function() {
-        var input, inputs, _i, _len, _results;
         console.log("Adding listeners to inputs...");
-        inputs = $("input:text");
-        _results = [];
-        for (_i = 0, _len = inputs.length; _i < _len; _i++) {
-          input = inputs[_i];
-          input = $(input);
-          _results.push(input.focus(function(e) {
-            console.log("setting input to: " + e.target.name);
-            return ipa_controller.current_input = $(e.target);
-          }));
-        }
-        return _results;
+        return $("body").on("focus", "input", function(e) {
+          console.log("setting input to: " + e.target.name);
+          return ipa_controller.current_input = $(e.target);
+        });
       }
     };
     ipa_controller.set_up_buttons();
     ipa_controller.set_up_inputs();
-    return $(".draggable").draggable();
+    return $("#ipa-toggle").click(function(e) {
+      e.preventDefault();
+      return $("#ipa_buttons").toggle();
+    });
   });
 
 }).call(this);

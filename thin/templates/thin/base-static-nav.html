@@ -67,9 +67,9 @@
         {% for item in breadcrumb_menu %}
           <li>
           {% if request.path != item.get_absolute_url %}
-            <a href="{{ item.get_absolute_url }}">{{ item.name }}</a>
+            <a href="{{ item.get_absolute_url }}" style="font-style: italic">{{ item.name }}</a>
           {% else %}
-            {{ item.name }}
+            <span style="font-style: italic; font-weight: bold">{{ item.name }}</span>
           {% endif %}
           </li>
         {% endfor %}
@@ -80,7 +80,7 @@
       <div class="messages">
         {% for message in messages %}
           <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissable" {% endif %}>
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
             {{ message }}
           </div>
         {% endfor %}
@@ -91,6 +91,7 @@
     {% endblock %}
   </div>
   <footer>
+    {% include "thin/ipa_input.html" %}
     <div class="container text-muted">
       <ul class="pull-left breadcrumb breadcrumb-bar">
         <li><a href="#">Home</a></li>
@@ -98,6 +99,7 @@
         <li><a href="#">Help</a></li>
       </ul>
       <ul class="pull-right breadcrumb">
+        <li><a id="ipa-toggle" href="#">Click to show IPA Keyboard</a></li>
         <li><span class="copyright">Software Studio </span></li>
       </ul>
     </div>

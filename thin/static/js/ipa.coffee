@@ -19,16 +19,17 @@ $ ->
               alert "No input set. Click on an text box to set the input."
     set_up_inputs: ->
       console.log "Adding listeners to inputs..."
-      inputs = $ "input:text"
-      for input in inputs
-        input = $ input
-        input.focus (e) ->
-          console.log "setting input to: "+ e.target.name
-          ipa_controller.current_input = $ e.target
+      $("body").on "focus","input", (e) ->
+        console.log "setting input to: "+ e.target.name
+        ipa_controller.current_input = $ e.target
   ipa_controller.set_up_buttons()
   ipa_controller.set_up_inputs()
 
-  $(".draggable").draggable()
+  $("#ipa-toggle").click (e) ->
+    e.preventDefault()
+#    $("#ipa_buttons").toggle("slide", {direction: "down", duration: 1000})
+    $("#ipa_buttons").toggle()
+
 
 
 
