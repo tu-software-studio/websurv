@@ -82,3 +82,7 @@ td > textarea {
     width: 300px;
     resize: none;
 }
+
+.gloss-row{
+    margin-bottom:25px;
+}

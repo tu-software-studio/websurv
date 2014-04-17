@@ -120,13 +120,14 @@ def survey_edit(request, id):
                   {'form': form, 'survey': survey})
 
 
-def survey_add(request):
+def survey_add(request, id):
     if request.method == 'POST':  # If the form has been submitted
         form = forms.SurveyForm(request.POST)
         if form.is_valid():
+            form.instance.dictionary = Dictionary.objects.get(id=id)
             form.save()
             messages.success(request, "Survey added!")
-            return redirect('survey_index')
+            return redirect('survey_detail', id=id)
     else:
         form = forms.SurveyForm()
     return render(request, 'thin/survey_add.html', {'form': form})
@@ -303,26 +304,6 @@ def gloss_add(request, id):
     form = forms.GlossForm()
     return render(request, 'thin/gloss_add.html', {'form': form, 'id': id})
 
-
-def gloss_add_with_ajax(request, id):
-    if request.method == 'POST':  # If the form has been submitted
-        form = forms.GlossForm(request.POST)
-        if form.is_valid():
-            messages.success(request, "form is valid")
-            form.instance.dictionary = Dictionary.objects.get(pk=id)
-            form.save()
-            messages.success(request, "Gloss Added!")
-            response_data = {}
-            response_data['result'] = 'Success'
-            response_data['status'] = 200
-            return HttpResponse(json.dumps(response_data), content_type="application/json")
-        return
-    else:
-        messages.error(request, "gloss things didn't work")
-        return redirect(request, 'thin/gloss_index.html')
-
-
-#import ipdb
 
 @api_view(['POST'])
 def gloss_add_with_ajax(request, id):
