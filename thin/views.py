@@ -97,7 +97,7 @@ def survey_index(request):
 def survey_detail(request, id):
     try:
         survey = Survey.objects.get(id=id)
-        varieties = Variety.objects.filter(id=survey.id)
+        varieties = Variety.objects.filter(survey=survey)
         dictionary = survey.dictionary
         project = dictionary.project
         breadcrumb_menu = [project, dictionary, survey]
@@ -231,16 +231,17 @@ def variety_edit(request, num):
     return render(request, 'thin/variety_edit.html', {'form': form, 'variety': variety})
 
 
-def variety_add(request):
+def variety_add(request, id):
     if request.method == 'POST':  # If the form has been submitted
+        survey=Survey.objects.get(pk=id)
         form = forms.VarietyForm(request.POST)
         if form.is_valid():
+            form.instance.survey=survey
             form.save()
             messages.success(request, "Variety Added!")
-            return redirect('project_index')
+            return redirect('survey_detail', id)
     else:
         form = forms.VarietyForm()
-        messages.error(request, "Variety failed to be created")
     return render(request, 'thin/variety_add.html', {'form': form})
 
 
