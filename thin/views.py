@@ -362,7 +362,7 @@ def transcription_edit(request, id):
     return render(request, 'thin/transcription_edit.html', {'form': form, 'transcription': transcription})
 
 
-#form = forms.VarietyForm(request.POST, instance=variety)
+#form = forms.VarietyForm(request.POST, instance=variety)s
 
 def transcription_add(request, id):
     """ Lists all of the glosses in a survey's variety that do 
