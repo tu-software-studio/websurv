@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.forms.formsets import formset_factory
+from django.forms.formsets import formset_factory 
+from django.forms.models import modelformset_factory
 from django.http import HttpResponse
 
 import json
@@ -228,16 +229,17 @@ def variety_edit(request, num):
     return render(request, 'thin/variety_edit.html', {'form': form, 'variety': variety})
 
 
-def variety_add(request):
+def variety_add(request, id):
     if request.method == 'POST':  # If the form has been submitted
+        survey=Survey.objects.get(pk=id)
         form = forms.VarietyForm(request.POST)
         if form.is_valid():
+            form.instance.survey=survey
             form.save()
             messages.success(request, "Variety Added!")
-            return redirect('project_index')
+            return redirect('survey_detail', id)
     else:
         form = forms.VarietyForm()
-        messages.error(request, "Variety failed to be created")
     return render(request, 'thin/variety_add.html', {'form': form})
 
 
@@ -312,7 +314,6 @@ def gloss_add(request, id):
     form = forms.GlossForm()
     return render(request, 'thin/gloss_add.html', {'form': form, 'id': id})
 
-
 @api_view(['POST'])
 def gloss_add_with_ajax(request, id):
     serializer = GlossSerializer(data=request.DATA)
@@ -321,7 +322,70 @@ def gloss_add_with_ajax(request, id):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     else:
-        #for x in serializer.errors:
-            #print x+" : "+ str(serializer.errors[x][0])
-            #messages.error(request, x + " : " + str(serializer.errors[x][0]))
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def transcription_index(request):
+    transcriptions = Transcription.objects.all()
+    return render(request, 'thin/transcription_index.html', {'transcription_list': transcriptions})
+
+
+def transcription_delete(request, id):
+    transcription = Transcription.objects.get(id=id)
+    transcription.delete()
+    messages.success(request, "Transcription has been deleted!")
+    return redirect('dictionary_detail', id=transcription.dictionary_id)
+
+
+def transcription_detail(request, id):
+    try:
+        transcription = Transcription.objects.get(pk=id)
+    except Transcription.DoesNotExist:
+        messages.error(request, "Can't find selected transcription.")
+        return redirect('transcription_index')
+    return render(request, 'thin/transcription_detail.html', {'transcription': transcription})
+
+
+def transcription_edit(request, id):
+    try:
+        transcription = Transcription.objects.get(pk=id)
+    except:
+        messages.error(request, "Couldn't find the selected transcription.")
+        return redirect('transcription_index')
+    if request.method == "POST":
+        form = forms.TranscriptionForm(request.POST, instance=transcription)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Transcription has been updated!")
+            return redirect('transcription_detail', id=transcription.id)
+    else:
+        form = forms.TranscriptionForm(instance=transcription)
+    return render(request, 'thin/transcription_edit.html', {'form': form, 'transcription': transcription})
+
+
+#form = forms.VarietyForm(request.POST, instance=variety)
+
+def transcription_add(request, id):
+    """ Lists all of the glosses in a survey's variety that do 
+        not already have transcriptions entered into the database
+    """
+    gloss_list=list(Gloss.objects.all())
+    formset = formset_factory(forms.TranscriptionForm, extra=len(gloss_list))
+    #Transcriptionformset = modelformset_factory(Transcription, form=forms.TranscriptionForm)
+    #qset = Gloss.objects.all()
+    #formset = Transcriptionformset(queryset=qset)
+
+    if request.method == "POST":
+        variety = Variety.objects.get(pk=id)
+        formset = formset(request.POST)
+        if formset.is_valid():
+            counter=0
+            for form in formset:
+               if form.is_valid():
+                    form.instance.variety=variety                
+                    form.instance.gloss=gloss_list[counter]
+                    if form.instance.ipa!="":
+                        form.save()
+               counter +=1     
+
+        return redirect('variety_detail', num=id)
+    return render(request, 'thin/transcription_add.html', {'formset': formset, 'id': id, 'gloss_list' : gloss_list})
