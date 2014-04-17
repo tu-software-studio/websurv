@@ -68,9 +68,9 @@ def dictionary_add(request, id):
         form = forms.DictionaryForm(request.POST)
         if form.is_valid():
             form.instance.project = Project.objects.get(pk=id)
-            form.save()
+            new_dictionary = form.save()
             messages.success(request, "Dictionary Added!")
-            return redirect('project_detail', num=id)
+            return redirect('dictionary_detail', id=new_dictionary.id)
     else:
         form = forms.DictionaryForm()
     return render(request, 'thin/dictionary_add.html', {'form': form})

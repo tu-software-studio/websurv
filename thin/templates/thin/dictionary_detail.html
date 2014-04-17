@@ -57,12 +57,10 @@
             <td><a href="{% url 'gloss_edit' gloss.id %}">Edit</a></td>
         </tr>
         {% endfor %}
-        <tr>
-            <td>
-                <a href="{% url 'gloss_add' dictionary.id %}" class="btn btn-primary">Add New Glosses</a>
-            </td>
-        </tr>
         </tbody>
+
 </table>
+
+<a href="{% url 'gloss_add' dictionary.id %}" class="btn btn-primary">Add New Glosses</a>
 
 {% endblock %}
