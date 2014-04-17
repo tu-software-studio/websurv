@@ -2,14 +2,13 @@ from django.contrib import admin
 from backend.models import *
 
 
-class DictionaryAdminInline(admin.TabularInline):
-    model = Dictionary
+class SurveyAdminInline(admin.TabularInline):
+    model = Survey
 
 
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
-    inlines = (DictionaryAdminInline,)
 
 
 class LanguageAdmin(admin.ModelAdmin):
@@ -23,8 +22,8 @@ class DictionaryAdmin(admin.ModelAdmin):
 
 
 class SurveyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'full_title', 'dictionary')
-    search_fields = ('name', 'full_title', 'dictionary')
+    list_display = ('name', 'full_title', )
+    search_fields = ('name', 'full_title', )
 
 
 class PartOfSpeechAdmin(admin.ModelAdmin):
@@ -33,8 +32,8 @@ class PartOfSpeechAdmin(admin.ModelAdmin):
 
 
 class GlossAdmin(admin.ModelAdmin):
-    list_display = ('primary', 'secondary', 'part_of_speech', 'dictionary', 'created_at',)
-    search_fields = ('primary', 'secondary', 'part_of_speech', 'dictionary', 'created_at',)
+    list_display = ('primary', 'secondary', 'part_of_speech', 'survey', 'dictionary', 'created_at',)
+    search_fields = ('primary', 'secondary', 'part_of_speech', 'survey' 'dictionary', 'created_at',)
 
 
 class SortOrderAdmin(admin.ModelAdmin):
