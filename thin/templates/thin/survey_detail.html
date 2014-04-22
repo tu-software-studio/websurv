@@ -4,15 +4,20 @@
 
 {{survey.name}} : <a href="{% url 'survey_edit' survey.id %}">Edit </a></li>
 
-<ul>
-{% for variety in varieties %}
+<h3><strong>Varieties</strong></h3>
 
-<li>
-  <a href='{% url 'variety_detail' variety.id %}'>{{ variety.name }}</a>
-  <a href='{% url 'variety_edit' variety.id %}'>Edit</a>
-</li>
-
-{% endfor %}
 <ul>
+    {% if variety %}
+        {% for variety in varieties %}
+        <li>
+          <a href='{% url 'variety_detail' variety.id %}'>{{ variety.name }}</a>
+          <a href='{% url 'variety_edit' variety.id %}'>Edit</a>
+        </li>
+        {% endfor %}
+    {% else %}
+        <li>No Varieties.</li>
+        <p>Would you like to <a href = "{% url 'variety_add' survey.id %}">Add A New Variety?</a></p>
+    {% endif %}
+</ul>
 
 {% endblock %}
