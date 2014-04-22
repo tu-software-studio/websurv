@@ -49,7 +49,10 @@
     ipa_controller.set_up_inputs();
     return $("#ipa-toggle").click(function(e) {
       e.preventDefault();
-      return $("#ipa_buttons").toggle();
+      return $("#ipa_buttons").toggle("slide", {
+        direction: "down",
+        duration: 500
+      });
     });
   });
 

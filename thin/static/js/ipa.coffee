@@ -27,8 +27,8 @@ $ ->
 
   $("#ipa-toggle").click (e) ->
     e.preventDefault()
-#    $("#ipa_buttons").toggle("slide", {direction: "down", duration: 1000})
-    $("#ipa_buttons").toggle()
+    $("#ipa_buttons").toggle("slide", {direction: "down", duration: 500})
+#    $("#ipa_buttons").toggle(500)
 
 
 
