@@ -123,7 +123,7 @@ def survey_add(request, id):
     if request.method == 'POST':  # If the form has been submitted
         form = forms.SurveyForm(request.POST)
         if form.is_valid():
-            form.instance.dictionary = Dictionary.objects.get(id=id)
+            form.instance.project = Project.objects.get(id=id)
             form.save()
             messages.success(request, "Survey added!")
             return redirect('survey_detail', id=form.instance.id)
@@ -362,20 +362,19 @@ def transcription_edit(request, id):
     return render(request, 'thin/transcription_edit.html', {'form': form, 'transcription': transcription})
 
 
-#form = forms.VarietyForm(request.POST, instance=variety)s
+#form = forms.VarietyForm(request.POST, instance=variety)
+
 
 def transcription_add(request, id):
     """ Lists all of the glosses in a survey's variety that do 
         not already have transcriptions entered into the database
     """
-    gloss_list=list(Gloss.objects.all())
+    variety = Variety.objects.get(pk=id)
+    
+    gloss_list=variety.survey.glosses.all()
     formset = formset_factory(forms.TranscriptionForm, extra=len(gloss_list))
-    #Transcriptionformset = modelformset_factory(Transcription, form=forms.TranscriptionForm)
-    #qset = Gloss.objects.all()
-    #formset = Transcriptionformset(queryset=qset)
-
+    #ipdb.set_trace()
     if request.method == "POST":
-        variety = Variety.objects.get(pk=id)
         formset = formset(request.POST)
         if formset.is_valid():
             counter=0
