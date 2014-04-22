@@ -2,22 +2,18 @@
 
 {% block content %}
 
-{{survey.name}} : <a href="{% url 'survey_edit' survey.id %}">Edit </a></li>
-
-<h3><strong>Varieties</strong></h3>
+<p>Current Survey:</p>
+<li>{{survey.name}} : <a href="{% url 'survey_edit' survey.id %}">Edit </a></li>
 
 <ul>
-    {% if variety %}
-        {% for variety in varieties %}
-        <li>
-          <a href='{% url 'variety_detail' variety.id %}'>{{ variety.name }}</a>
-          <a href='{% url 'variety_edit' variety.id %}'>Edit</a>
-        </li>
-        {% endfor %}
-    {% else %}
-        <li>No Varieties.</li>
-        <p>Would you like to <a href = "{% url 'variety_add' survey.id %}">Add A New Variety?</a></p>
-    {% endif %}
+{% for variety in varieties %}
+<li>
+  <a href='{% url 'variety_detail' variety.id %}'>{{ variety.name }}</a>
+  <a href='{% url 'variety_edit' variety.id %}'>Edit</a>
+</li>
+
+{% endfor %}
 </ul>
 
+<a href="{% url 'variety_add' survey.id %}" class='btn btn-primary'>Add a new variety</a>
 {% endblock %}
