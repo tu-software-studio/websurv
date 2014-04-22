@@ -12,7 +12,7 @@
       set_up_buttons: function() {
         var button, button_div, button_divs, _i, _len, _results;
         console.log("Adding listeners to buttons...");
-        button_divs = $("div.buttons");
+        button_divs = $("div.btn-toolbar");
         _results = [];
         for (_i = 0, _len = button_divs.length; _i < _len; _i++) {
           button_div = button_divs[_i];

@@ -7,7 +7,7 @@ $ ->
     current_input: null
     set_up_buttons: ->
       console.log "Adding listeners to buttons..."
-      button_divs = $ "div.buttons"
+      button_divs = $ "div.btn-toolbar"
       for button_div in button_divs
         for button in $(button_div).find "button"
           button = $ button
