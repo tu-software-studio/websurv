@@ -2,11 +2,11 @@
 
 {% block content %}
 
-{{survey.name}} : <a href="{% url 'survey_edit' survey.id %}">Edit </a></li>
+<p>Current Survey:</p>
+<li>{{survey.name}} : <a href="{% url 'survey_edit' survey.id %}">Edit </a></li>
 
 <ul>
 {% for variety in varieties %}
-
 <li>
   <a href='{% url 'variety_detail' variety.id %}'>{{ variety.name }}</a>
   <a href='{% url 'variety_edit' variety.id %}'>Edit</a>
@@ -15,4 +15,5 @@
 {% endfor %}
 <ul>
 
+<a href="{% url 'variety_add' survey.id %}" class='btn btn-primary'>Add a new variety</a>
 {% endblock %}

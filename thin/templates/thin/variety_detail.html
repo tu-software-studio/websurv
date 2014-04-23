@@ -8,7 +8,5 @@
   <li>{{ transcript.gloss }} | {{ transcript.ipa }}</li>
 {% endfor %}
 </ul>
-<input name="ipa_name9" type="text" id="ipa_input"/>
-<input name="ipa_name19" type="text" id="ipa_input"/>
-
+<a href="{% url 'transcription_add' variety.id %}" class='btn btn-primary'>Add Transcriptions</a>
 {% endblock %}

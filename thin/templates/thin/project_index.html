@@ -8,6 +8,8 @@
         <a href="{% url 'project_detail' project.id %}">{{ project.name }}</a>
         {% url 'project_edit' project.id as project_edit_path %}{% blink_to project_edit_path "Edit" "btn-warning btn-xs" %}
     </li>
+    {% empty %}
+    <li>There are currently no projects.</li>
     {% endfor %}
 </ul>
 {% url 'project_add' as project_add_path %}{% blink_to project_add_path "New Project" "btn-primary" %}
