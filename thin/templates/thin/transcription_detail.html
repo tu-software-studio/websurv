@@ -1,0 +1,13 @@
+{# Transcription Detail #}
+{% extends "thin/base.html" %}
+
+{% block content %}
+
+<p>Transcription's gloss: <a href="{% url 'gloss_detail' transcription.gloss.id %}">{{transcription.gloss}}</a></p>
+<p>Transcription's Variety: <a href="{% url 'variety_detail' transcription.variety.id %}">{{transcription.variety}}</a></p>
+
+
+<p>Transcription : {{transcription.ipa}} : <a href="{% url 'transcription_edit' transcription.id %}">Edit</a></p>
+
+{% endblock %}
+

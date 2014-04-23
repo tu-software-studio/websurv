@@ -34,7 +34,7 @@ urlpatterns = patterns(
     url(r'^varieties/(?P<num>\d+)/$', variety_detail, name='variety_detail'),
     url(r'^varieties/(?P<num>\d+)/edit/$', variety_edit, name='variety_edit'),
     url(r'^varieties/(?P<num>\d+)/delete/$', variety_delete, name='variety_delete'),
-    url(r'^varieties/add/$',variety_add,name='variety_add'),
+    url(r'^varieties/add/(?P<id>\d+)$',variety_add,name='variety_add'),
     
     url(r'^glosses/$', gloss_index, name='gloss_index'),
     url(r'^glosses/(?P<id>\d+)/$', gloss_detail, name='gloss_detail'),
@@ -43,9 +43,15 @@ urlpatterns = patterns(
     url(r'^glosses/add/(?P<id>\d+)/submit$', gloss_add_with_ajax, name='gloss_add_with_ajax'),
     url(r'^glosses/(?P<id>\d+)/delete/$', gloss_delete, name='gloss_delete'),
 
+    url(r'^transcriptions/$', transcription_index, name='transcription_index'),
+    url(r'^transcriptions/(?P<id>\d+)/$', transcription_detail, name='transcription_detail'),
+    url(r'^transcriptions/(?P<id>\d+)/edit/$', transcription_edit, name='transcription_edit'),
+    url(r'^transcriptions/add/(?P<id>\d+)/$', transcription_add, name='transcription_add'),
+    url(r'^transcriptions/(?P<id>\d+)/delete/$', transcription_delete, name='transcription_delete'),
+
     url(r'^comparisons/$', comparison_index, name='comparison_index'),
-    url(r'^comparisons/(?P<num>\d+)/$', comparison_detail, name='comparison_detail'),
-    url(r'^comparisons/(?P<num>\d+)/edit/$', comparison_edit, name='comparison_edit'),
+    url(r'^comparisons/(?P<id>\d+)/$', comparison_detail, name='comparison_detail'),
+    url(r'^comparisons/(?P<id>\d+)/edit/$', comparison_edit, name='comparison_edit'),
 
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name' : 'thin/login.html'}, name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page' : project_index},  name='logout'),
