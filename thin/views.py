@@ -1,11 +1,12 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.forms.formsets import formset_factory
+from django.forms.formsets import formset_factory 
+from django.forms.models import modelformset_factory
 from django.http import HttpResponse
 
 import json
 
-from backend.models import Dictionary, Project, Survey, Variety, Transcription, Gloss
+from backend.models import Comparison, Dictionary, Project, Survey, Variety, Transcription, Gloss
 
 from thin import forms
 
@@ -17,10 +18,7 @@ from backend.serializers import GlossSerializer
 
 def home(request):
     """Render the main home page."""
-    survey = Survey.objects.get(id=1)
-    dictionary = survey.dictionary
-    project = dictionary.project
-    breadcrumb_menu = [project, dictionary, survey]
+    breadcrumb_menu = []
     context = {'breadcrumb_menu': breadcrumb_menu}
 
     return render(request, 'thin/base.html', context)
@@ -34,14 +32,13 @@ def dictionary_index(request):
 def dictionary_detail(request, id):
     try:
         dictionary = Dictionary.objects.get(pk=id)
-        surveys = Survey.objects.filter(dictionary=dictionary)
         glosses = Gloss.objects.filter(dictionary=dictionary)
     except Dictionary.DoesNotExist:
         messages.error(request, "Can't find selected dictionary.")
         return redirect('dictionary_index')
     breadcrumb_menu = [dictionary.project, dictionary]
     return render(request, 'thin/dictionary_detail.html',
-                  {'dictionary': dictionary, 'breadcrumb_menu': breadcrumb_menu, 'surveys': surveys, 'glosses': glosses})
+                  {'dictionary': dictionary, 'breadcrumb_menu': breadcrumb_menu, 'glosses': glosses})
 
 
 def dictionary_edit(request, id):
@@ -101,7 +98,7 @@ def survey_detail(request, id):
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
-    breadcrumb_menu = [survey.dictionary.project, survey.dictionary, survey]
+    breadcrumb_menu = [survey.project, survey]
     context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu}
     return render(request, 'thin/survey_detail.html', context)
 
@@ -115,22 +112,22 @@ def survey_edit(request, id):
             return redirect('survey_detail', id=id)
     else:
         form = forms.SurveyForm(instance=survey)
-    breadcrumb_menu = [survey.dictionary.project, survey.dictionary, survey]
+    breadcrumb_menu = [survey.project, survey]
     return render(request, 'thin/survey_edit.html', {'form': form, 'survey': survey, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def survey_add(request, id):
-    dictionary = Dictionary.objects.get(id=id)
+    project = Project.objects.get(id=id)
     if request.method == 'POST':  # If the form has been submitted
         form = forms.SurveyForm(request.POST)
         if form.is_valid():
-            form.instance.dictionary = dictionary
-            survey = form.save()
+            form.instance.project = project
+            form.save()
             messages.success(request, "Survey added!")
-            return redirect('survey_detail', id=survey.id)
+            return redirect('survey_detail', id=form.instance.id)
     else:
         form = forms.SurveyForm()
-    breadcrumb_menu = [dictionary.project, dictionary]
+    breadcrumb_menu = [project]
     return render(request, 'thin/survey_add.html', {'form': form, 'breadcrumb_menu': breadcrumb_menu})
 
 
@@ -150,12 +147,13 @@ def project_detail(request, num):
     try:
         project = Project.objects.get(pk=num)
         dictionaries = Dictionary.objects.filter(project=project)
+        surveys = Survey.objects.filter(project=project)
         breadcrumb_menu = [project]
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
     return render(request, 'thin/project_detail.html',
-                  {'project': project, 'dictionaries': dictionaries, 'breadcrumb_menu': breadcrumb_menu})
+                  {'project': project, 'dictionaries': dictionaries, 'surveys':surveys, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def project_edit(request, num):
@@ -207,7 +205,7 @@ def variety_detail(request, num):
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected variety.")
         return redirect('variety_index')
-    breadcrumb_menu = [variety.survey.dictionary.project, variety.survey.dictionary, variety.survey, variety]
+    breadcrumb_menu = [variety.survey.project, variety.survey, variety.survey, variety]
     return render(request, 'thin/variety_detail.html',
                   {'variety': variety, 'transcripts': transcripts, 'breadcrumb_menu': breadcrumb_menu})
 
@@ -226,7 +224,7 @@ def variety_edit(request, num):
             return redirect('variety_detail', num=variety.id)
     else:
         form = forms.VarietyForm(instance=variety)
-    breadcrumb_menu = [variety.survey.dictionary.project, variety.survey.dictionary, variety.survey, variety]
+    breadcrumb_menu = [variety.survey.project, variety.survey, variety.survey, variety]
     return render(request, 'thin/variety_edit.html', {'form': form, 'variety': variety, 'breadcrumb_menu': breadcrumb_menu})
 
 
@@ -235,13 +233,14 @@ def variety_add(request, id):
     if request.method == 'POST':  # If the form has been submitted
         form = forms.VarietyForm(request.POST)
         if form.is_valid():
+            form.instance.survey=survey
             form.save()
             messages.success(request, "Variety Added!")
-            return redirect('project_index')
+            return redirect('survey_detail', id)
     else:
         form = forms.VarietyForm()
         messages.error(request, "Variety failed to be created")
-    breadcrumb_menu = [survey.dictionary.project, survey.dictionary, survey]
+    breadcrumb_menu = [survey.project, survey]
     return render(request, 'thin/variety_add.html', {'form': form, 'breadcrumb_menu': breadcrumb_menu})
 
 
@@ -253,15 +252,25 @@ def variety_delete(request, num):
 
 
 def comparison_index(request):
-    pass
+    return render(request, 'thin/comparison_index.html')
 
 
-def comparison_detail(request, num):
-    pass
+def comparison_detail(request, id):
+    try:
+        comparison = Comparison.objects.get(pk=id)
+    except Comparison.DoesNotExist:
+        messages.error(request, "Can't find selected comparison.")
+        return redirect('comparison_index')
+    return render(request, 'thin/comparison_detail.html', {'comparison' : comparison})
 
 
-def comparison_edit(request, num):
-    pass
+def comparison_edit(request, id):
+    try:
+        comparison = Comparison.objects.get(pk=id)
+    except Comparison.DoesNotExist:
+        messages.error(request, "Can't find the selected comparison.")
+        return redirect('comparison_index')
+    return render(request, 'thin/comparison_edit.html', {'comparison' : comparison})
 
 
 def gloss_index(request):
@@ -319,7 +328,69 @@ def gloss_add_with_ajax(request, id):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     else:
-        #for x in serializer.errors:
-            #print x+" : "+ str(serializer.errors[x][0])
-            #messages.error(request, x + " : " + str(serializer.errors[x][0]))
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def transcription_index(request):
+    transcriptions = Transcription.objects.all()
+    return render(request, 'thin/transcription_index.html', {'transcription_list': transcriptions})
+
+
+def transcription_delete(request, id):
+    transcription = Transcription.objects.get(id=id)
+    transcription.delete()
+    messages.success(request, "Transcription has been deleted!")
+    return redirect('dictionary_detail', id=transcription.dictionary_id)
+
+
+def transcription_detail(request, id):
+    try:
+        transcription = Transcription.objects.get(pk=id)
+    except Transcription.DoesNotExist:
+        messages.error(request, "Can't find selected transcription.")
+        return redirect('transcription_index')
+    return render(request, 'thin/transcription_detail.html', {'transcription': transcription})
+
+
+def transcription_edit(request, id):
+    try:
+        transcription = Transcription.objects.get(pk=id)
+    except:
+        messages.error(request, "Couldn't find the selected transcription.")
+        return redirect('transcription_index')
+    if request.method == "POST":
+        form = forms.TranscriptionForm(request.POST, instance=transcription)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Transcription has been updated!")
+            return redirect('transcription_detail', id=transcription.id)
+    else:
+        form = forms.TranscriptionForm(instance=transcription)
+    return render(request, 'thin/transcription_edit.html', {'form': form, 'transcription': transcription})
+
+
+#form = forms.VarietyForm(request.POST, instance=variety)
+
+
+def transcription_add(request, id):
+    """ Lists all of the glosses in a survey's variety that do 
+        not already have transcriptions entered into the database
+    """
+    variety = Variety.objects.get(pk=id)
+    
+    gloss_list=variety.survey.glosses.all()
+    formset = formset_factory(forms.TranscriptionForm, extra=len(gloss_list))
+    #ipdb.set_trace()
+    if request.method == "POST":
+        formset = formset(request.POST)
+        if formset.is_valid():
+            counter=0
+            for form in formset:
+               if form.is_valid():
+                    form.instance.variety=variety                
+                    form.instance.gloss=gloss_list[counter]
+                    if form.instance.ipa!="":
+                        form.save()
+               counter +=1     
+
+        return redirect('variety_detail', num=id)
+    return render(request, 'thin/transcription_add.html', {'formset': formset, 'id': id, 'gloss_list' : gloss_list})

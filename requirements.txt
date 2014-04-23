@@ -5,8 +5,11 @@ argparse==1.2.1
 django-bootstrap-form==3.1
 django-debug-toolbar==1.0.1
 django-extensions==1.3.3
+django-multiforloop==0.2.1
 django-widget-tweaks==1.3
 djangorestframework==2.3.13
+ipdb==0.8
+ipython==1.2.1
 pyparsing==2.0.1
 python-dateutil==2.2
 pytz==2014.2

@@ -82,7 +82,8 @@ class SortPosition(models.Model):
 class Survey(models.Model):
     name = models.CharField(max_length=20)
     full_title = models.CharField(max_length=100)
-    dictionary = models.ForeignKey(Dictionary, related_name='surveys')
+    project = models.ForeignKey(Project, related_name='surveys')
+    glosses = models.ManyToManyField(Gloss, related_name='surveys')
 
     def __unicode__(self):
         return self.name

@@ -4,12 +4,9 @@ html, body {
   height: 100%;
 }
 
-.user_tag {
-  vertical-align: middle;
-  text-align: center;
-  line-height: 50px;
-  font-size: 1.1em;
-}
+/*
+ * Inverse Dropdown
+ */
 
 .dropdown-inverse {
   background-color: #222;
@@ -46,6 +43,10 @@ html, body {
   padding-bottom: calc(35px + 280px);
 }
 
+/*
+ * Footer
+ */
+
 footer {
   position: absolute;
   bottom: 0;
@@ -72,12 +73,11 @@ footer .breadcrumb {
   background-color: #222;
 }
 
-.breadcrumb > li + li.pull-right:before {
-  content: "";
-}
-
-.breadcrumb > li + li.no-bullet:before {
-  content: "";
+.breadcrumb > li {
+  content: "/";
+  + li.pull-right:before, + li.no-bullet:before {
+    content: "";
+  }
 }
 
 .copyright:after {

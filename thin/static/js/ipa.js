@@ -25,7 +25,7 @@
               button = $(button);
               _results1.push(button.click(function(e) {
                 if (ipa_controller.current_input != null) {
-                  ipa_controller.current_input.val(ipa_controller.current_input.val() + $.trim(e.target.innerHTML));
+                  ipa_controller.current_input.val(ipa_controller.current_input.val() + $.trim(e.target.innerHTML).replace(/&nbsp;/g, ""));
                   return ipa_controller.current_input.focus();
                 } else {
                   return alert("No input set. Click on an text box to set the input.");
