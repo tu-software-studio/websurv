@@ -74,7 +74,9 @@ footer .breadcrumb {
 }
 
 .breadcrumb > li {
-  content: "/";
+  + li:before {
+    content: "/";
+  }
   + li.pull-right:before, + li.no-bullet:before {
     content: "";
   }

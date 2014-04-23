@@ -5930,7 +5930,7 @@ footer .breadcrumb {
 .breadcrumb-inverse {
   background-color: #222;
 }
-.breadcrumb > li {
+.breadcrumb > li + li:before {
   content: "/";
 }
 .breadcrumb > li + li.pull-right:before,
