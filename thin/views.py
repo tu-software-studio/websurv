@@ -125,9 +125,9 @@ def survey_add(request, id):
         form = forms.SurveyForm(request.POST)
         if form.is_valid():
             form.instance.dictionary = dictionary
-            form.save()
+            survey = form.save()
             messages.success(request, "Survey added!")
-            return redirect('survey_detail', id=id)
+            return redirect('survey_detail', id=survey.id)
     else:
         form = forms.SurveyForm()
     breadcrumb_menu = [dictionary.project, dictionary]

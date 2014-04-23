@@ -1,14 +1,32 @@
 {% extends 'thin/base.html' %}
 
+{% load utils %}
 {% block content %}
-{{ variety.name }} : <a href="{% url 'variety_edit' variety.id %}">Edit </a>
-
-<ul>
-{% for transcript in transcripts %}
-  <li>{{ transcript.gloss }} | {{ transcript.ipa }}</li>
-{% endfor %}
-</ul>
-<input name="ipa_name9" type="text" id="ipa_input"/>
-<input name="ipa_name19" type="text" id="ipa_input"/>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Transcriptions</h3>
+      {% url 'transcription_add' variety.id as transcription_add_path %}
+      {% blink_to transcription_add_path "Add New Transcription" "btn-primary btn-xs pull-right" %}
+    </div>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Gloss</th>
+        <th>IPA</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for transcription in transcripts %}
+        <tr>
+          <td>{{ transcription.gloss }}</td>
+          <td>{{ transcription.ipa }}</td>
+          {% url 'transcription_edit' transcription.id as transcription_edit_path %}
+          <td>{% link_to transcription_edit_path "Edit" "pull-right" %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
 {% endblock %}

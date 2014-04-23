@@ -2,23 +2,20 @@
 
 {% load utils %}
 {% block content %}
-    <p>
-        {{ project.name }} :
-        {% url 'project_edit' project.id as project_edit_path %}
-        {% blink_to project_edit_path "Edit" "btn-warning btn-xs" %}
-    </p>
-    <div class="well well-sm">
-        Dictionaries in this project:
-        <ul>
-            {% for dictionary in dictionaries %}
-                <li>
-                    <a href="{{ dictionary.get_absolute_url }}">{{ dictionary.name }}</a>
-                    {% url 'dictionary_edit' dictionary.id as dictionary_edit_path %}
-                    {% blink_to dictionary_edit_path "Edit" "btn-warning btn-xs" %}
-                </li>
-            {% endfor %}
-        </ul>
-        {% url 'dictionary_add' project.id as dictionary_add_path %}
-        {% blink_to dictionary_add_path "Add" "btn-primary btn-xs" %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Associated Dictionaries</h3>
+      {% url 'dictionary_add' project.id as dictionary_add_path %}
+      {% blink_to dictionary_add_path "Create New Dictionary" "btn-primary btn-xs pull-right" %}
     </div>
+    <table class="table table-striped">
+      {% for dictionary in dictionaries %}
+        <tr>
+          <td><a href="{{ dictionary.get_absolute_url }}">{{ dictionary.name }}</a></td>
+          {% url 'dictionary_edit' dictionary.id as dictionary_edit_path %}
+          <td>{% link_to dictionary_edit_path "Edit" "pull-right" %}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
 {% endblock %}
