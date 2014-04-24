@@ -99,7 +99,7 @@ def survey_detail(request, id):
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
     breadcrumb_menu = [survey.project, survey]
-    context = {'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu}
+    context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu}
     return render(request, 'thin/survey_detail.html', context)
 
 
@@ -142,7 +142,7 @@ def survey_delete(request, id):
     survey = Survey.objects.get(id=id)
     survey.delete()
     messages.success(request, "Survey has been deleted!")
-    return redirect('survey_index')
+    return redirect('project_detail', id=survey.project_id)
 
 
 def project_index(request):
@@ -212,7 +212,7 @@ def variety_detail(request, num):
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected variety.")
         return redirect('variety_index')
-    breadcrumb_menu = [variety.survey.project, variety.survey, variety.survey, variety]
+    breadcrumb_menu = [variety.survey.project, variety.survey, variety]
     return render(request, 'thin/variety_detail.html',
                   {'variety': variety, 'transcripts': transcripts, 'breadcrumb_menu': breadcrumb_menu})
 
@@ -241,9 +241,9 @@ def variety_add(request, id):
         form = forms.VarietyForm(request.POST)
         if form.is_valid():
             form.instance.survey=survey
-            form.save()
+            variety = form.save()
             messages.success(request, "Variety Added!")
-            return redirect('survey_detail', id)
+            return redirect('variety_detail', variety.id)
     else:
         form = forms.VarietyForm()
     breadcrumb_menu = [survey.project, survey]
@@ -254,7 +254,7 @@ def variety_delete(request, num):
     variety = Variety.objects.get(pk=num)
     variety.delete()
     messages.success(request, "Variety has been deleted!")
-    return redirect('variety_index')
+    return redirect('survey_detail', variety.survey_id)
 
 
 def comparison_index(request):
