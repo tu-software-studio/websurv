@@ -34,7 +34,7 @@ urlpatterns = patterns(
     url(r'^varieties/(?P<num>\d+)/$', variety_detail, name='variety_detail'),
     url(r'^varieties/(?P<num>\d+)/edit/$', variety_edit, name='variety_edit'),
     url(r'^varieties/(?P<num>\d+)/delete/$', variety_delete, name='variety_delete'),
-    url(r'^varieties/add/(?P<id>\d+)$',variety_add,name='variety_add'),
+    url(r'^varieties/add/(?P<id>\d+)/$', variety_add, name='variety_add'),
     
     url(r'^glosses/$', gloss_index, name='gloss_index'),
     url(r'^glosses/(?P<id>\d+)/$', gloss_detail, name='gloss_detail'),
