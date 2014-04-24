@@ -1,19 +1,20 @@
 {% extends 'thin/base.html' %}
-
+{% load utils %}
 {% block content %}
-
-<p>Current Survey:</p>
-<li>{{survey.name}} : <a href="{% url 'survey_edit' survey.id %}">Edit </a></li>
-
-<ul>
-{% for variety in varieties %}
-<li>
-  <a href='{% url 'variety_detail' variety.id %}'>{{ variety.name }}</a>
-  <a href='{% url 'variety_edit' variety.id %}'>Edit</a>
-</li>
-
-{% endfor %}
-<ul>
-
-<a href="{% url 'variety_add' survey.id %}" class='btn btn-primary'>Add a new variety</a>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Varieties</h3>
+      {% url 'variety_add' survey.id as variety_add_path %}
+      {% blink_to variety_add_path "Create New Variety" "btn-primary btn-xs pull-right" %}
+    </div>
+    <table class="table table-striped">
+      {% for variety in varieties %}
+        <tr>
+          <td><a href='{{ variety.get_absolute_url }}'>{{ variety }}</a></td>
+          {% url 'variety_edit' variety.id as variety_edit_path %}
+          <td>{% link_to variety_edit_path "Edit" "pull-right" %}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
 {% endblock %}
