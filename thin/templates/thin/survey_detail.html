@@ -11,9 +11,15 @@
   <a href='{% url 'variety_detail' variety.id %}'>{{ variety.name }}</a>
   <a href='{% url 'variety_edit' variety.id %}'>Edit</a>
 </li>
-
 {% endfor %}
 </ul>
 
 <a href="{% url 'variety_add' survey.id %}" class='btn btn-primary'>Add a new variety</a>
+
+<h4>Comparisons:</h4>
+{% for comparison in comparisons %}
+<li>
+    <a href="{% url 'comparison_detail' comparison.id %}">{{ comparison.name }}</a>
+    <a href=""
+</li>
 {% endblock %}

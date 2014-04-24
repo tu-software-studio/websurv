@@ -97,12 +97,13 @@ def survey_detail(request, id):
     try:
         survey = Survey.objects.get(id=id)
         varieties = Variety.objects.filter(survey=survey)
+        comparisons = Comparison.objects.filter(survey=survey)
         project = survey.project
         breadcrumb_menu = [project, survey]
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
-    context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu}
+    context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu, "comparisons": comparisons}
     return render(request, 'thin/survey_detail.html', context)
 
 
@@ -249,9 +250,22 @@ def variety_delete(request, num):
     messages.success(request, "Variety has been deleted!")
     return redirect('variety_index')
 
+def comparison_add(request, id):
+    if request.method == "POST":
+        survey = Survey.object.get(pk=id)
+        form = forms.ComparisonForm(request.POST)
+        if form.is_valid():
+            form.instance.survey = survey
+            form.save()
+            messages.success(request, "Comparison Created!")
+            return redirect('comparison_detail', id)
+    else:
+        form = forms.ComparisonForm()
+    return render(request, "thin/comparison_add.html", {'form': form})
 
 def comparison_index(request):
-    return render(request, 'thin/comparison_index.html')
+    comparisons = Comparison.objects.all()
+    return render(request, 'thin/comparison_index.html', {'comparisons': comparisons})
 
 
 def comparison_detail(request, id):
@@ -260,7 +274,7 @@ def comparison_detail(request, id):
     except Comparison.DoesNotExist:
         messages.error(request, "Can't find selected comparison.")
         return redirect('comparison_index')
-    return render(request, 'thin/comparison_detail.html', {'comparison' : comparison})
+    return render(request, 'thin/comparison_detail.html', {'comparison': comparison})
 
 
 def comparison_edit(request, id):

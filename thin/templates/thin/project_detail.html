@@ -6,7 +6,7 @@
 <p>
     {{ project.name }} :
     {% url 'project_edit' project.id as project_edit_path %}
-    {% blink_to project_edit_path "Edit" "btn-warning btn-xs" %}
+    {% blink_to project_edit_path "Edit" "btn-warning btn-xs pull-right" %}
 </p>
 <div class="well well-sm">
     Dictionaries in this project:

@@ -157,7 +157,7 @@ class ComparisonEntry(models.Model):
     transcription = models.ForeignKey(Transcription, related_name='comparison_entries')
 
     class Meta:
-        verbose_name_plural = 'Comaparison Entries'
+        verbose_name_plural = 'Comparison Entries'
 
     def __unicode__(self):
         return self.aligned_form
