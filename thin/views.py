@@ -119,18 +119,26 @@ def survey_edit(request, id):
     return render(request, 'thin/survey_edit.html',
                   {'form': form, 'survey': survey})
 
-
 def survey_add(request, id):
+    project=Project.objects.get(pk=id)
+    dictionary_list=list(project.dictionaries.all())
+
     if request.method == 'POST':  # If the form has been submitted
-        form = forms.SurveyForm(request.POST)
+        form = forms.SurveyAddForm(request.POST)
         if form.is_valid():
             form.instance.project = Project.objects.get(id=id)
             form.save()
+            dictionary_list = request.POST.getlist('dictionaries') #dictionaries that were selected
+            for x in dictionary_list:
+                dictionary = Dictionary.objects.get(id=x)
+                glosses=list(dictionary.glosses.all())
+                for gloss in glosses:
+                    form.instance.glosses.add(gloss)
             messages.success(request, "Survey added!")
             return redirect('survey_detail', id=form.instance.id)
     else:
-        form = forms.SurveyForm()
-    return render(request, 'thin/survey_add.html', {'form': form})
+        form = forms.SurveyAddForm()
+    return render(request, 'thin/survey_add.html', {'form': form })
 
 
 def survey_delete(request, id):
