@@ -4,11 +4,13 @@
   <title>Websurv</title>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/websurv.css"/>
-  <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
+
 {% url 'home' as home_path %}
 <div id="everything">
   <nav class="navbar navbar-static-top navbar-inverse" role="navigation">
@@ -64,11 +66,11 @@
       <ol class="breadcrumb">
         {% for item in breadcrumb_menu %}
           <li>
-          {% if request.path != item.get_absolute_url %}
-            <a href="{{ item.get_absolute_url }}">{{ item.name }}</a>
-          {% else %}
-            {{ item.name }}
-          {% endif %}
+            {% if request.path != item.get_absolute_url %}
+              <a href="{{ item.get_absolute_url }}" style="font-style: italic">{{ item.name }}</a>
+            {% else %}
+              <span style="font-style: italic; font-weight: bold">{{ item.name }}</span>
+            {% endif %}
           </li>
         {% endfor %}
       </ol>
@@ -78,7 +80,7 @@
       <div class="messages">
         {% for message in messages %}
           <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissable" {% endif %}>
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
             {{ message }}
           </div>
         {% endfor %}
@@ -89,15 +91,19 @@
     {% endblock %}
   </div>
   <footer>
-    <div class="container text-muted">
-      <ul class="pull-left breadcrumb breadcrumb-bar">
-        <li><a href="#">Home</a></li>
-        <li><a href="{% url "project_index" %}">Project List</a></li>
-        <li><a href="#">Help</a></li>
-      </ul>
-      <ul class="pull-right breadcrumb">
-        <li><span class="copyright">Software Studio </span></li>
-      </ul>
+    {% include "thin/ipa_input.html" %}
+    <div class="footer">
+      <div class="container text-muted">
+        <ul class="pull-left breadcrumb breadcrumb-bar">
+          <li><a href="#">Home</a></li>
+          <li><a href="{% url "project_index" %}">Project List</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+        <ul class="pull-right breadcrumb">
+          <li><a id="ipa-toggle" href="#">Click to toggle IPA Keyboard</a></li>
+          <li><span class="copyright">Software Studio </span></li>
+        </ul>
+      </div>
     </div>
   </footer>
 </div>

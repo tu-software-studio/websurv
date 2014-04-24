@@ -1,13 +1,11 @@
 {% extends 'thin/base.html' %}
 
 {% block content %}
-
 {{ variety.name }} : <a href="{% url 'variety_edit' variety.id %}">Edit </a>
 
 <ul>
 {% for transcript in transcripts %}
-   <li>{{ transcript.gloss }} | {{ transcript.ipa }}</li>
-
+  <li>{{ transcript.gloss }} | {{ transcript.ipa }}</li>
 {% endfor %}
 </ul>
 <a href="{% url 'transcription_add' variety.id %}" class='btn btn-primary'>Add Transcriptions</a>
