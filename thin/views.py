@@ -118,18 +118,26 @@ def survey_edit(request, id):
     return render(request, 'thin/survey_edit.html',
                   {'form': form, 'survey': survey})
 
-
 def survey_add(request, id):
+    project=Project.objects.get(pk=id)
+    dictionary_list=list(project.dictionaries.all())
+
     if request.method == 'POST':  # If the form has been submitted
-        form = forms.SurveyForm(request.POST)
+        form = forms.SurveyAddForm(request.POST)
         if form.is_valid():
-            form.instance.dictionary = Dictionary.objects.get(id=id)
-            new_survey = form.save()
+            form.instance.project = Project.objects.get(id=id)
+            form.save()
+            dictionary_list = request.POST.getlist('dictionaries') #dictionaries that were selected
+            for x in dictionary_list:
+                dictionary = Dictionary.objects.get(id=x)
+                glosses=list(dictionary.glosses.all())
+                for gloss in glosses:
+                    form.instance.glosses.add(gloss)
             messages.success(request, "Survey added!")
             return redirect('survey_detail', id=form.instance.id)
     else:
-        form = forms.SurveyForm()
-    return render(request, 'thin/survey_add.html', {'form': form})
+        form = forms.SurveyAddForm()
+    return render(request, 'thin/survey_add.html', {'form': form })
 
 
 def survey_delete(request, id):
@@ -365,18 +373,17 @@ def transcription_edit(request, id):
 
 #form = forms.VarietyForm(request.POST, instance=variety)
 
+
 def transcription_add(request, id):
     """ Lists all of the glosses in a survey's variety that do 
         not already have transcriptions entered into the database
     """
-    gloss_list=list(Gloss.objects.all())
+    variety = Variety.objects.get(pk=id)
+    
+    gloss_list=variety.survey.glosses.all()
     formset = formset_factory(forms.TranscriptionForm, extra=len(gloss_list))
-    #Transcriptionformset = modelformset_factory(Transcription, form=forms.TranscriptionForm)
-    #qset = Gloss.objects.all()
-    #formset = Transcriptionformset(queryset=qset)
-
+    #ipdb.set_trace()
     if request.method == "POST":
-        variety = Variety.objects.get(pk=id)
         formset = formset(request.POST)
         if formset.is_valid():
             counter=0

@@ -8,30 +8,6 @@
     {{dictionary.name}} : <a href="{% url 'dictionary_edit' dictionary.id %}">Edit</a>
 </span>
 
-
-<hr>
-
-<h4><strong>Surveys</strong></h4>
-
-<div>
-    {% if surveys %}
-        <ul>
-        {% for survey in surveys %}
-            <li>
-                <a href="{% url 'survey_detail' survey.id %}">{{ survey.name }}</a> :
-                <a href="{% url 'survey_edit' survey.id %}">Edit</a>
-            </li>
-        {% endfor %}
-        </ul>
-        <a href = "{% url 'survey_add' dictionary.id %}" class="btn btn-primary">Add Survey</a>
-    {% else %}
-    <ul>
-        <li>There are no surveys</li>
-        <span>Would you like to <a href="{% url 'survey_add' dictionary.id %}">Add a New Survey</a>?</span>
-    </ul>
-    {% endif %}
-</div>
-
 <hr>
 
 <h4><strong>Glosses</strong></h4>
