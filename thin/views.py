@@ -25,8 +25,7 @@ def home(request):
 
 
 def dictionary_index(request):
-    dictionaries = Dictionary.objects.all()
-    return render(request, 'thin/dictionary_index.html', {'dictionary_list': dictionaries})
+    return redirect('home')
 
 
 def dictionary_detail(request, id):
@@ -86,9 +85,7 @@ def dictionary_delete(request, id):
 
 
 def survey_index(request):
-    survey_list = Survey.objects.all()
-    context = {'survey_list': survey_list}
-    return render(request, 'thin/survey_index.html', context)
+    return redirect('home')
 
 
 def survey_detail(request, id):
@@ -202,8 +199,7 @@ def project_delete(request, id):
 
 
 def variety_index(request):
-    varieties = Variety.objects.all()
-    return render(request, 'thin/variety_index.html', {'varieties': varieties})
+    return redirect('home')
 
 
 def variety_detail(request, id):
@@ -259,7 +255,7 @@ def variety_delete(request, id):
 
 
 def comparison_index(request):
-    return render(request, 'thin/comparison_index.html')
+    return redirect('home')
 
 
 def comparison_detail(request, id):
@@ -281,8 +277,7 @@ def comparison_edit(request, id):
 
 
 def gloss_index(request):
-    glosses = Gloss.objects.all()
-    return render(request, 'thin/gloss_index.html', {'gloss_list': glosses})
+    return redirect('home')
 
 
 def gloss_delete(request, id):
@@ -296,10 +291,10 @@ def gloss_detail(request, id):
     try:
         gloss = Gloss.objects.get(pk=id)
     except Gloss.DoesNotExist:
-        messages.error(request, "Can't find selected gloss.")
-        return redirect('gloss_index')
-    breadcrumb_menu = [gloss.dictionary.project, gloss.dictionary, gloss]
-    return render(request, 'thin/gloss_detail.html', {'gloss': gloss, 'breadcrumb_menu': breadcrumb_menu})
+        return redirect('home')
+    return redirect('dictionary_detail', gloss.dictionary.id)
+    # breadcrumb_menu = [gloss.dictionary.project, gloss.dictionary, gloss]
+    # return render(request, 'thin/gloss_detail.html', {'gloss': gloss, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def gloss_edit(request, id):
@@ -339,8 +334,7 @@ def gloss_add_with_ajax(request, id):
 
 
 def transcription_index(request):
-    transcriptions = Transcription.objects.all()
-    return render(request, 'thin/transcription_index.html', {'transcription_list': transcriptions})
+    return redirect('home')
 
 
 def transcription_delete(request, id):
@@ -354,9 +348,9 @@ def transcription_detail(request, id):
     try:
         transcription = Transcription.objects.get(pk=id)
     except Transcription.DoesNotExist:
-        messages.error(request, "Can't find selected transcription.")
-        return redirect('transcription_index')
-    return render(request, 'thin/transcription_detail.html', {'transcription': transcription})
+        return redirect('home')
+    return redirect('variety_detail', transcription.variety.id)
+    # return render(request, 'thin/transcription_detail.html', {'transcription': transcription})
 
 
 def transcription_edit(request, id):
