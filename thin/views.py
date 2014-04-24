@@ -70,7 +70,7 @@ def dictionary_add(request, id):
             form.instance.project = Project.objects.get(pk=id)
             form.save()
             messages.success(request, "Dictionary Added!")
-            return redirect('project_detail', num=id)
+            return redirect('project_detail', id=id)
     else:
         form = forms.DictionaryForm()
     return render(request, 'thin/dictionary_add.html', {'form': form})
@@ -84,7 +84,7 @@ def dictionary_delete(request, id):
         return redirect('dictionary_index')
     dictionary.delete()
     messages.success(request, "Dictionary has been deleted!")
-    return redirect('project_detail', num=dictionary.project_id)
+    return redirect('project_detail', id=dictionary.project_id)
 
 
 def survey_index(request):
@@ -152,9 +152,9 @@ def project_index(request):
     return render(request, 'thin/project_index.html', {'project_list': projects})
 
 
-def project_detail(request, num):
+def project_detail(request, id):
     try:
-        project = Project.objects.get(pk=num)
+        project = Project.objects.get(pk=id)
         dictionaries = Dictionary.objects.filter(project=project)
         surveys = Survey.objects.filter(project=project)
         breadcrumb_menu = [project]
@@ -165,9 +165,9 @@ def project_detail(request, num):
                   {'project': project, 'dictionaries': dictionaries, 'surveys':surveys, 'breadcrumb_menu': breadcrumb_menu})
 
 
-def project_edit(request, num):
+def project_edit(request, id):
     try:
-        project = Project.objects.get(pk=num)
+        project = Project.objects.get(pk=id)
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
@@ -176,7 +176,7 @@ def project_edit(request, num):
         if form.is_valid():
             form.save()
             messages.success(request, "Project has been editted successfully!")
-            return redirect('project_detail', num=project.id)
+            return redirect('project_detail', id=project.id)
     else:
         form = forms.ProjectForm(instance=project)
     return render(request, 'thin/project_edit.html', {'form': form, 'project': project})
@@ -194,8 +194,8 @@ def project_add(request):
     return render(request, 'thin/project_add.html', {'form': form})
 
 
-def project_delete(request, num):
-    project = Project.objects.get(pk=num)
+def project_delete(request, id):
+    project = Project.objects.get(pk=id)
     project.delete()
     messages.success(request, "Project has been deleted!")
     return redirect('project_index')
@@ -206,9 +206,9 @@ def variety_index(request):
     return render(request, 'thin/variety_index.html', {'varieties': varieties})
 
 
-def variety_detail(request, num):
+def variety_detail(request, id):
     try:
-        variety = Variety.objects.get(pk=num)
+        variety = Variety.objects.get(pk=id)
         transcripts = Transcription.objects.filter(variety=variety)
         survey = variety.survey
         project = survey.project
@@ -220,9 +220,9 @@ def variety_detail(request, num):
                   {'variety': variety, 'transcripts': transcripts, 'breadcrumb_menu': breadcrumb_menu})
 
 
-def variety_edit(request, num):
+def variety_edit(request, id):
     try:
-        variety = Variety.objects.get(pk=num)
+        variety = Variety.objects.get(pk=id)
     except Variety.DoesNotExist:
         messages.error(request, "Can't find selected variety.")
         return redirect('variety_index')
@@ -231,7 +231,7 @@ def variety_edit(request, num):
         if form.is_valid():
             form.save()
             messages.success(request, "Variety has been editted successfully!")
-            return redirect('variety_detail', num=variety.id)
+            return redirect('variety_detail', id=variety.id)
     else:
         form = forms.VarietyForm(instance=variety)
     return render(request, 'thin/variety_edit.html', {'form': form, 'variety': variety})
@@ -251,8 +251,8 @@ def variety_add(request, id):
     return render(request, 'thin/variety_add.html', {'form': form})
 
 
-def variety_delete(request, num):
-    variety = Variety.objects.get(pk=num)
+def variety_delete(request, id):
+    variety = Variety.objects.get(pk=id)
     variety.delete()
     messages.success(request, "Variety has been deleted!")
     return redirect('variety_index')
@@ -394,5 +394,5 @@ def transcription_add(request, id):
                         form.save()
                counter +=1     
 
-        return redirect('variety_detail', num=id)
+        return redirect('variety_detail', id=id)
     return render(request, 'thin/transcription_add.html', {'formset': formset, 'id': id, 'gloss_list' : gloss_list})
