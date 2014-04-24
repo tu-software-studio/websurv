@@ -22,6 +22,7 @@ urlpatterns = patterns(
     url(r'^surveys/(?P<id>\d+)/delete/$', survey_delete, name='survey_delete'),
     url(r'^surveys/add/(?P<id>\d+)$', survey_add, name='survey_add'),
 
+    url(r'^projects/$', project_index, name='project_index'),
     url(r'^projects/(?P<id>\d+)/$', project_detail, name='project_detail'),
     url(r'^projects/(?P<id>\d+)/edit/$', project_edit, name='project_edit'),
     url(r'^projects/(?P<id>\d+)/delete/$', project_delete, name='project_delete'),
