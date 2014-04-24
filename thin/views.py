@@ -124,7 +124,7 @@ def survey_add(request, id):
         form = forms.SurveyForm(request.POST)
         if form.is_valid():
             form.instance.dictionary = Dictionary.objects.get(id=id)
-            form.save()
+            new_survey = form.save()
             messages.success(request, "Survey added!")
             return redirect('survey_detail', id=form.instance.id)
     else:
@@ -178,9 +178,9 @@ def project_add(request):
     if request.method == 'POST':  # If the form has been submitted
         form = forms.ProjectForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_project = form.save()
             messages.success(request, "Project Added!")
-            return redirect('project_index')
+            return redirect('project_detail', num=new_project.id)
     else:
         form = forms.ProjectForm()
     return render(request, 'thin/project_add.html', {'form': form})
@@ -237,7 +237,8 @@ def variety_add(request, id):
             form.instance.survey=survey
             form.save()
             messages.success(request, "Variety Added!")
-            return redirect('survey_detail', id)
+            #return redirect('survey_detail', id)
+            return redirect('variety_detail', id=form.instance.id)
     else:
         form = forms.VarietyForm()
     return render(request, 'thin/variety_add.html', {'form': form})
