@@ -18,20 +18,25 @@
       {% endfor %}
     </table>
   </div>
-<div class="well well-sm">
-    Surveys in this project:
-    <ul>
-        {% for survey in surveys %}
-        <li>
-            <a href="{{ survey.get_absolute_url }}">{{ survey.name }}</a>
-            {% url 'survey_edit' survey.id as survey_edit_path %}
-            {% blink_to survey_edit_path "Edit" "btn-warning btn-xs" %}
-        </li>
-        {% empty %}
-        <li>There are currently no surveys for this project.</li>
-        {% endfor %}
-    </ul>
-    {% url 'survey_add' project.id as survey_add_path %}
-    {% blink_to survey_add_path "Add" "btn-primary btn-xs" %}
-</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Associated Surveys</h3>
+      {% url 'survey_add' project.id as survey_add_path %}
+      {% blink_to survey_add_path "Create New Survey" "btn-primary btn-xs pull-right" %}
+    </div>
+    <table class="table table-striped">
+      {% for survey in surveys %}
+        <tr>
+          <td><a href="{{ survey.get_absolute_url }}">{{ survey.name }}</a></td>
+          {% url 'survey_edit' survey.id as survey_edit_path %}
+          <td>{% link_to survey_edit_path "Edit" "pull-right" %}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td>There are currently no surveys for this project.</td>
+          <td></td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
 {% endblock %}

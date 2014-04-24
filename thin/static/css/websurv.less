@@ -65,21 +65,21 @@ footer .breadcrumb {
 /*
  * Breadcrumbs
  */
-.breadcrumb-bar li + li:before {
-  content: "|\00a0";
-}
-
 .breadcrumb-inverse {
   background-color: #222;
 }
 
-.breadcrumb > li {
+.breadcrumb li {
   + li:before {
     content: "/";
   }
   + li.pull-right:before, + li.no-bullet:before {
     content: "";
   }
+}
+
+.breadcrumb-bar li + li:before {
+  content: "|\00a0";
 }
 
 .copyright:after {

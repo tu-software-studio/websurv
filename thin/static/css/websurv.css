@@ -5924,18 +5924,18 @@ footer .breadcrumb {
 /*
  * Breadcrumbs
  */
-.breadcrumb-bar li + li:before {
-  content: "|\00a0";
-}
 .breadcrumb-inverse {
   background-color: #222;
 }
-.breadcrumb > li + li:before {
+.breadcrumb li + li:before {
   content: "/";
 }
-.breadcrumb > li + li.pull-right:before,
-.breadcrumb > li + li.no-bullet:before {
+.breadcrumb li + li.pull-right:before,
+.breadcrumb li + li.no-bullet:before {
   content: "";
+}
+.breadcrumb-bar li + li:before {
+  content: "|\00a0";
 }
 .copyright:after {
   content: "\00a9";

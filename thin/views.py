@@ -94,12 +94,12 @@ def survey_index(request):
 def survey_detail(request, id):
     try:
         survey = Survey.objects.get(id=id)
-        varieties = Variety.objects.filter(id=survey.id)
+        varieties = Variety.objects.filter(survey_id=survey.id)
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
     breadcrumb_menu = [survey.project, survey]
-    context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu}
+    context = {'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu}
     return render(request, 'thin/survey_detail.html', context)
 
 
@@ -239,7 +239,6 @@ def variety_add(request, id):
             return redirect('survey_detail', id)
     else:
         form = forms.VarietyForm()
-        messages.error(request, "Variety failed to be created")
     breadcrumb_menu = [survey.project, survey]
     return render(request, 'thin/variety_add.html', {'form': form, 'breadcrumb_menu': breadcrumb_menu})
 
