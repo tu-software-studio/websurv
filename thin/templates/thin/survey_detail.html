@@ -13,7 +13,22 @@
 </li>
 
 {% endfor %}
-<ul>
+</ul>
 
 <a href="{% url 'variety_add' survey.id %}" class='btn btn-primary'>Add a new variety</a>
+
+<hr/>
+
+<p>Comparisons: </p>
+
+<ul>
+    {% for comparison in comparisons %}
+        <li>
+            <a href="{% url 'comparison_detail' comparison.id %}">{{ comparison.name }}</a>
+            <a href="{% url 'comparison_edit' comparison.id %}">Edit</a>
+        </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'comparison_add' survey.id %}" class="btn btn-primary">Add New Comparison</a>
+
 {% endblock %}

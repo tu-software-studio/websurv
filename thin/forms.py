@@ -33,3 +33,8 @@ class TranscriptionForm(ModelForm):
     class Meta:
         model = Transcription
         fields = ['ipa']
+
+class ComparisonForm(ModelForm):
+    class Meta:
+        model = Comparison
+        fields = ['name', 'description']

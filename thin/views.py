@@ -97,12 +97,13 @@ def survey_detail(request, id):
     try:
         survey = Survey.objects.get(id=id)
         varieties = Variety.objects.filter(survey=survey)
+        comparisons = Comparison.objects.filter(survey=survey)
         project = survey.project
         breadcrumb_menu = [project, survey]
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
-    context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu}
+    context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu, 'comparisons': comparisons}
     return render(request, 'thin/survey_detail.html', context)
 
 
@@ -248,6 +249,20 @@ def variety_delete(request, num):
     variety.delete()
     messages.success(request, "Variety has been deleted!")
     return redirect('variety_index')
+
+
+def comparison_add(request, id):
+    if request.method == 'POST':  # If the form has been submitted
+        survey=Survey.objects.get(pk=id)
+        form = forms.ComparisonForm(request.POST)
+        if form.is_valid():
+            form.instance.survey=survey
+            form.save()
+            messages.success(request, "Comaprison Created!")
+            return redirect('comparison_detail', id)
+    else:
+        form = forms.ComparisonForm()
+    return render(request, 'thin/comparison_add.html', {'form': form})
 
 
 def comparison_index(request):
