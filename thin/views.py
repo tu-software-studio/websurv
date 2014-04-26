@@ -17,13 +17,7 @@ from backend.serializers import GlossSerializer
 
 def home(request):
     """Render the main home page."""
-    survey = Survey.objects.get(id=1)
-    dictionary = survey.dictionary
-    project = dictionary.project
-    breadcrumb_menu = [project, dictionary, survey]
-    context = {'breadcrumb_menu': breadcrumb_menu}
-
-    return render(request, 'thin/base.html', context)
+    return project_index(request)
 
 
 def dictionary_index(request):

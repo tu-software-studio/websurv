@@ -8,13 +8,35 @@ from backend.models import Comparison, Dictionary, Gloss, PartOfSpeech, Project,
 
 class SessionsTestCase(TestCase):
     def test_sessions_login_exists(self):
+        """ 
+        Ensure login page exists. We'll assume it
+        works, since it's django's stuff.
+        """
         response = self.client.get('/login/')
         self.assertEquals(response.status_code, 200)
 
     def test_sessions_logout_exists(self):
+        """ Ensure logout exists and redirects to / """
         response = self.client.get('/logout/')
         self.assertEquals(response.status_code, 302)
-        self.assertEquals(response['Location'], 'http://testserver/projects/')
+        self.assertRedirects(response, '/')
+
+
+class HomeTestCase(TestCase):
+    def setUp(self):
+        """ Set up for home page tests. """
+        self.response = self.client.get('/')
+
+    def test_home_page_exists(self):
+        """ Ensure the home page exists. """
+        self.assertEqual(self.response.status_code, 200)
+
+    def test_home_page_location(self):
+        """ Ensure home page is project_index. """
+        names = []
+        for template in self.response.templates:
+            names.append(template.name)
+        self.assertIn('thin/project_index.html', names)
 
 
 class AdminTestCase(TestCase):
