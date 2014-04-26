@@ -7,13 +7,11 @@ from django.http import HttpResponse
 import json
 
 from backend.models import Comparison, Dictionary, Project, Survey, Variety, Transcription, Gloss
-
-from thin import forms
-
+from backend.serializers import GlossSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from backend.serializers import GlossSerializer
+from thin import forms
 
 
 def home(request):
@@ -239,13 +237,11 @@ def variety_edit(request, num):
 
 def variety_add(request, id):
     if request.method == 'POST':  # If the form has been submitted
-        survey=Survey.objects.get(pk=id)
         form = forms.VarietyForm(request.POST)
         if form.is_valid():
-            form.instance.survey=survey
+            form.instance.survey = Survey.objects.get(pk=id)
             form.save()
             messages.success(request, "Variety Added!")
-            #return redirect('survey_detail', id)
             return redirect('variety_detail', id=form.instance.id)
     else:
         form = forms.VarietyForm()
@@ -382,18 +378,17 @@ def transcription_add(request, id):
     
     gloss_list=variety.survey.glosses.all()
     formset = formset_factory(forms.TranscriptionForm, extra=len(gloss_list))
-    #ipdb.set_trace()
     if request.method == "POST":
         formset = formset(request.POST)
         if formset.is_valid():
-            counter=0
+            counter = 0
             for form in formset:
                if form.is_valid():
-                    form.instance.variety=variety                
-                    form.instance.gloss=gloss_list[counter]
-                    if form.instance.ipa!="":
+                    form.instance.variety = variety                
+                    form.instance.gloss = gloss_list[counter]
+                    if form.instance.ipa != "":
                         form.save()
-               counter +=1     
+               counter += 1     
 
         return redirect('variety_detail', num=id)
     return render(request, 'thin/transcription_add.html', {'formset': formset, 'id': id, 'gloss_list' : gloss_list})
