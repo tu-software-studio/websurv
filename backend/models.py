@@ -60,6 +60,9 @@ class Gloss(models.Model):
     def __unicode__(self):
         return self.primary
 
+    def get_absolute_url(self):
+        return reverse('gloss_detail', args=[str(self.id)])
+
 
 class SortOrder(models.Model):
     name = models.CharField(max_length=100)
@@ -149,9 +152,13 @@ class Comparison(models.Model):
     def get_absolute_url(self):
         return reverse('comparison_detail', args=[str(self.id)])
 
-    def create_all_entries(self):
-
-
+    def createEntries(self):
+        varities = Variety.objects.filter(survey=survey)
+        for variety in varities:
+            transcriptions = Transcription.objects.filer(variety=variety)
+            for transcription in transcriptions:
+                ComparisonEntry.new(transcription=transcription)
+        pass
 
 
 class ComparisonEntry(models.Model):
