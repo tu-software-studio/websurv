@@ -34,6 +34,7 @@ function newForm(){
     $("#formrow"+count).clone().attr('id', 'formrow'+(++count)).insertAfter("#formrow"+(count-1))
     $("#formrow"+count).find("#rownum").html(count)
     $("#formrow"+count).find("input")[1].value = ""
+    $("#formrow"+count).find("input")[2].value = ""
     $( "#formrow"+count ).find("form").attr('id', "form"+count)
 };
 

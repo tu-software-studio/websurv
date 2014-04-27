@@ -103,7 +103,7 @@ def survey_detail(request, id):
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
-    context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu, 'comparisons': comparisons}
+    context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu, "comparisons": comparisons}
     return render(request, 'thin/survey_detail.html', context)
 
 
@@ -119,18 +119,26 @@ def survey_edit(request, id):
     return render(request, 'thin/survey_edit.html',
                   {'form': form, 'survey': survey})
 
-
 def survey_add(request, id):
+    project=Project.objects.get(pk=id)
+    dictionary_list=list(project.dictionaries.all())
+
     if request.method == 'POST':  # If the form has been submitted
-        form = forms.SurveyForm(request.POST)
+        form = forms.SurveyAddForm(request.POST)
         if form.is_valid():
             form.instance.project = Project.objects.get(id=id)
             form.save()
+            dictionary_list = request.POST.getlist('dictionaries') #dictionaries that were selected
+            for x in dictionary_list:
+                dictionary = Dictionary.objects.get(id=x)
+                glosses=list(dictionary.glosses.all())
+                for gloss in glosses:
+                    form.instance.glosses.add(gloss)
             messages.success(request, "Survey added!")
             return redirect('survey_detail', id=form.instance.id)
     else:
-        form = forms.SurveyForm()
-    return render(request, 'thin/survey_add.html', {'form': form})
+        form = forms.SurveyAddForm()
+    return render(request, 'thin/survey_add.html', {'form': form })
 
 
 def survey_delete(request, id):
@@ -252,21 +260,22 @@ def variety_delete(request, num):
 
 
 def comparison_add(request, id):
-    if request.method == 'POST':  # If the form has been submitted
-        survey=Survey.objects.get(pk=id)
+    if request.method == "POST":
+        survey = Survey.objects.get(pk=id)
         form = forms.ComparisonForm(request.POST)
         if form.is_valid():
-            form.instance.survey=survey
+            form.instance.survey = survey
             form.save()
-            messages.success(request, "Comaprison Created!")
+            messages.success(request, "Comparison Created!")
             return redirect('comparison_detail', id)
     else:
         form = forms.ComparisonForm()
-    return render(request, 'thin/comparison_add.html', {'form': form})
+    return render(request, "thin/comparison_add.html", {'form': form})
 
 
 def comparison_index(request):
-    return render(request, 'thin/comparison_index.html')
+    comparisons = Comparison.objects.all()
+    return render(request, 'thin/comparison_index.html', {'comparisons': comparisons})
 
 
 def comparison_detail(request, id):
@@ -275,7 +284,7 @@ def comparison_detail(request, id):
     except Comparison.DoesNotExist:
         messages.error(request, "Can't find selected comparison.")
         return redirect('comparison_index')
-    return render(request, 'thin/comparison_detail.html', {'comparison' : comparison})
+    return render(request, 'thin/comparison_detail.html', {'comparison': comparison})
 
 
 def comparison_edit(request, id):

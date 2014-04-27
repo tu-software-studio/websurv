@@ -149,9 +149,14 @@ class Comparison(models.Model):
     def get_absolute_url(self):
         return reverse('comparison_detail', args=[str(self.id)])
 
+    def create_all_entries(self):
+
+
+
 
 class ComparisonEntry(models.Model):
     aligned_form = models.CharField(max_length=100)
+    group = models.CharField(max_length=1)
     exclude = models.BooleanField()
     comparison = models.ForeignKey(Comparison, related_name='entries')
     transcription = models.ForeignKey(Transcription, related_name='comparison_entries')
