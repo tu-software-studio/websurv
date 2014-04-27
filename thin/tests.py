@@ -68,12 +68,32 @@ class ComparisonTestCase(TestCase):
 
 class DictionaryTestCase(TestCase):
     def setUp(self):
-        self.project = factories.ProjectFactory()
-        self.instance = factories.DictionaryFactory(project=self.project)
+        """ Set up for DictionaryTestCase test cases """
+        self.instance = factories.DictionaryFactory()
 
     def test_dictionary_add_exists(self):
-        response = self.client.get('/dictionaries/add/'+ str(self.project.id) + '/')
+        """ Ensure a GET request works on /dictionary/add/ """
+        response = self.client.get('/dictionaries/add/' + str(self.instance.project_id) + '/')
         self.assertEqual(response.status_code, 200)
+
+    def test_dictionary_add(self):
+        response = self.client.post('/dictionaries/add/' + str(self.instance.project_id) + '/',
+                                    {'name': 'new_dictionary',
+                                     'language': factories.LanguageFactory()
+                                     }
+        )
+        #response = self.client.post('/dictionaries/add/' + str(self.instance.project_id) + '/', {'name': 'new_dictionary', 'language': factories.LanguageFactory()})
+        try:
+            new_instance = Dictionary.objects.get(name='new_dictionary')
+        except Dictionary.DoesNotExist:
+            """
+            print "\n"
+            for dictionary in Project.objects.all():
+                print dictionary.name
+            """
+            self.fail("Dictionary was not created.")
+        self.assertEqual(new_instance.name, 'new_dictionary')
+        self.assertRedirects(response, '/dictionaries/' + str(new_instance.id) + '/')
 
     def test_dictionary_delete_exists(self):
         response = self.client.post('/dictionaries/1/delete')
@@ -84,7 +104,7 @@ class DictionaryTestCase(TestCase):
         
     def test_dictionary_delete_removes_dictionary(self):
         """ Tests that the dictionary_delete view deletes a dicionary. """
-        num_dicts = self.project.dictionaries.count()
+        num_dicts = self.instance.project.dictionaries.count()
         self.client.post('/dictionaries/' + str(self.instance.id) + '/delete/')
         response = self.client.get('/dictionaries/')
         self.assertEqual(len(response.context['dictionary_list']), num_dicts - 1)
@@ -102,7 +122,7 @@ class DictionaryTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_dictionary_index_contains_dictionary(self):
-        factories.DictionaryFactory(project=self.project)
+        factories.DictionaryFactory(project=self.instance.project)
         response = self.client.get('/dictionaries/')
         self.assertEqual(len(response.context['dictionary_list']), 2)
 
@@ -145,13 +165,13 @@ class ProjectTestCase(TestCase):
 
     def test_project_add(self):
         """ Test that project add creates project """
-        response = self.client.post('/projects/add/', {'name' : 'new_name'})
+        response = self.client.post('/projects/add/', {'name': 'new_project'})
         try:
-            new_instance = Project.objects.get(name='new_name')
+            new_instance = Project.objects.get(name='new_project')
         except Project.DoesNotExist:
             # Tested, and this code runs if the object is not created.
-            self.fail("Project was not created")
-        self.assertEqual(new_instance.name, 'new_name')
+            self.fail("Project was not created.")
+        self.assertEqual(new_instance.name, 'new_project')
         self.assertRedirects(response, '/projects/' + str(new_instance.id) + '/')
               
     def test_project_delete_works(self):

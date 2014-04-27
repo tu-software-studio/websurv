@@ -14,7 +14,7 @@ class ProjectFactory(factory.django.DjangoModelFactory):
 class LanguageFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = models.Language
 
-    name = 'English'
+    name = factory.Sequence(lambda n: 'Test Language {0}'.format(n))
     iso_code = 'USA'
 
 
