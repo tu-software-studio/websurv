@@ -60,6 +60,9 @@ class Gloss(models.Model):
     def __unicode__(self):
         return self.primary
 
+    def get_absolute_url(self):
+        return reverse('gloss_detail', args=[str(self.id)])
+
 
 class SortOrder(models.Model):
     name = models.CharField(max_length=100)

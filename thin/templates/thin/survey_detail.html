@@ -1,19 +1,42 @@
-{% extends 'thin/base.html' %}
+{% extends "thin/base.html" %}
 
+{% load utils %}
 {% block content %}
-
-<p>Current Survey:</p>
-<li>{{survey.name}} : <a href="{% url 'survey_edit' survey.id %}">Edit </a></li>
-
-<ul>
-{% for variety in varieties %}
-<li>
-  <a href='{% url 'variety_detail' variety.id %}'>{{ variety.name }}</a>
-  <a href='{% url 'variety_edit' variety.id %}'>Edit</a>
-</li>
-{% endfor %}
-</ul>
-
-<a href="{% url 'variety_add' survey.id %}" class='btn btn-primary'>Add a new variety</a>
-
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Associated Dictionaries</h3>
+      {% url 'dictionary_add' project.id as dictionary_add_path %}
+      {% blink_to dictionary_add_path "Create New Dictionary" "btn-primary btn-xs pull-right" %}
+    </div>
+    <table class="table table-striped">
+      {% for dictionary in dictionaries %}
+        <tr>
+          <td><a href="{{ dictionary.get_absolute_url }}">{{ dictionary.name }}</a></td>
+          {% url 'dictionary_edit' dictionary.id as dictionary_edit_path %}
+          <td>{% link_to dictionary_edit_path "Edit" "pull-right" %}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Associated Surveys</h3>
+      {% url 'survey_add' project.id as survey_add_path %}
+      {% blink_to survey_add_path "Create New Survey" "btn-primary btn-xs pull-right" %}
+    </div>
+    <table class="table table-striped">
+      {% for survey in surveys %}
+        <tr>
+          <td><a href="{{ survey.get_absolute_url }}">{{ survey.name }}</a></td>
+          {% url 'survey_edit' survey.id as survey_edit_path %}
+          <td>{% link_to survey_edit_path "Edit" "pull-right" %}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td>There are currently no surveys for this project.</td>
+          <td></td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
 {% endblock %}
