@@ -43,8 +43,8 @@ function textify( $form ){
     console.log(form);
     for(var i=1;i<form.length;i++)
     {
-	var element = $(form[i]);
-	console.log(element[0]);
+	var element = $(form[i].childNodes[1]);
+	console.log(element);
 	element[0].style.outline="none";
 	element[0].readOnly=true;
 	element[0].disabled="disabled";
