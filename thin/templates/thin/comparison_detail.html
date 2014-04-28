@@ -1,16 +1,18 @@
 {% extends "thin/base.html" %}
 
 {% block content %}
-
-  {{comparison.name}} : <a href="{% url 'comparison_edit' comparison.id %}">Edit </a></li>
-
-  <ul>
-  {% for dictionary in dictionaries %}
-    <li>
-      <a href="{% url 'comparison_entry_detail' comparison_entry.id %}">{{comparison_entry.aligned_form}}</a>
-      <a href="{% url 'comparison_entry_edit' comparison_entry.id %}">Edit</a>
-    </li>
-  {% endfor%}
-  </ul>
+<div class="panel panel-default">
+<div class="panel-heading">
+  <h3 class="panel-title">{{comparison.name}}</h3>
+  <a href="{% url 'comparison_edit' comparison.id %}" class="btn btn-primary btn-xs pull-right">Edit </a></li>
+</div>
+<table class="table table-striped">
+    {% for comparison_entry in comparison_entries %}
+    <tr>
+      <td>{{ comparison_entry.transcription.ipa }}</a></td>
+    </tr>
+  {% endfor %}
+</table>
+</div>
 
 {% endblock %}

@@ -6,7 +6,7 @@ from django.http import HttpResponse
 
 import json
 
-from backend.models import Comparison, Dictionary, Project, Survey, Variety, Transcription, Gloss
+from backend.models import *
 
 from thin import forms
 
@@ -116,6 +116,7 @@ def survey_edit(request, id):
         form = forms.SurveyForm(instance=survey)
     breadcrumb_menu = [survey.project, survey]
     return render(request, 'thin/survey_edit.html', {'form': form, 'survey': survey, 'breadcrumb_menu': breadcrumb_menu})
+
 
 def survey_add(request, id):
     project=Project.objects.get(pk=id)
@@ -266,6 +267,7 @@ def comparison_add(request, id):
         if form.is_valid():
             form.instance.survey = survey
             form.save()
+            form.instance.create_entries()
             messages.success(request, "Comparison Created!")
             return redirect('comparison_detail', id)
     else:
@@ -281,19 +283,38 @@ def comparison_index(request):
 def comparison_detail(request, id):
     try:
         comparison = Comparison.objects.get(pk=id)
+        comparison_entries = ComparisonEntry.objects.filter(comparison=comparison)
     except Comparison.DoesNotExist:
         messages.error(request, "Can't find selected comparison.")
         return redirect('comparison_index')
-    return render(request, 'thin/comparison_detail.html', {'comparison': comparison})
+    breadcrumb_menu = [comparison.survey.project, comparison.survey, comparison]
+    context = {'comparison': comparison, 'comparison_entries': comparison_entries, "breadcrumb_menu": breadcrumb_menu}
+    return render(request, 'thin/comparison_detail.html', context )
 
 
 def comparison_edit(request, id):
     try:
-        comparison = Comparison.objects.get(pk=id)
-    except Comparison.DoesNotExist:
-        messages.error(request, "Can't find the selected comparison.")
-        return redirect('comparison_index')
-    return render(request, 'thin/comparison_edit.html', {'comparison' : comparison})
+        comparison = Comparison.objects.get(id=id)
+    except:
+        messages.error(request, "Couldn't find the selected Comparison.")
+        return redirect('comparison_detail')
+    if request.method == "POST":
+        form = forms.ComparisonForm(request.POST, instance=comparison)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Comparison has been updated!")
+            return redirect('comparison_detail', id=comparison.id)
+    else:
+        form = forms.ComparisonForm(instance=comparison)
+    breadcrumb_menu = [comparison.survey.project, comparison.survey, comparison]
+    return render(request, 'thin/comparison_edit.html', {'form': form, 'comparison': comparison, 'breadcrumb_menu': breadcrumb_menu})
+
+
+def comparison_delete(request, id):
+    comparison = Comparison.objects.get(id=id)
+    comparison.delete()
+    messages.success(request, "Comparison has been deleted!")
+    return redirect('survey_detail', id=comparison.survey_id)
 
 
 def gloss_index(request):
@@ -353,6 +374,7 @@ def gloss_add_with_ajax(request, id):
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 def transcription_index(request):
     transcriptions = Transcription.objects.all()
     return render(request, 'thin/transcription_index.html', {'transcription_list': transcriptions})
@@ -409,11 +431,11 @@ def transcription_add(request, id):
             counter=0
             for form in formset:
                if form.is_valid():
-                    form.instance.variety=variety                
-                    form.instance.gloss=gloss_list[counter]
-                    if form.instance.ipa!="":
+                    form.instance.variety = variety
+                    form.instance.gloss = gloss_list[counter]
+                    if form.instance.ipa != "":
                         form.save()
-               counter +=1     
+               counter += 1
 
         return redirect('variety_detail', id=id)
-    return render(request, 'thin/transcription_add.html', {'formset': formset, 'id': id, 'gloss_list' : gloss_list})
+    return render(request, 'thin/transcription_add.html', {'formset': formset, 'id': id, 'gloss_list': gloss_list})
