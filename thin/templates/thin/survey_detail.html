@@ -17,14 +17,20 @@
       {% endfor %}
     </table>
   </div>
-<p>Comparisons: </p>
-<ul>
-    {% for comparison in comparisons %}
-        <li>
-            <a href="{% url 'comparison_detail' comparison.id %}">{{ comparison.name }}</a>
-            <a href="{% url 'comparison_edit' comparison.id %}">Edit</a>
-        </li>
-    {% endfor %}
-</ul>
-<a href="{% url 'comparison_add' survey.id %}" class="btn btn-primary">Add New Comparison</a>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Comparisons</h3>
+      {% url 'comparison_add' comparison.id as comparison_add_path %}
+      {% blink_to comparison_add_path "Create New Comparison" "btn-primary btn-xs pull-right" %}
+    </div>
+    <table class="table table-striped">
+      {% for comparison in comparisons %}
+        <tr>
+          <td><a href='{{ comparison.get_absolute_url }}'>{{ comparison }}</a></td>
+          {% url 'comparison_edit' comparison.id as comparison_edit_path %}
+          <td>{% link_to comparison_edit_path "Edit" "pull-right" %}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
 {% endblock %}

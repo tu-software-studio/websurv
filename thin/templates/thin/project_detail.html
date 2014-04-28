@@ -15,6 +15,11 @@
           {% url 'dictionary_edit' dictionary.id as dictionary_edit_path %}
           <td>{% link_to dictionary_edit_path "Edit" "pull-right" %}</td>
         </tr>
+        {% empty %}
+        <tr>
+            <td>There are currently no dictionaries for this project.</td>
+            <td></td>
+        </tr>
       {% endfor %}
     </table>
   </div>
