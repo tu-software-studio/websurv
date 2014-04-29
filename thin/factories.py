@@ -31,7 +31,7 @@ class SurveyFactory(factory.django.DjangoModelFactory):
 
     name = factory.Sequence(lambda n: 'Test Survey {0}'.format(n))
     full_title = factory.LazyAttribute(lambda a: 'Full Title For {0}'.format(a.name))
-    dictionary = factory.SubFactory(DictionaryFactory)
+    project = factory.SubFactory(ProjectFactory)
 
 
 class VarietyFactory(factory.django.DjangoModelFactory):
@@ -62,5 +62,6 @@ class GlossFactory(factory.django.DjangoModelFactory):
     secondary = factory.Sequence(lambda n: 'secondary {0}'.format(n))
     part_of_speech = factory.SubFactory(PartOfSpeechFactory)
     dictionary = factory.SubFactory(DictionaryFactory)
+    survey = factory.SubFactory(SurveyFactory)
     field_tip = factory.Sequence(lambda n: 'field tip {0}'.format(n))
     comment_tip = factory.Sequence(lambda n: 'comment tip {0}'.format(n))

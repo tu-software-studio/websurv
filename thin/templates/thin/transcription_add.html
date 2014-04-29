@@ -1,0 +1,38 @@
+{% extends "thin/base.html" %}
+
+{% load static from staticfiles %}
+{% load bootstrap %}
+
+
+{% block content %}
+  {% load widget_tweaks %}
+  {% load multifor %}
+
+  <form method="post" action="">
+    {{ formset.management_form }}
+    {% csrf_token %}
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Gloss</th>
+        <th>Transcription</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for form in formset; gloss in gloss_list %}
+        {% for transcription in form %}
+          <tr>
+            <td>{{ forloop.parentloop.counter }}</td>
+            <td>{{ gloss }}</td>
+            <td>{{ transcription|add_class:"form-control" }}</td>
+          </tr>
+        {% endfor %}
+      {% endfor %}
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+
+
+{% endblock %}

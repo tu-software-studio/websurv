@@ -1,0 +1,17 @@
+ {% extends "thin/base.html" %}
+
+{% block content %}
+
+<h3>List of Transcriptions</h3>
+<ul>
+  {% for transcription in transcription_list %}
+  <li>{{transcription.gloss}}
+    <a href="{% url 'transcription_detail' transcription.id %}">{{transcription.ipa}}</a> :
+    <a href="{% url 'transcription_edit' transcription.id %}">Edit</a>
+  </li>
+  {% empty %}
+  <li>No Transcriptions</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
