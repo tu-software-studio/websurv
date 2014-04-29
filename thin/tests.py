@@ -100,7 +100,7 @@ class DictionaryTestCase(TestCase):
         # Status code should be 301 since we want a redirect
         self.assertEqual(response.status_code, 301)
         # TODO: Change all of these to the assertRedirects
-        self.assertEqual(response['Location'], 'http://testserver/dictionaries/1/delete/')
+        self.assertRedirects(response, 'http://testserver/dictionaries/1/delete/')
         
     def test_dictionary_delete_removes_dictionary(self):
         """ Tests that the dictionary_delete view deletes a dicionary. """
@@ -138,7 +138,7 @@ class GlossTestCase(TestCase):
     def test_gloss_delete_exists(self):
         response = self.client.post('/glosses/' + str(self.instance.id) + '/delete/')
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], 'http://testserver/dictionaries/1/')
+        self.assertRedirects(response, 'http://testserver/dictionaries/1/')
 
     def test_gloss_detail_exists(self):
         response = self.client.get('/glosses/' + str(self.instance.id) + '/')
@@ -254,7 +254,7 @@ class SurveyTestCase(TestCase):
     def test_survey_delete_exists(self):
         response = self.client.post('/surveys/' + str(self.instance.id) + '/delete/')
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], 'http://testserver/surveys/')
+        self.assertRedirects(response, 'http://testserver/surveys/')
 
     def test_survey_detail_exists(self):
         response = self.client.get('/surveys/' + str(self.instance.id) + '/')
@@ -280,7 +280,7 @@ class VarietyTestCase(TestCase):
     def test_variety_delete_exists(self):
         response = self.client.post('/varieties/' + str(self.instance.id) + '/delete/')
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], 'http://testserver/varieties/')
+        self.assertRedirects(response, 'http://testserver/varieties/')
 
     def test_variety_detail_exists(self):
         response = self.client.get('/varieties/' + str(self.instance.id) + '/')
