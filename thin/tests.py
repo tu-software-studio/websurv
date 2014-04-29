@@ -72,29 +72,28 @@ class DictionaryTestCase(TestCase):
         self.instance = factories.DictionaryFactory()
 
     def test_dictionary_add_exists(self):
-        """ Ensure a GET request works on /dictionary/add/ """
+        """ Ensure a GET request works on /dictionaries/add/ """
         response = self.client.get('/dictionaries/add/' + str(self.instance.project_id) + '/')
         self.assertEqual(response.status_code, 200)
+        """
+        response = self.client.post('/dictionaries/add/' + str(self.instance.project_id) + '/')
+        self.assertEqual(response.status_code, 200)
+        """
 
     def test_dictionary_add(self):
         response = self.client.post('/dictionaries/add/' + str(self.instance.project_id) + '/',
                                     {'name': 'new_dictionary',
-                                     'language': factories.LanguageFactory()
+                                     'language': factories.LanguageFactory().id
                                      }
         )
-        #response = self.client.post('/dictionaries/add/' + str(self.instance.project_id) + '/', {'name': 'new_dictionary', 'language': factories.LanguageFactory()})
         try:
             new_instance = Dictionary.objects.get(name='new_dictionary')
         except Dictionary.DoesNotExist:
-            """
-            print "\n"
-            for dictionary in Project.objects.all():
-                print dictionary.name
-            """
             self.fail("Dictionary was not created.")
         self.assertEqual(new_instance.name, 'new_dictionary')
         self.assertRedirects(response, '/dictionaries/' + str(new_instance.id) + '/')
 
+    # TODO: I'm here.
     def test_dictionary_delete_exists(self):
         response = self.client.post('/dictionaries/1/delete')
         # Status code should be 301 since we want a redirect
