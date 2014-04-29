@@ -3,10 +3,29 @@
 {% block content %}
 {{ variety.name }} : <a href="{% url 'variety_edit' variety.id %}">Edit </a>
 
-<ul>
-{% for transcript in transcripts %}
-  <li>{{ transcript.gloss }} | {{ transcript.ipa }}</li>
-{% endfor %}
-</ul>
+<table class="table table-striped" id='table'>
+        <thead>
+        <tr>
+            <th>Gloss</th>
+            <th>Transcription</th>
+        </tr>
+        </thead>
+        <tbody>
+	{% for transcript in transcripts %}
+	<tr>
+	  <td>{{transcript.gloss}}</td>
+	  <td>{{transcript.ipa}}</td>
+	</tr>
+	{% endfor %}
+	
+        {% for gloss in surveyglosses %}
+        <tr>
+            <td>{{ gloss.primary }}</td>
+            <td>{{ gloss.secondary }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+</table>
 <a href="{% url 'transcription_add' variety.id %}" class='btn btn-primary'>Add Transcriptions</a>
+
 {% endblock %}

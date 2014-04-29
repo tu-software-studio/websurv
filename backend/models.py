@@ -128,7 +128,7 @@ class Variety(models.Model):
 class Transcription(models.Model):
     ipa = models.CharField(max_length=100)
     gloss = models.ForeignKey(Gloss, related_name='transcriptions')
-    variety = models.ForeignKey(Variety, related_name='tanscriptions')
+    variety = models.ForeignKey(Variety, related_name='transcriptions')
 
     def __unicode__(self):
         return self.ipa

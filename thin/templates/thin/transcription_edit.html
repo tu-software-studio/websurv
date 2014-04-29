@@ -3,22 +3,24 @@
 {% load bootstrap %}
 {% block content %}
 <div class='row'>
-  <form method="POST" action="{% url 'transcription_delete' transcription.id%} " class='pull-right'>
-    {% csrf_token %}
-    <input type="submit" value="Delete" class='btn btn-danger'/>
-  </form>
-
   <div class='col-md-4'>
 
     <form method="POST" action="">
       {% csrf_token %}
-      {{ form|bootstrap }}
+      {{formset.management_form}}      
+
+      {% for form in formset %}
+      {% for ipa in form %}
+
+      <p> {{ form.instance.gloss }} : {{ ipa }} </p>
+
+      {% endfor %}
+      {% endfor %}
+
       <input type="submit" value="Save Changes" class='btn btn-primary'/>
     </form>
 
   </div>
 </div>
-
-
 
 {% endblock %}

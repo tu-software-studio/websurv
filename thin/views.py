@@ -120,7 +120,6 @@ def survey_edit(request, id):
 
 def survey_add(request, id):
     project=Project.objects.get(pk=id)
-    dictionary_list=list(project.dictionaries.all())
 
     if request.method == 'POST':  # If the form has been submitted
         form = forms.SurveyAddForm(request.POST)
@@ -209,6 +208,7 @@ def variety_index(request):
 def variety_detail(request, num):
     try:
         variety = Variety.objects.get(pk=num)
+        surveyglosses = list(variety.survey.glosses.all())
         transcripts = Transcription.objects.filter(variety=variety)
         survey = variety.survey
         project = survey.project
@@ -216,8 +216,15 @@ def variety_detail(request, num):
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected variety.")
         return redirect('variety_index')
+    transcriptglosses=[]
+    surveyglosscopy=surveyglosses[:]
+    for transcript in transcripts:
+        transcriptglosses.append(transcript.gloss)
+    for gloss in surveyglosscopy:
+        if gloss in transcriptglosses:
+            surveyglosses.remove(gloss)
     return render(request, 'thin/variety_detail.html',
-                  {'variety': variety, 'transcripts': transcripts, 'breadcrumb_menu': breadcrumb_menu})
+                  {'variety': variety, 'transcripts': transcripts, 'surveyglosses' : surveyglosses, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def variety_edit(request, num):
@@ -372,27 +379,51 @@ def transcription_edit(request, id):
 
 #form = forms.VarietyForm(request.POST, instance=variety)
 
+import ipdb
+
 
 def transcription_add(request, id):
-    """ Lists all of the glosses in a survey's variety that do 
-        not already have transcriptions entered into the database
+    """
+    Lists all of the glosses in a survey's variety that do
+    not already have transcriptions entered into the database
     """
     variety = Variety.objects.get(pk=id)
-    
-    gloss_list=variety.survey.glosses.all()
+
+    gloss_list = variety.survey.glosses.all()
     formset = formset_factory(forms.TranscriptionForm, extra=len(gloss_list))
     #ipdb.set_trace()
     if request.method == "POST":
         formset = formset(request.POST)
         if formset.is_valid():
-            counter=0
+            counter = 0
             for form in formset:
-               if form.is_valid():
-                    form.instance.variety=variety                
-                    form.instance.gloss=gloss_list[counter]
-                    if form.instance.ipa!="":
+                if form.is_valid():
+                    form.instance.variety = variety
+                    form.instance.gloss = gloss_list[counter]
+                    if form.instance.ipa != "":
                         form.save()
-               counter +=1     
+                counter += 1
+        return redirect('variety_detail', id=id)
+    breadcrumb_menu = [variety.survey.project, variety.survey, variety]
+    return render(request, 'thin/transcription_add.html', {'formset': formset, 'id': id, 'gloss_list': gloss_list, 'breadcrumb_menu': breadcrumb_menu})
+
+def transcription_edit(request, id):
+    """ 
+        List all of the transcriptions that already have something in them
+    """
+    variety = Variety.objects.get(pk=id)
+    transcriptions = variety.transcriptions.all()
+
+    TranscriptionFormSet = modelformset_factory(Transcription, form = forms.TranscriptionForm)
+    qset = transcriptions
+    formset = TranscriptionFormSet(queryset = qset)  
+    ipdb.set_trace()
+
+
+    if request.method == "POST":    
+        formset = TranscriptionFormset(request.POST)
+        if formset.is_valid():
+            formset.save()
 
         return redirect('variety_detail', num=id)
-    return render(request, 'thin/transcription_add.html', {'formset': formset, 'id': id, 'gloss_list' : gloss_list})
+    return render(request, 'thin/transcription_edit.html', {'formset': formset, 'id': id})
