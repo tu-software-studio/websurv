@@ -25,6 +25,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'multiforloop',
 
     'backend',
     'thin',
@@ -58,3 +59,7 @@ MESSAGE_TAGS = {
 
 LOGIN_REDIRECT_URL = reverse_lazy('home')
 LOGOUT_REDIRECT_URL = reverse_lazy('home')
+
+TEMPLATE_DIRS = (
+    'thin/templates',
+)

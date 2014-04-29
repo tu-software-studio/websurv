@@ -14,6 +14,13 @@ class SurveyForm(ModelForm):
         model = Survey
         fields = ['name','full_title']
 
+class SurveyAddForm(ModelForm):
+    class Meta:
+        model = Survey
+        fields = ['name','full_title']
+    dictionaries = forms.ModelMultipleChoiceField(queryset=Dictionary.objects.all(),label="Dictionaries for Survey")
+
+
 class DictionaryForm(ModelForm):
     class Meta:
         model = Dictionary
@@ -29,3 +36,7 @@ class GlossForm(ModelForm):
         model = Gloss
         fields = ['primary','secondary','part_of_speech','field_tip','comment_tip']
 
+class TranscriptionForm(ModelForm):
+    class Meta:
+        model = Transcription
+        fields = ['ipa']
