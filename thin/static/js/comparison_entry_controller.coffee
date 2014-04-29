@@ -22,3 +22,9 @@ comparison_entry_controller =
   comparison_entry_controller.set_up_inputs()
   comparison_entry_controller.loop_through_spans()
   key 'up', -> alert('you pressed up!')
+  key 'down', ->
+    alert('you pressed down!')
+  key 'left', ->
+    key 'left'.preventDefault()
+    alert('you pressed left!')
+  key 'right', -> alert('you pressed right!')

@@ -261,8 +261,8 @@ def variety_delete(request, id):
 
 
 def comparison_add(request, id):
+    survey = Survey.objects.get(pk=id)
     if request.method == "POST":
-        survey = Survey.objects.get(pk=id)
         form = forms.ComparisonForm(request.POST)
         if form.is_valid():
             form.instance.survey = survey
@@ -272,7 +272,8 @@ def comparison_add(request, id):
             return redirect('comparison_detail', id)
     else:
         form = forms.ComparisonForm()
-    return render(request, "thin/comparison_add.html", {'form': form})
+    breadcrumb_menu = [survey.project, survey]
+    return render(request, "thin/comparison_add.html", {'form': form, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def comparison_index(request):

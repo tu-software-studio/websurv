@@ -44,4 +44,17 @@
     return alert('you pressed up!');
   });
 
+  key('down', function() {
+    return alert('you pressed down!');
+  });
+
+  key('left', function() {
+    key('left'.preventDefault());
+    return alert('you pressed left!');
+  });
+
+  key('right', function() {
+    return alert('you pressed right!');
+  });
+
 }).call(this);

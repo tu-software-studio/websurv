@@ -9,6 +9,7 @@
       {% blink_to transcription_add_path "Add New Transcription" "btn-primary btn-xs pull-right" %}
     </div>
     <table class="table table-striped">
+      {% if transcripts %}
       <thead>
       <tr>
         <th>Gloss</th>
@@ -16,6 +17,7 @@
         <th></th>
       </tr>
       </thead>
+      {% endif %}
       <tbody>
       {% for transcription in transcripts %}
         <tr>
@@ -23,6 +25,10 @@
           <td>{{ transcription.ipa }}</td>
           {% url 'transcription_edit' transcription.id as transcription_edit_path %}
           <td>{% link_to transcription_edit_path "Edit" "pull-right" %}</td>
+        </tr>
+      {% empty %}
+        <tr>
+            <td>There are currently no transcription.</td>
         </tr>
       {% endfor %}
       </tbody>

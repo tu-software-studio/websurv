@@ -14,13 +14,17 @@
           {% url 'variety_edit' variety.id as variety_edit_path %}
           <td>{% link_to variety_edit_path "Edit" "pull-right" %}</td>
         </tr>
+        {% empty %}
+        <tr>
+            <td>There are currently no varieties.</td>
+        </tr>
       {% endfor %}
     </table>
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Comparisons</h3>
-      {% url 'comparison_add' comparison.id as comparison_add_path %}
+      {% url 'comparison_add' survey.id as comparison_add_path %}
       {% blink_to comparison_add_path "Create New Comparison" "btn-primary btn-xs pull-right" %}
     </div>
     <table class="table table-striped">
@@ -29,6 +33,10 @@
           <td><a href='{{ comparison.get_absolute_url }}'>{{ comparison }}</a></td>
           {% url 'comparison_edit' comparison.id as comparison_edit_path %}
           <td>{% link_to comparison_edit_path "Edit" "pull-right" %}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td>There are currently no comparisons.</td>
         </tr>
       {% endfor %}
     </table>

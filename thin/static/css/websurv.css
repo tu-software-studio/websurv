@@ -5978,3 +5978,7 @@ ul.dash > li:before {
 div.btn-toolbar {
   display: inline-block;
 }
+
+th.comp {
+    text-align: center;
+}

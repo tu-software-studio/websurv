@@ -6,23 +6,32 @@
   <h3 class="panel-title">{{comparison.name}}</h3>
   <a href="{% url 'comparison_edit' comparison.id %}" class="btn btn-primary btn-xs pull-right"> Edit </a></li>
 </div>
-<table class="table table-striped">
-    {% for comparison_entry in comparison_entries %}
-    <tr id="{{ comparison_entry.id }}">
-      <td><input value="{{ comparison_entry.transcription.ipa }}" class="form-control trans-form" readonly="true" name="{{ comparison_entry.transcription.ipa }}"/></td>
-      <td><span class="label label-info current" id="{{ comparison_entry.id }}"></span></td>
-      <td><input class="form-control" id="group1" disabled="true" /></td>
-      <td><input class="form-control" /></td>
-      <td>
-          <div class="checkbox">
-                <label>
-                    <input type="checkbox" class="form-control" />
-                </label>
-          </div>
-      </td>
-    </tr>
-  {% endfor %}
-</table>
+    <table class="table table-striped">
+        {% if comparison_entries %}
+        <thead>
+            <tr>
+                <th class="comp">Transcription</th>
+                <th class="comp">Current</th>
+                <th class="comp">Aligned Form</th>
+                <th class="comp">Group</th>
+                <th class="comp">Exclude</th>
+            </tr>
+        </thead>
+        {% endif %}
+        {% for comparison_entry in comparison_entries %}
+            <tr>
+              <td><input value="{{ comparison_entry.transcription.ipa }}" class="form-control trans-form" size="5" readonly="true" name="{{ comparison_entry.transcription.ipa }}"></td>
+              <td align="center"><span class="label label-info current" id="{{ comparison_entry.id }}"></span></td>
+              <td><input class="form-control" id="group1" disabled="true" size="2"></td>
+              <td><input class="form-control" size="2"></td>
+              <td align="center"><input type="checkbox" class="form-control"></td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td>No transcriptions with this comparison.</td>
+            </tr>
+        {% endfor %}
+    </table>
 </div>
 
 <script src="/static/js/keymaster/keymaster.js"></script>
