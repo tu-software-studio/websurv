@@ -1,17 +1,16 @@
 {% extends "thin/base.html" %}
 {% load utils %}
 {% block content %}
-
-<ul>
-    {% for project in project_list %}
-    <li>
-        <a href="{% url 'project_detail' project.id %}">{{ project.name }}</a>
-        {% url 'project_edit' project.id as project_edit_path %}{% blink_to project_edit_path "Edit" "btn-warning btn-xs" %}
-    </li>
-    {% empty %}
-    <li>There are currently no projects.</li>
-    {% endfor %}
-</ul>
-{% url 'project_add' as project_add_path %}{% blink_to project_add_path "New Project" "btn-primary" %}
-
+  {% url 'project_add' as project_add_path %}
+  <div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Projects</h3>{% blink_to project_add_path "New Project" "pull-right btn-xs btn-primary" %}</div>
+    <table class="table table-striped">
+      {% for project in project_list %}
+        <tr>
+          <td><a href="{% url 'project_detail' project.id %}">{{ project.name }}</a></td>
+          <td>{% url 'project_edit' project.id as project_edit_path %}{% link_to project_edit_path "Edit" "pull-right" %}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
 {% endblock %}

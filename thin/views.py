@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.forms.formsets import formset_factory 
+from django.forms.formsets import formset_factory
 from django.forms.models import modelformset_factory
 from django.http import HttpResponse
 
@@ -18,29 +18,24 @@ from backend.serializers import GlossSerializer
 
 def home(request):
     """Render the main home page."""
-    survey = Survey.objects.get(id=1)
-    dictionary = survey.dictionary
-    project = dictionary.project
-    breadcrumb_menu = [project, dictionary, survey]
+    breadcrumb_menu = []
     context = {'breadcrumb_menu': breadcrumb_menu}
 
     return render(request, 'thin/base.html', context)
 
 
 def dictionary_index(request):
-    dictionaries = Dictionary.objects.all()
-    return render(request, 'thin/dictionary_index.html', {'dictionary_list': dictionaries})
+    return redirect('home')
 
 
 def dictionary_detail(request, id):
     try:
         dictionary = Dictionary.objects.get(pk=id)
-        project = dictionary.project
-        breadcrumb_menu = [project, dictionary]
         glosses = Gloss.objects.filter(dictionary=dictionary)
     except Dictionary.DoesNotExist:
         messages.error(request, "Can't find selected dictionary.")
         return redirect('dictionary_index')
+    breadcrumb_menu = [dictionary.project, dictionary]
     return render(request, 'thin/dictionary_detail.html',
                   {'dictionary': dictionary, 'breadcrumb_menu': breadcrumb_menu, 'glosses': glosses})
 
@@ -59,21 +54,23 @@ def dictionary_edit(request, id):
             return redirect('dictionary_detail', id=dictionary.id)
     else:
         form = forms.DictionaryForm(instance=dictionary)
-    return render(request, 'thin/dictionary_edit.html', {'form': form, 'dictionary': dictionary})
+    breadcrumb_menu = [dictionary.project, dictionary]
+    return render(request, 'thin/dictionary_edit.html', {'form': form, 'dictionary': dictionary, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def dictionary_add(request, id):
-    """  """
+    project = Project.objects.get(pk=id)
     if request.method == 'POST':  # If the form has been submitted
         form = forms.DictionaryForm(request.POST)
         if form.is_valid():
-            form.instance.project = Project.objects.get(pk=id)
+            form.instance.project = project
             form.save()
             messages.success(request, "Dictionary Added!")
             return redirect('project_detail', num=id)
     else:
         form = forms.DictionaryForm()
-    return render(request, 'thin/dictionary_add.html', {'form': form})
+    breadcrumb_menu = [project]
+    return render(request, 'thin/dictionary_add.html', {'form': form, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def dictionary_delete(request, id):
@@ -84,24 +81,21 @@ def dictionary_delete(request, id):
         return redirect('dictionary_index')
     dictionary.delete()
     messages.success(request, "Dictionary has been deleted!")
-    return redirect('project_detail', num=dictionary.project_id)
+    return redirect('project_detail', id=dictionary.project_id)
 
 
 def survey_index(request):
-    survey_list = Survey.objects.all()  # TODO - only get stuff we need
-    context = {'survey_list': survey_list}
-    return render(request, 'thin/survey_index.html', context)
+    return redirect('home')
 
 
 def survey_detail(request, id):
     try:
         survey = Survey.objects.get(id=id)
         varieties = Variety.objects.filter(survey=survey)
-        project = survey.project
-        breadcrumb_menu = [project, survey]
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
+    breadcrumb_menu = [survey.project, survey]
     context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu}
     return render(request, 'thin/survey_detail.html', context)
 
@@ -115,35 +109,38 @@ def survey_edit(request, id):
             return redirect('survey_detail', id=id)
     else:
         form = forms.SurveyForm(instance=survey)
-    return render(request, 'thin/survey_edit.html',
-                  {'form': form, 'survey': survey})
+    breadcrumb_menu = [survey.project, survey]
+    return render(request, 'thin/survey_edit.html', {'form': form, 'survey': survey, 'breadcrumb_menu': breadcrumb_menu})
+
 
 def survey_add(request, id):
-    project=Project.objects.get(pk=id)
+    project = Project.objects.get(pk=id)
+    dictionary_list = list(project.dictionaries.all())
 
     if request.method == 'POST':  # If the form has been submitted
         form = forms.SurveyAddForm(request.POST)
         if form.is_valid():
-            form.instance.project = Project.objects.get(id=id)
+            form.instance.project = project
             form.save()
-            dictionary_list = request.POST.getlist('dictionaries') #dictionaries that were selected
+            dictionary_list = request.POST.getlist('dictionaries')  #dictionaries that were selected
             for x in dictionary_list:
                 dictionary = Dictionary.objects.get(id=x)
-                glosses=list(dictionary.glosses.all())
+                glosses = list(dictionary.glosses.all())
                 for gloss in glosses:
                     form.instance.glosses.add(gloss)
             messages.success(request, "Survey added!")
             return redirect('survey_detail', id=form.instance.id)
     else:
         form = forms.SurveyAddForm()
-    return render(request, 'thin/survey_add.html', {'form': form })
+    breadcrumb_menu = [project]
+    return render(request, 'thin/survey_add.html', {'form': form, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def survey_delete(request, id):
     survey = Survey.objects.get(id=id)
     survey.delete()
     messages.success(request, "Survey has been deleted!")
-    return redirect('survey_index')
+    return redirect('project_detail', id=survey.project_id)
 
 
 def project_index(request):
@@ -151,9 +148,9 @@ def project_index(request):
     return render(request, 'thin/project_index.html', {'project_list': projects})
 
 
-def project_detail(request, num):
+def project_detail(request, id):
     try:
-        project = Project.objects.get(pk=num)
+        project = Project.objects.get(pk=id)
         dictionaries = Dictionary.objects.filter(project=project)
         surveys = Survey.objects.filter(project=project)
         breadcrumb_menu = [project]
@@ -161,12 +158,12 @@ def project_detail(request, num):
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
     return render(request, 'thin/project_detail.html',
-                  {'project': project, 'dictionaries': dictionaries, 'surveys':surveys, 'breadcrumb_menu': breadcrumb_menu})
+                  {'project': project, 'dictionaries': dictionaries, 'surveys': surveys, 'breadcrumb_menu': breadcrumb_menu})
 
 
-def project_edit(request, num):
+def project_edit(request, id):
     try:
-        project = Project.objects.get(pk=num)
+        project = Project.objects.get(pk=id)
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
@@ -175,10 +172,11 @@ def project_edit(request, num):
         if form.is_valid():
             form.save()
             messages.success(request, "Project has been editted successfully!")
-            return redirect('project_detail', num=project.id)
+            return redirect('project_detail', id=project.id)
     else:
         form = forms.ProjectForm(instance=project)
-    return render(request, 'thin/project_edit.html', {'form': form, 'project': project})
+    breadcrumb_menu = [project]
+    return render(request, 'thin/project_edit.html', {'form': form, 'project': project, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def project_add(request):
@@ -193,26 +191,22 @@ def project_add(request):
     return render(request, 'thin/project_add.html', {'form': form})
 
 
-def project_delete(request, num):
-    project = Project.objects.get(pk=num)
+def project_delete(request, id):
+    project = Project.objects.get(pk=id)
     project.delete()
     messages.success(request, "Project has been deleted!")
     return redirect('project_index')
 
 
 def variety_index(request):
-    varieties = Variety.objects.all()
-    return render(request, 'thin/variety_index.html', {'varieties': varieties})
+    return redirect('home')
 
 
-def variety_detail(request, num):
+def variety_detail(request, id):
     try:
-        variety = Variety.objects.get(pk=num)
         surveyglosses = list(variety.survey.glosses.all())
+        variety = Variety.objects.get(pk=id)
         transcripts = Transcription.objects.filter(variety=variety)
-        survey = variety.survey
-        project = survey.project
-        breadcrumb_menu = [project, survey, variety]
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected variety.")
         return redirect('variety_index')
@@ -223,13 +217,14 @@ def variety_detail(request, num):
     for gloss in surveyglosscopy:
         if gloss in transcriptglosses:
             surveyglosses.remove(gloss)
+    breadcrumb_menu = [variety.survey.project, variety.survey, variety]
     return render(request, 'thin/variety_detail.html',
                   {'variety': variety, 'transcripts': transcripts, 'surveyglosses' : surveyglosses, 'breadcrumb_menu': breadcrumb_menu})
 
 
-def variety_edit(request, num):
+def variety_edit(request, id):
     try:
-        variety = Variety.objects.get(pk=num)
+        variety = Variety.objects.get(pk=id)
     except Variety.DoesNotExist:
         messages.error(request, "Can't find selected variety.")
         return redirect('variety_index')
@@ -238,35 +233,37 @@ def variety_edit(request, num):
         if form.is_valid():
             form.save()
             messages.success(request, "Variety has been editted successfully!")
-            return redirect('variety_detail', num=variety.id)
+            return redirect('variety_detail', id=variety.id)
     else:
         form = forms.VarietyForm(instance=variety)
-    return render(request, 'thin/variety_edit.html', {'form': form, 'variety': variety})
+    breadcrumb_menu = [variety.survey.project, variety.survey, variety.survey, variety]
+    return render(request, 'thin/variety_edit.html', {'form': form, 'variety': variety, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def variety_add(request, id):
+    survey = Survey.objects.get(pk=id)
     if request.method == 'POST':  # If the form has been submitted
-        survey=Survey.objects.get(pk=id)
         form = forms.VarietyForm(request.POST)
         if form.is_valid():
             form.instance.survey=survey
-            form.save()
+            variety = form.save()
             messages.success(request, "Variety Added!")
-            return redirect('survey_detail', id)
+            return redirect('variety_detail', variety.id)
     else:
         form = forms.VarietyForm()
-    return render(request, 'thin/variety_add.html', {'form': form})
+    breadcrumb_menu = [survey.project, survey]
+    return render(request, 'thin/variety_add.html', {'form': form, 'breadcrumb_menu': breadcrumb_menu})
 
 
-def variety_delete(request, num):
-    variety = Variety.objects.get(pk=num)
+def variety_delete(request, id):
+    variety = Variety.objects.get(pk=id)
     variety.delete()
     messages.success(request, "Variety has been deleted!")
-    return redirect('variety_index')
+    return redirect('survey_detail', variety.survey_id)
 
 
 def comparison_index(request):
-    return render(request, 'thin/comparison_index.html')
+    return redirect('home')
 
 
 def comparison_detail(request, id):
@@ -275,7 +272,7 @@ def comparison_detail(request, id):
     except Comparison.DoesNotExist:
         messages.error(request, "Can't find selected comparison.")
         return redirect('comparison_index')
-    return render(request, 'thin/comparison_detail.html', {'comparison' : comparison})
+    return render(request, 'thin/comparison_detail.html', {'comparison': comparison})
 
 
 def comparison_edit(request, id):
@@ -284,12 +281,11 @@ def comparison_edit(request, id):
     except Comparison.DoesNotExist:
         messages.error(request, "Can't find the selected comparison.")
         return redirect('comparison_index')
-    return render(request, 'thin/comparison_edit.html', {'comparison' : comparison})
+    return render(request, 'thin/comparison_edit.html', {'comparison': comparison})
 
 
 def gloss_index(request):
-    glosses = Gloss.objects.all()
-    return render(request, 'thin/gloss_index.html', {'gloss_list': glosses})
+    return redirect('home')
 
 
 def gloss_delete(request, id):
@@ -303,9 +299,10 @@ def gloss_detail(request, id):
     try:
         gloss = Gloss.objects.get(pk=id)
     except Gloss.DoesNotExist:
-        messages.error(request, "Can't find selected gloss.")
-        return redirect('gloss_index')
-    return render(request, 'thin/gloss_detail.html', {'gloss': gloss})
+        return redirect('home')
+    return redirect('dictionary_detail', gloss.dictionary.id)
+    # breadcrumb_menu = [gloss.dictionary.project, gloss.dictionary, gloss]
+    # return render(request, 'thin/gloss_detail.html', {'gloss': gloss, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def gloss_edit(request, id):
@@ -322,12 +319,16 @@ def gloss_edit(request, id):
             return redirect('gloss_detail', id=gloss.id)
     else:
         form = forms.GlossForm(instance=gloss)
-    return render(request, 'thin/gloss_edit.html', {'form': form, 'gloss': gloss})
+    breadcrumb_menu = [gloss.dictionary.project, gloss.dictionary, gloss]
+    return render(request, 'thin/gloss_edit.html', {'form': form, 'gloss': gloss, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def gloss_add(request, id):
     form = forms.GlossForm()
-    return render(request, 'thin/gloss_add.html', {'form': form, 'id': id})
+    dictionary = Dictionary.objects.get(pk=id)
+    breadcrumb_menu = [dictionary.project, dictionary]
+    return render(request, 'thin/gloss_add.html', {'form': form, 'id': id, 'breadcrumb_menu': breadcrumb_menu})
+
 
 @api_view(['POST'])
 def gloss_add_with_ajax(request, id):
@@ -339,9 +340,9 @@ def gloss_add_with_ajax(request, id):
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 def transcription_index(request):
-    transcriptions = Transcription.objects.all()
-    return render(request, 'thin/transcription_index.html', {'transcription_list': transcriptions})
+    return redirect('home')
 
 
 def transcription_delete(request, id):
@@ -355,9 +356,9 @@ def transcription_detail(request, id):
     try:
         transcription = Transcription.objects.get(pk=id)
     except Transcription.DoesNotExist:
-        messages.error(request, "Can't find selected transcription.")
-        return redirect('transcription_index')
-    return render(request, 'thin/transcription_detail.html', {'transcription': transcription})
+        return redirect('home')
+    return redirect('variety_detail', transcription.variety.id)
+    # return render(request, 'thin/transcription_detail.html', {'transcription': transcription})
 
 
 def transcription_edit(request, id):
@@ -374,7 +375,8 @@ def transcription_edit(request, id):
             return redirect('transcription_detail', id=transcription.id)
     else:
         form = forms.TranscriptionForm(instance=transcription)
-    return render(request, 'thin/transcription_edit.html', {'form': form, 'transcription': transcription})
+    breadcrumb_menu = [transcription.variety.survey.project, transcription.variety.survey, transcription.variety, transcription]
+    return render(request, 'thin/transcription_edit.html', {'form': form, 'transcription': transcription, 'breadcrumb_menu': breadcrumb_menu})
 
 
 #form = forms.VarietyForm(request.POST, instance=variety)
