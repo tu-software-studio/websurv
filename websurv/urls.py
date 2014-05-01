@@ -8,7 +8,8 @@ from thin.views import *
 urlpatterns = patterns(
     '',
 
-    url(r'^$', home, name='home'),
+    url(r'^$', project_index, name='home'),
+    url(r'^bread/$', home, name="breadcrumbs"),
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^dictionaries/$', dictionary_index, name='dictionary_index'),
@@ -21,7 +22,7 @@ urlpatterns = patterns(
     url(r'^surveys/(?P<id>\d+)/$', survey_detail, name='survey_detail'),
     url(r'^surveys/(?P<id>\d+)/edit/$', survey_edit, name='survey_edit'),
     url(r'^surveys/(?P<id>\d+)/delete/$', survey_delete, name='survey_delete'),
-    url(r'^surveys/add/(?P<id>\d+)/$', survey_add, name='survey_add'),
+    url(r'^surveys/add/(?P<id>\d+)$', survey_add, name='survey_add'),
 
     url(r'^projects/$', project_index, name='project_index'),
     url(r'^projects/(?P<id>\d+)/$', project_detail, name='project_detail'),
@@ -53,7 +54,6 @@ urlpatterns = patterns(
     url(r'^comparisons/(?P<id>\d+)/edit/$', comparison_edit, name='comparison_edit'),
 
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name' : 'thin/login.html'}, name='login'),
-    #url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page' : project_index},  name='logout'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page' : home},  name='logout'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page' : project_index},  name='logout'),
 
 )
