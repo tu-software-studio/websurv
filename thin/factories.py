@@ -54,7 +54,6 @@ class PartOfSpeechFactory(factory.django.DjangoModelFactory):
 
     name = 'noun'
 
-
 class GlossFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = models.Gloss
 
@@ -65,3 +64,12 @@ class GlossFactory(factory.django.DjangoModelFactory):
     survey = factory.SubFactory(SurveyFactory)
     field_tip = factory.Sequence(lambda n: 'field tip {0}'.format(n))
     comment_tip = factory.Sequence(lambda n: 'comment tip {0}'.format(n))
+
+
+class TranscriptionFactory(factory.django.DjangoModelFactory):
+    FACTORY_FOR = models.Transcription
+
+    ipa = factory.Sequence(lambda n: 'ipa {0}'.format(n))
+    gloss = factory.SubFactory(GlossFactory)
+    variety = factory.SubFactory(VarietyFactory)
+    
