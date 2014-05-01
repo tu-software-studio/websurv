@@ -99,8 +99,7 @@ class DictionaryTestCase(TestCase):
         response = self.client.post('/dictionaries/1/delete')
         # Status code should be 301 since we want a redirect
         self.assertEqual(response.status_code, 301)
-        # TODO: Change all of these to the assertRedirects
-        self.assertRedirects(response, 'http://testserver/dictionaries/1/delete/')
+        self.assertRedirects(response.status_code, 302,  'http://testserver/dictionaries/1/delete/')
         
     def test_dictionary_delete_removes_dictionary(self):
         """ Tests that the dictionary_delete view deletes a dicionary. """
