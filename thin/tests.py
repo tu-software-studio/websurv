@@ -268,6 +268,14 @@ class SurveyTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class TranscriptionTestCase(TestCase):
+    def setUp(self):
+        self.instance = factories.TranscriptionFactory()
+
+    def test_transcription_add_exists(self):
+        response = self.client.get('/transcriptions/add/')
+        self.assertEqual(response.status_code, 200)
+
 class VarietyTestCase(TestCase):
     def setUp(self):
         self.instance = factories.VarietyFactory()
