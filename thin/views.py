@@ -269,7 +269,7 @@ def comparison_add(request, id):
             form.save()
             form.instance.create_entries()
             messages.success(request, "Comparison Created!")
-            return redirect('comparison_detail', id)
+            return redirect('comparison_detail', form.instance.id)
     else:
         form = forms.ComparisonForm()
     breadcrumb_menu = [survey.project, survey]
@@ -287,7 +287,7 @@ def comparison_detail(request, id):
         comparison_entries = ComparisonEntry.objects.filter(comparison=comparison)
     except Comparison.DoesNotExist:
         messages.error(request, "Can't find selected comparison.")
-        return redirect('comparison_index')
+        return redirect('survey_detail', id)
     breadcrumb_menu = [comparison.survey.project, comparison.survey, comparison]
     context = {'comparison': comparison, 'comparison_entries': comparison_entries, "breadcrumb_menu": breadcrumb_menu}
     return render(request, 'thin/comparison_detail.html', context )
