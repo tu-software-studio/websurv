@@ -204,8 +204,8 @@ def variety_index(request):
 
 def variety_detail(request, id):
     try:
-        surveyglosses = list(variety.survey.glosses.all())
         variety = Variety.objects.get(pk=id)
+        surveyglosses = list(variety.survey.glosses.all())
         transcripts = Transcription.objects.filter(variety=variety)
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected variety.")
@@ -379,21 +379,21 @@ def transcription_edit(request, id):
     return render(request, 'thin/transcription_edit.html', {'form': form, 'transcription': transcription, 'breadcrumb_menu': breadcrumb_menu})
 
 
-#form = forms.VarietyForm(request.POST, instance=variety)
-
-import ipdb
-
-
 def transcription_add(request, id):
     """
     Lists all of the glosses in a survey's variety that do
     not already have transcriptions entered into the database
     """
     variety = Variety.objects.get(pk=id)
-
-    gloss_list = variety.survey.glosses.all()
+    gloss_list = list(variety.survey.glosses.all())
+    transcription_list = variety.transcriptions.all()
+    for x in transcription_list: #only has glosses that don't have transcriptions in the gloss_list
+        if x.gloss in gloss_list:
+            gloss_list.remove(x.gloss)
+    if len(gloss_list)==0: #If all of glosses have transcriptions then you can't add any more
+        messages.error(request,"No transcriptions left to add in survey")
+        return redirect('variety_detail', id=id)
     formset = formset_factory(forms.TranscriptionForm, extra=len(gloss_list))
-    #ipdb.set_trace()
     if request.method == "POST":
         formset = formset(request.POST)
         if formset.is_valid():
@@ -410,22 +410,21 @@ def transcription_add(request, id):
     return render(request, 'thin/transcription_add.html', {'formset': formset, 'id': id, 'gloss_list': gloss_list, 'breadcrumb_menu': breadcrumb_menu})
 
 def transcription_edit(request, id):
-    """ 
-        List all of the transcriptions that already have something in them
     """
-    variety = Variety.objects.get(pk=id)
-    transcriptions = variety.transcriptions.all()
-
-    TranscriptionFormSet = modelformset_factory(Transcription, form = forms.TranscriptionForm)
-    qset = transcriptions
-    formset = TranscriptionFormSet(queryset = qset)  
-    ipdb.set_trace()
-
-
-    if request.method == "POST":    
-        formset = TranscriptionFormset(request.POST)
-        if formset.is_valid():
-            formset.save()
-
-        return redirect('variety_detail', num=id)
-    return render(request, 'thin/transcription_edit.html', {'formset': formset, 'id': id})
+    Lets a single transcription IPA to be editted
+    """
+    try:
+        transcription = Transcription.objects.get(pk=id)
+    except Transcription.DoesNotExist:
+        messages.error(request, "Can't find selected transcription.")
+        return redirect('transcription_index')
+    if request.method == 'POST':  # If the form has been submitted
+        form = forms.TranscriptionForm(request.POST, instance=transcription)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Transcription has been editted successfully!")
+            return redirect('variety_detail', id=transcription.variety.id)
+    else:
+        form = forms.TranscriptionForm(instance=transcription)
+    breadcrumb_menu = [transcription.variety.survey.project, transcription.variety.survey, transcription.variety, transcription]
+    return render(request, 'thin/transcription_edit.html', {'form': form, 'transcription': transcription, 'breadcrumb_menu': breadcrumb_menu})

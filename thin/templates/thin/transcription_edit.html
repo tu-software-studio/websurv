@@ -1,26 +1,30 @@
-{# Transcription Edit #}
-{% extends 'thin/base.html' %}
+{% extends "thin/base.html" %}
+
+{% load static from staticfiles %}
 {% load bootstrap %}
+
+
 {% block content %}
-<div class='row'>
-  <div class='col-md-4'>
+{% load widget_tweaks %}
 
-    <form method="POST" action="">
-      {% csrf_token %}
-      {{formset.management_form}}      
-
-      {% for form in formset %}
-      {% for ipa in form %}
-
-      <p> {{ form.instance.gloss }} : {{ ipa }} </p>
-
-      {% endfor %}
-      {% endfor %}
-
-      <input type="submit" value="Save Changes" class='btn btn-primary'/>
-    </form>
-
-  </div>
-</div>
+  <form method="post" action="">
+    {{ formset.management_form }}
+    {% csrf_token %}
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Gloss</th>
+        <th>Transcription</th>
+      </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>{{ form.instance.gloss }}</td>
+            <td>{{ form.ipa|add_class:"form-control" }}</td>
+          </tr>
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
 
 {% endblock %}
