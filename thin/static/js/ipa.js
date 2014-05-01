@@ -5,13 +5,39 @@
  */
 
 (function() {
+  var finishIPA, hideIPA, showIPA, toggleIPA;
+
+  finishIPA = function() {
+    return $("#ipa_buttons").stop(true, true);
+  };
+
+  showIPA = function() {
+    return $("#ipa_buttons").show("slide", {
+      direction: "down",
+      duration: 500
+    });
+  };
+
+  hideIPA = function() {
+    return $("#ipa_buttons").hide("slide", {
+      direction: "down",
+      duration: 500
+    });
+  };
+
+  toggleIPA = function() {
+    return $("#ipa_buttons").toggle("slide", {
+      direction: "down",
+      duration: 500
+    });
+  };
+
   $(function() {
     var ipa_controller;
     ipa_controller = {
       current_input: null,
       set_up_buttons: function() {
         var button, button_div, button_divs, _i, _len, _results;
-        console.log("Adding listeners to buttons...");
         button_divs = $("div.btn-toolbar");
         _results = [];
         for (_i = 0, _len = button_divs.length; _i < _len; _i++) {
@@ -38,10 +64,15 @@
         return _results;
       },
       set_up_inputs: function() {
-        console.log("Adding listeners to inputs...");
-        return $("body").on("focus", "input", function(e) {
-          console.log("setting input to: " + e.target.name);
-          return ipa_controller.current_input = $(e.target);
+        $("body").on("focusin", "input", function(e) {
+          ipa_controller.current_input = $(e.target);
+          finishIPA();
+          return showIPA();
+        });
+        return $("body").on("focusout", "input", function(e) {
+          ipa_controller.current_input = null;
+          finishIPA();
+          return hideIPA();
         });
       }
     };
@@ -49,10 +80,7 @@
     ipa_controller.set_up_inputs();
     return $("#ipa-toggle").click(function(e) {
       e.preventDefault();
-      return $("#ipa_buttons").toggle("slide", {
-        direction: "down",
-        duration: 500
-      });
+      return toggleIPA();
     });
   });
 
