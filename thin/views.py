@@ -186,7 +186,7 @@ def project_add(request):
             new_project = form.save()
             messages.success(request, "Project Added!")
             #return redirect('project_index')
-            return redirect('project_detail', num=new_project.id)
+            return redirect('project_detail', id=new_project.id)
     else:
         form = forms.ProjectForm()
     return render(request, 'thin/project_add.html', {'form': form})
