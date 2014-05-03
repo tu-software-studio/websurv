@@ -3,4 +3,4 @@ Web-based version of the SIL WordSurv software
 
 Trivial change to test Rally integration.
 
-Another trivial change to test Jenkins integration.
+Another other trivial change to test Jenkins integration.
