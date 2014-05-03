@@ -7,6 +7,8 @@
 
   comparison_entry_controller = {
     current_input: null,
+    current_input_counter: 0,
+    align_form_counter: 0,
     loop_through_spans: function() {
       var currentLetters, input, inputCounter, inputs, span, spanCounter, spans, _i, _j, _len, _len1, _results;
       console.log("Grabbing all first letters...");
@@ -33,19 +35,38 @@
       return $("body").on("keydown", function(e) {
         var _ref;
         if ((_ref = e.which, __indexOf.call([37, 38, 39, 40], _ref) >= 0) && comparison_entry_controller.current_input) {
-          e.preventDefault();
           switch (e.which) {
             case 37:
-              return console.log("left");
+              console.log("left");
+              if (comparison_entry_controller.current_input_counter > 0) {
+                comparison_entry_controller.current_input_counter -= 1;
+              }
+              break;
             case 38:
-              return console.log("up");
+              console.log("up");
+              e.preventDefault();
+              break;
             case 39:
-              return console.log("right");
+              console.log("right");
+              if (comparison_entry_controller.current_input_counter < comparison_entry_controller.current_input[0].value.length - 1) {
+                comparison_entry_controller.current_input_counter += 1;
+              }
+              break;
             case 40:
-              return console.log("down");
+              console.log("down");
+              e.preventDefault();
           }
+          console.log(comparison_entry_controller.current_input_counter);
+          return comparison_entry_controller.update_current_cell();
         }
       });
+    },
+    update_current_cell: function() {
+      var inputValue, tableRow;
+      console.log("updating cell");
+      inputValue = comparison_entry_controller.current_input[0].value;
+      tableRow = comparison_entry_controller.current_input[0].parentNode.parentNode;
+      return tableRow.children[1].firstChild.innerHTML = inputValue[comparison_entry_controller.current_input_counter];
     },
     set_up_inputs: function() {
       console.log("Adding listeners to inputs for comparison entries...");
@@ -53,6 +74,7 @@
         console.log("setting input to: " + e.target.name);
         comparison_entry_controller.current_input = $(e.target);
         return comparison_entry_controller.current_input.blur(function() {
+          comparison_entry_controller.current_input_counter = 0;
           return comparison_entry_controller.current_input = null;
         });
       });
@@ -61,9 +83,9 @@
 
   comparison_entry_controller.loop_through_spans();
 
-  comparison_entry_controller.set_up_inputs();
-
   comparison_entry_controller.check_keys();
+
+  comparison_entry_controller.set_up_inputs();
 
 }).call(this);
 
