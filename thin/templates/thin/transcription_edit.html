@@ -1,24 +1,30 @@
-{# Transcription Edit #}
-{% extends 'thin/base.html' %}
+{% extends "thin/base.html" %}
+
+{% load static from staticfiles %}
 {% load bootstrap %}
+
+
 {% block content %}
-<div class='row'>
-  <form method="POST" action="{% url 'transcription_delete' transcription.id%} " class='pull-right'>
+{% load widget_tweaks %}
+
+  <form method="post" action="">
+    {{ formset.management_form }}
     {% csrf_token %}
-    <input type="submit" value="Delete" class='btn btn-danger'/>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Gloss</th>
+        <th>Transcription</th>
+      </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>{{ form.instance.gloss }}</td>
+            <td>{{ form.ipa|add_class:"form-control" }}</td>
+          </tr>
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Save</button>
   </form>
-
-  <div class='col-md-4'>
-
-    <form method="POST" action="">
-      {% csrf_token %}
-      {{ form|bootstrap }}
-      <input type="submit" value="Save Changes" class='btn btn-primary'/>
-    </form>
-
-  </div>
-</div>
-
-
 
 {% endblock %}

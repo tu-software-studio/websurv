@@ -55,7 +55,7 @@ class ComparisonTestCase(TestCase):
 
     def test_comparison_index_exists(self):
         response = self.client.get('/comparisons/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_comparison_detail_exists(self):
         response = self.client.get('/comparisons/' + str(self.instance.id) + '/')
@@ -98,8 +98,7 @@ class DictionaryTestCase(TestCase):
         response = self.client.post('/dictionaries/1/delete')
         # Status code should be 301 since we want a redirect
         self.assertEqual(response.status_code, 301)
-        # TODO: Change all of these to the assertRedirects
-        self.assertRedirects(response, 'http://testserver/dictionaries/1/delete/')
+        self.assertRedirects(response.status_code, 302,  'http://testserver/dictionaries/1/delete/')
         
     def test_dictionary_delete_removes_dictionary(self):
         """ Tests that the dictionary_delete view deletes a dicionary. """
@@ -118,7 +117,7 @@ class DictionaryTestCase(TestCase):
 
     def test_dictionary_index_exists(self):
         response = self.client.get('/dictionaries/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_dictionary_index_contains_dictionary(self):
         factories.DictionaryFactory(project=self.instance.project)
@@ -227,7 +226,7 @@ class ProjectTestCase(TestCase):
         self.instance.delete()
         response = self.client.get('/projects/')
         self.assertEqual(len(response.context['project_list']), 0)
-        self.assertContains(response, 'There are currently no projects.')
+        self.assertContains(response.errors, 'There are currently no projects.')
 
         # Now add some projects and test for stuff
         num_projects = 15
@@ -247,13 +246,13 @@ class SurveyTestCase(TestCase):
         self.instance = factories.SurveyFactory()
 
     def test_survey_add_exists(self):
-        response = self.client.get('/surveys/add/' + str(self.instance.project.id) + '/')
+        response = self.client.get('/surveys/add/1')
         self.assertEqual(response.status_code, 200)
 
     def test_survey_delete_exists(self):
-        response = self.client.post('/surveys/' + str(self.instance.id) + '/delete/')
+        response = self.client.post('/surveys/1/delete/')
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, 'http://testserver/surveys/')
+        self.assertRedirects(response, 'http://testserver/projects/1/')
 
     def test_survey_detail_exists(self):
         response = self.client.get('/surveys/' + str(self.instance.id) + '/')
@@ -265,15 +264,23 @@ class SurveyTestCase(TestCase):
         
     def test_survey_index_exists(self):
         response = self.client.get('/surveys/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
+
+class TranscriptionTestCase(TestCase):
+    def setUp(self):
+        self.instance = factories.TranscriptionFactory()
+
+    def test_transcription_add_exists(self):
+        response = self.client.get('/transcriptions/add/')
+        self.assertEqual(response.status_code, 200)
 
 class VarietyTestCase(TestCase):
     def setUp(self):
         self.instance = factories.VarietyFactory()
 
     def test_variety_add_exists(self):
-        response = self.client.get('/varieties/add/')
+        response = self.client.get('/varieties/add/1')
         self.assertEqual(response.status_code, 200)
 
     def test_variety_delete_exists(self):
@@ -291,5 +298,5 @@ class VarietyTestCase(TestCase):
         
     def test_variety_index_exists(self):
         response = self.client.get('/varieties/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
