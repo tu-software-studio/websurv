@@ -10,7 +10,7 @@
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 </head>
 
-<body>
+<body {% block ipa-toggle %}{% endblock %}>
 
 {% url 'home' as home_path %}
 <div id="everything">
@@ -93,8 +93,8 @@
     {% block content %}
     {% endblock %}
   </div>
+  {% include "thin/ipa_input.html" %}
   <footer>
-    {% include "thin/ipa_input.html" %}
     <div class="footer">
       <div class="container text-muted">
         <ul class="pull-left breadcrumb breadcrumb-bar">
@@ -103,7 +103,7 @@
           <li><a href="#">Help</a></li>
         </ul>
         <ul class="pull-right breadcrumb breadcrumb-bar">
-          <li><a id="ipa-toggle" href="#">Click to toggle IPA Keyboard</a></li>
+{#          <li><a id="ipa-toggle" href="#">Click to toggle IPA Keyboard</a></li>#}
           <li><span class="copyright">Software Studio </span></li>
         </ul>
       </div>
