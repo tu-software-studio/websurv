@@ -1,6 +1,7 @@
 {% extends "thin/base.html" %}
 
 {% block content %}
+<script src="{{ STATIC_URL }}js/comparison_entry_controller.js"></script>
 <div class="panel panel-default">
 <div class="panel-heading">
   <h3 class="panel-title">{{comparison.name}}</h3>
@@ -20,7 +21,7 @@
         {% for comparison_entry in comparison_entries %}
             <tr>
               <td><input value="{{ comparison_entry.transcription.ipa }}" class="form-control trans-form" size="5" readonly="true" name="{{ comparison_entry.transcription.ipa }}"></td>
-              <td><input class="form-control" id="group1" disabled="true"><span class="label label-info current" id="{{ comparison_entry.id }}"></span></td>
+              <td><input class="form-control" id="group1" disabled="disabled"><span class="label label-info current" id="{{ comparison_entry.id }}"></span></td>
               <td><input class="form-control" size="1"></td>
               <td align="center"><input type="checkbox"></td>
             </tr>
@@ -31,7 +32,5 @@
         {% endfor %}
     </table>
 </div>
-
-<script src="/static/js/comparison_entry_controller.js"></script>
 
 {% endblock %}

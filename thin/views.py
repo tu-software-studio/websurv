@@ -6,7 +6,7 @@ from django.http import HttpResponse
 
 import json
 
-from backend.models import Comparison, Dictionary, Project, Survey, Variety, Transcription, Gloss
+from backend.models import Comparison, ComparisonEntry, Dictionary, Project, Survey, Variety, Transcription, Gloss
 
 from thin import forms
 
@@ -92,13 +92,25 @@ def survey_detail(request, id):
     try:
         survey = Survey.objects.get(id=id)
         varieties = Variety.objects.filter(survey=survey)
+        comparisons = Comparison.objects.filter(survey=survey)
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
     breadcrumb_menu = [survey.project, survey]
-    context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu}
+    context = {'survey': survey, 'varieties': varieties, 'comparisons': comparisons, 'breadcrumb_menu': breadcrumb_menu}
     return render(request, 'thin/survey_detail.html', context)
-
+#
+# try:
+#         survey = Survey.objects.get(id=id)
+#         varieties = Variety.objects.filter(survey=survey)
+#         comparisons = Comparison.objects.filter(survey=survey)
+#         project = survey.project
+#         breadcrumb_menu = [project, survey]
+#     except Survey.DoesNotExist:
+#         messages.error(request, "Can't find selected survey.")
+#         return redirect('survey_index')
+#     context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu, "comparisons": comparisons}
+#     return render(request, 'thin/survey_detail.html', context)
 
 def survey_edit(request, id):
     survey = Survey.objects.get(id=id)
