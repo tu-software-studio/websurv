@@ -141,7 +141,7 @@ class GlossTestCase(TestCase):
 
     def test_gloss_detail_exists(self):
         response = self.client.get('/glosses/' + str(self.instance.id) + '/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_gloss_edit_exists(self):
         response = self.client.get('/glosses/' + str(self.instance.id) + '/edit/')
@@ -149,7 +149,7 @@ class GlossTestCase(TestCase):
         
     def test_gloss_index_exists(self):
         response = self.client.get('/glosses/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
         
 class ProjectTestCase(TestCase):
@@ -274,7 +274,7 @@ class TranscriptionTestCase(TestCase):
 
     def test_transcription_add_exists(self):
         response = self.client.get('/transcriptions/add/' + str(self.instance.variety.id))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 301)
 
 class VarietyTestCase(TestCase):
     def setUp(self):

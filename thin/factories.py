@@ -52,7 +52,7 @@ class ComparisonFactory(factory.django.DjangoModelFactory):
 class PartOfSpeechFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = models.PartOfSpeech
 
-    name = 'noun'
+    name = 'Noun'
 
 class GlossFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = models.Gloss
@@ -61,10 +61,8 @@ class GlossFactory(factory.django.DjangoModelFactory):
     secondary = factory.Sequence(lambda n: 'secondary {0}'.format(n))
     part_of_speech = factory.SubFactory(PartOfSpeechFactory)
     dictionary = factory.SubFactory(DictionaryFactory)
-    survey = factory.SubFactory(SurveyFactory)
     field_tip = factory.Sequence(lambda n: 'field tip {0}'.format(n))
     comment_tip = factory.Sequence(lambda n: 'comment tip {0}'.format(n))
-
 
 class TranscriptionFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = models.Transcription
