@@ -9,21 +9,22 @@
       current_input: null,
       current_input_counter: 0,
       current_group: 1,
+      current_row: null,
       align_form_counter: 0,
       loop_through_spans: function() {
         var currentLetters, input, inputCounter, inputs, span, spanCounter, spans, _i, _j, _len, _len1, _results;
         console.log("Grabbing all first letters...");
-        inputs = $("input.trans-form");
+        inputs = $("div.trans-form");
         spans = $("span.current");
         currentLetters = [];
-        inputCounter = 0;
-        spanCounter = 0;
+        inputCounter = 1;
+        spanCounter = 1;
         inputs[0].autofocus = true;
         for (_i = 0, _len = inputs.length; _i < _len; _i++) {
           input = inputs[_i];
           input = $(input);
-          currentLetters[inputCounter] = input.val()[0];
-          input.id = inputCounter;
+          currentLetters[inputCounter] = input.html()[0];
+          input.attr('id', inputCounter);
           inputCounter++;
         }
         _results = [];
@@ -31,7 +32,7 @@
           span = spans[_j];
           span = $(span);
           span.html(currentLetters[spanCounter]);
-          span.parent().parent().id = spanCounter;
+          span.parent().parent().attr('id', spanCounter);
           _results.push(spanCounter++);
         }
         return _results;
@@ -51,32 +52,36 @@
                 break;
               case 38:
                 console.log("" + h1 + "up" + h1);
-                if (comparison_controller.current_input_counter < comparison_controller.current_input.val().length) {
-                  inputValue = comparison_controller.current_input.val();
+                if (comparison_controller.current_input_counter < comparison_controller.current_input.html().length) {
+                  inputValue = comparison_controller.current_input.html();
                   tableRow = comparison_controller.current_input.parent().parent();
-                  tableRow.children()[comparison_controller.current_group].firstChild.value += inputValue[comparison_controller.current_input_counter];
+                  console.log("row_children:");
+                  console.log(tableRow.children().eq(1).children()[comparison_controller.current_group]);
+                  console.log(comparison_controller.current_group);
+                  $("#group" + comparison_controller.current_group)[0].value += inputValue[comparison_controller.current_input_counter];
                   comparison_controller.current_input_counter += 1;
                 }
                 break;
               case 39:
                 console.log("" + h1 + "right" + h1);
                 console.log("current_input_counter: " + comparison_controller.current_input_counter);
-                console.log("current_input: " + (comparison_controller.current_input.val().length));
-                if (comparison_controller.current_input_counter < comparison_controller.current_input.val().length) {
+                console.log("current_input: " + (comparison_controller.current_input.html().length));
+                console.log("current_group: " + comparison_controller.current_group);
+                if (comparison_controller.current_input_counter < comparison_controller.current_input.html().length) {
                   tableRow = comparison_controller.current_input.parent().parent();
-                  console.log(tableRow.children().eq(comparison_controller.current_group).children());
-                  span = tableRow.children().eq(comparison_controller.current_group).children()[1];
-                  console.log("tagname " + span.tagName);
+                  console.log(tableRow.children().eq(1).children()[comparison_controller.current_group]);
+                  console.log;
+                  span = tableRow.children().eq(1).children()[comparison_controller.current_group];
+                  console.log("tagname: " + span.tagName);
                   if (span.tagName === "SPAN") {
                     console.log("new group");
                     td = $('<td>');
                     element = $('<input>');
-                    console.log("ppooop");
                     element.addClass("form-control");
+                    element.attr('style', "width: inherit; display: inline-block;");
                     element.attr('id', 'group' + (comparison_controller.current_group + 1));
                     element.attr('disabled', 'disabled');
-                    td.append(element);
-                    td.insertBefore(tableRow.children().eq(tableRow.children().length - 2));
+                    element.insertBefore(span);
                     tableRow.children().eq(tableRow.children().length - 3).append(span);
                     comparison_controller.current_group += 1;
                   } else {
@@ -87,7 +92,7 @@
               case 40:
                 console.log("" + h1 + "down" + h1);
                 if (comparison_controller.current_input_counter > 0) {
-                  inputValue = comparison_controller.current_input.val();
+                  inputValue = comparison_controller.current_input.html();
                   tableRow = comparison_controller.current_input.parent().parent();
                   tableRow.children()[comparison_controller.current_group].firstChild.val(tableRow.children()[1].firstChild.val().slice(0, -1));
                   comparison_controller.current_input_counter -= 1;
@@ -102,22 +107,26 @@
       update_current_cell: function() {
         var inputValue, tableRow;
         console.log("updating cell");
-        inputValue = comparison_controller.current_input.val();
+        inputValue = comparison_controller.current_input.html();
         tableRow = comparison_controller.current_input.parent().parent();
         if (inputValue[comparison_controller.current_input_counter] === void 0) {
-          return tableRow.children().eq(comparison_controller.current_group).children().eq(1).html("&#x2713;");
+          return tableRow.children().eq(1).children().eq(comparison_controller.current_group).html("&#x2713;");
         } else {
-          return tableRow.children().eq(comparison_controller.current_group).children().eq(1).html(inputValue[comparison_controller.current_input_counter]);
+          return $("#" + comparison_controller.current_row + ".current").html(inputValue[comparison_controller.current_input_counter]);
         }
       },
       set_up_inputs: function() {
         console.log("Adding listeners to inputs for comparison entries...");
-        return $("body").on("focus", "input.trans-form", function(e) {
-          console.log("setting input to: " + e.target.name);
+        return $("body").on("click", "tr.trans-form", function(e) {
+          console.log("setting input to: " + e.target.id);
           comparison_controller.current_input = $(e.target).first();
+          comparison_controller.current_row = comparison_controller.current_input.attr('id');
+          $("table tr td").attr('style', 'background-color: #86C67C;');
           return comparison_controller.current_input.blur(function() {
             comparison_controller.current_input_counter = 0;
             comparison_controller.current_group = 1;
+            comparison_controller.current_row = null;
+            comparison_controller.current_input.unbind('blur');
             return comparison_controller.current_input = null;
           });
         });
