@@ -8,6 +8,7 @@
   comparison_entry_controller = {
     current_input: null,
     current_input_counter: 0,
+    current_group: 1,
     align_form_counter: 0,
     loop_through_spans: function() {
       var currentLetters, input, inputCounter, inputs, span, spanCounter, spans, _i, _j, _len, _len1, _results;
@@ -21,40 +22,74 @@
       for (_i = 0, _len = inputs.length; _i < _len; _i++) {
         input = inputs[_i];
         currentLetters[inputCounter] = input.value[0];
+        input.id = inputCounter;
         inputCounter++;
       }
       _results = [];
       for (_j = 0, _len1 = spans.length; _j < _len1; _j++) {
         span = spans[_j];
         span.innerHTML = currentLetters[spanCounter];
+        span.parentNode.parentNode.id = spanCounter;
         _results.push(spanCounter++);
       }
       return _results;
     },
     check_keys: function() {
       return $("body").on("keydown", function(e) {
-        var _ref;
+        var element, inputValue, span, tableRow, td, _ref;
         if ((_ref = e.which, __indexOf.call([37, 38, 39, 40], _ref) >= 0) && comparison_entry_controller.current_input) {
           switch (e.which) {
             case 37:
               console.log("left");
               if (comparison_entry_controller.current_input_counter > 0) {
+                console.log("Message");
+              } else {
                 comparison_entry_controller.current_input_counter -= 1;
               }
               break;
             case 38:
               console.log("up");
               e.preventDefault();
+              if (comparison_entry_controller.current_input_counter < comparison_entry_controller.current_input[0].value.length) {
+                inputValue = comparison_entry_controller.current_input[0].value;
+                tableRow = comparison_entry_controller.current_input[0].parentNode.parentNode;
+                tableRow.children[comparison_entry_controller.current_group].firstChild.value += inputValue[comparison_entry_controller.current_input_counter];
+                comparison_entry_controller.current_input_counter += 1;
+              }
               break;
             case 39:
               console.log("right");
               if (comparison_entry_controller.current_input_counter < comparison_entry_controller.current_input[0].value.length - 1) {
-                comparison_entry_controller.current_input_counter += 1;
+                tableRow = comparison_entry_controller.current_input[0].parentNode.parentNode;
+                console.log(tableRow.children[comparison_entry_controller.current_group].children);
+                span = tableRow.children[comparison_entry_controller.current_group].children[1];
+                if (span.tagName === "SPAN") {
+                  console.log("new group");
+                  td = document.createElement("td");
+                  element = document.createElement("input");
+                  element.className = "form-control";
+                  element.id = "group" + (comparison_entry_controller.current_group + 1);
+                  element.disabled = "true";
+                  td.appendChild(element);
+                  console.log(tableRow);
+                  console.log(tableRow.children.length);
+                  tableRow.insertBefore(td, tableRow.children[tableRow.children.length - 2]);
+                  tableRow.children[tableRow.children.length - 3].appendChild(span);
+                  comparison_entry_controller.current_group += 1;
+                } else {
+                  comparison_entry_controller.current_input_counter += 1;
+                }
               }
               break;
             case 40:
               console.log("down");
               e.preventDefault();
+              if (comparison_entry_controller.current_input_counter > 0) {
+                inputValue = comparison_entry_controller.current_input[0].value;
+                tableRow = comparison_entry_controller.current_input[0].parentNode.parentNode;
+                tableRow.children[comparison_entry_controller.current_group].firstChild.value = tableRow.children[1].firstChild.value.slice(0, -1);
+                comparison_entry_controller.current_input_counter -= 1;
+              }
           }
           console.log(comparison_entry_controller.current_input_counter);
           return comparison_entry_controller.update_current_cell();
@@ -66,7 +101,12 @@
       console.log("updating cell");
       inputValue = comparison_entry_controller.current_input[0].value;
       tableRow = comparison_entry_controller.current_input[0].parentNode.parentNode;
-      return tableRow.children[1].firstChild.innerHTML = inputValue[comparison_entry_controller.current_input_counter];
+      console.log(inputValue[comparison_entry_controller.current_input_counter]);
+      if (inputValue[comparison_entry_controller.current_input_counter] === void 0) {
+        return tableRow.children[comparison_entry_controller.current_group].children[1].innerHTML = "&#x2713;";
+      } else {
+        return tableRow.children[comparison_entry_controller.current_group].children[1].innerHTML = inputValue[comparison_entry_controller.current_input_counter];
+      }
     },
     set_up_inputs: function() {
       console.log("Adding listeners to inputs for comparison entries...");
@@ -75,6 +115,7 @@
         comparison_entry_controller.current_input = $(e.target);
         return comparison_entry_controller.current_input.blur(function() {
           comparison_entry_controller.current_input_counter = 0;
+          comparison_entry_controller.current_group = 1;
           return comparison_entry_controller.current_input = null;
         });
       });

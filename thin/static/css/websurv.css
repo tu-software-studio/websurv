@@ -5982,3 +5982,7 @@ div.btn-toolbar {
 th.comp {
     text-align: center;
 }
+
+span.current {
+    font-size: 20px;
+}

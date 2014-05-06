@@ -12,7 +12,6 @@
             <tr>
                 <th class="comp">Transcription</th>
                 <th class="comp">Current</th>
-                <th class="comp">Aligned Form</th>
                 <th class="comp">Group</th>
                 <th class="comp">Exclude</th>
             </tr>
@@ -21,9 +20,8 @@
         {% for comparison_entry in comparison_entries %}
             <tr>
               <td><input value="{{ comparison_entry.transcription.ipa }}" class="form-control trans-form" size="5" readonly="true" name="{{ comparison_entry.transcription.ipa }}"></td>
-              <td align="center"><span class="label label-info current" id="{{ comparison_entry.id }}"></span></td>
-              <td><input class="form-control" id="group1" disabled="true" size="2"></td>
-              <td><input class="form-control" size="2"></td>
+              <td><input class="form-control" id="group1" disabled="true"><span class="label label-info current" id="{{ comparison_entry.id }}"></span></td>
+              <td><input class="form-control" size="1"></td>
               <td align="center"><input type="checkbox"></td>
             </tr>
         {% empty %}
