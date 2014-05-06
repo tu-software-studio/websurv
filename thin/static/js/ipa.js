@@ -76,7 +76,6 @@
         });
       }
     };
-    console.log($("body").attr("no-ipa"));
     if (!$("body").attr("no-ipa")) {
       ipa_controller.set_up_buttons();
       ipa_controller.set_up_inputs();

@@ -1,4 +1,5 @@
 $ ->
+  h1 = Array(10).join('#')
   comparison_controller =
     current_input: null
     current_input_counter: 0
@@ -13,82 +14,89 @@ $ ->
       spanCounter = 0
       inputs[0].autofocus = true
       for input in inputs
-        currentLetters[inputCounter] = input.value[0]
+        input = $(input)
+        currentLetters[inputCounter] = input.val()[0]
         input.id = inputCounter
         inputCounter++
       for span in spans
-        span.innerHTML = currentLetters[spanCounter]
-        span.parentNode.parentNode.id = spanCounter
+        span = $(span)
+        span.html(currentLetters[spanCounter])
+        span.parent().parent().id = spanCounter
         spanCounter++
 
     set_up_key_listener: ->
       $("body").on "keydown", (e) ->
-        if e.which in [37..40] and comparison_controller.current_input
+        if comparison_controller.current_input and e.which in [37..40] # Reordered conditions for short-circuiting
           switch e.which
             when 37
-              console.log "left"
+              console.log "#{h1}left#{h1}"
               if comparison_controller.current_input_counter > 0
                 console.log "Message"
               else
                 comparison_controller.current_input_counter -= 1
             when 38
-              console.log "up"
-              e.preventDefault()
-              if comparison_controller.current_input_counter < comparison_controller.current_input[0].value.length
-                inputValue = comparison_controller.current_input[0].value
-                tableRow = comparison_controller.current_input[0].parentNode.parentNode
-                tableRow.children[comparison_controller.current_group].firstChild.value += inputValue[comparison_controller.current_input_counter]
+              console.log "#{h1}up#{h1}"
+#              e.preventDefault()
+              if comparison_controller.current_input_counter < comparison_controller.current_input.val().length
+                inputValue = comparison_controller.current_input.val()
+                tableRow = comparison_controller.current_input.parent().parent()
+                tableRow.children()[comparison_controller.current_group].firstChild.value += inputValue[comparison_controller.current_input_counter]
                 comparison_controller.current_input_counter += 1
 
             when 39
-              console.log "right"
-              if comparison_controller.current_input_counter < comparison_controller.current_input[0].value.length - 1
-                tableRow = comparison_controller.current_input[0].parentNode.parentNode
-                console.log tableRow.children[comparison_controller.current_group].children
-                span = tableRow.children[comparison_controller.current_group].children[1]
+              console.log "#{h1}right#{h1}"
+              console.log "current_input_counter: #{comparison_controller.current_input_counter}"
+              console.log "current_input: #{comparison_controller.current_input.val().length}"
+              if comparison_controller.current_input_counter < comparison_controller.current_input.val().length
+                tableRow = comparison_controller.current_input.parent().parent()
+                console.log tableRow.children().eq(comparison_controller.current_group).children()
+                span = tableRow.children().eq(comparison_controller.current_group).children()[1]
+                console.log "tagname #{span.tagName}"
                 if span.tagName is "SPAN"
                   console.log "new group"
-                  td = document.createElement("td")
-                  element = document.createElement("input")
-                  element.className = "form-control"
-                  element.id = "group" + (comparison_controller.current_group + 1)
-                  element.disabled = "true"
-                  td.appendChild(element)
-                  console.log tableRow
-                  console.log tableRow.children.length
-                  tableRow.insertBefore(td, tableRow.children[tableRow.children.length - 2])
-                  tableRow.children[tableRow.children.length - 3].appendChild(span)
+                  td = $('<td>')
+                  element = $('<input>')
+                  console.log "ppooop"
+                  element.addClass("form-control")
+#                  element.attr('style', "width: inherit; display: inline;")
+                  element.attr('id', 'group' + (comparison_controller.current_group + 1))
+                  element.attr('disabled', 'disabled')
+                  td.append(element)
+                  td.insertBefore(tableRow.children().eq(tableRow.children().length - 2))
+#                  element.insertBefore(span)
+                  tableRow.children().eq(tableRow.children().length - 3).append(span)
                   comparison_controller.current_group += 1
                 else
                   comparison_controller.current_input_counter += 1
             when 40
-              console.log "down"
-              e.preventDefault()
+              console.log "#{h1}down#{h1}"
+#              e.preventDefault()
               if comparison_controller.current_input_counter > 0
-                inputValue = comparison_controller.current_input[0].value
-                tableRow = comparison_controller.current_input[0].parentNode.parentNode
-                tableRow.children[comparison_controller.current_group].firstChild.value = tableRow.children[1].firstChild.value[...-1]
+                inputValue = comparison_controller.current_input.val()
+                tableRow = comparison_controller.current_input.parent().parent()
+                tableRow.children()[comparison_controller.current_group].firstChild.val(tableRow.children()[1].firstChild.val()[...-1])
                 comparison_controller.current_input_counter -= 1
             else
-              # Do nothing
-          console.log comparison_controller.current_input_counter
+            # Do nothing
+          console.log "current_input_counter: #{comparison_controller.current_input_counter}"
           comparison_controller.update_current_cell()
 
     update_current_cell: ->
       console.log "updating cell"
-      inputValue = comparison_controller.current_input[0].value
-      tableRow = comparison_controller.current_input[0].parentNode.parentNode
-      console.log inputValue[comparison_controller.current_input_counter]
+      inputValue = comparison_controller.current_input.val()
+      tableRow = comparison_controller.current_input.parent().parent()
+#      console.log inputValue[comparison_controller.current_input_counter]
       if inputValue[comparison_controller.current_input_counter] is undefined
-        tableRow.children[comparison_controller.current_group].children[1].innerHTML = "&#x2713;"
+        tableRow.children().eq(comparison_controller.current_group).children().eq(1).html("&#x2713;")
       else
-        tableRow.children[comparison_controller.current_group].children[1].innerHTML = inputValue[comparison_controller.current_input_counter]
+#        console.log tableRow.children()[comparison_controller.current_group]
+        tableRow.children().eq(comparison_controller.current_group).children().eq(1).html(inputValue[comparison_controller.current_input_counter])
 
     set_up_inputs: ->
       console.log "Adding listeners to inputs for comparison entries..."
-      $("body").on "focus","input.trans-form", (e) ->
-        console.log "setting input to: "+ e.target.name
-        comparison_controller.current_input = $ e.target
+      $("body").on "focus", "input.trans-form", (e) ->
+        console.log "setting input to: " + e.target.name
+        comparison_controller.current_input = $(e.target).first()
         comparison_controller.current_input.blur ->
           comparison_controller.current_input_counter = 0
           comparison_controller.current_group = 1

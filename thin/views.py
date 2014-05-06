@@ -297,12 +297,11 @@ def comparison_index(request):
 def comparison_detail(request, id):
     try:
         comparison = Comparison.objects.get(pk=id)
-        comparison_entries = ComparisonEntry.objects.filter(comparison=comparison)
     except Comparison.DoesNotExist:
         messages.error(request, "Can't find selected comparison.")
         return redirect('survey_detail', id)
     breadcrumb_menu = [comparison.survey.project, comparison.survey, comparison]
-    context = {'comparison': comparison, 'comparison_entries': comparison_entries, "breadcrumb_menu": breadcrumb_menu}
+    context = {'comparison': comparison, 'comparison_entries': comparison.entries.all(), "breadcrumb_menu": breadcrumb_menu}
     return render(request, 'thin/comparison_detail.html', context )
 
 
