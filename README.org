@@ -7,7 +7,9 @@ Another other trivial change to test Jenkins integration.
 Here's to hoping github edits don't count as pushes.
 
 
-Maybe this'll work part 2...
+Status for master branch:
+[[https://www.codeship.io/projects/873347f0-b77a-0131-67eb-5a685ad57897/status?branch=master]]
 
-[[https://www.codeship.io/projects/873347f0-b77a-0131-67eb-5a685ad57897/status]]
+Status for testing branch:
+[[https://www.codeship.io/projects/873347f0-b77a-0131-67eb-5a685ad57897/status?branch=testing]]
 
