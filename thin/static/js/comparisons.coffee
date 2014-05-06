@@ -1,5 +1,5 @@
 $ ->
-comparison_controller =
+  comparison_controller =
     current_input: null
     current_input_counter: 0
     current_group: 1
@@ -95,6 +95,6 @@ comparison_controller =
           comparison_controller.current_input = null
 
 
-comparison_controller.loop_through_spans()
-comparison_controller.set_up_key_listener()
-comparison_controller.set_up_inputs()
+  comparison_controller.loop_through_spans()
+  comparison_controller.set_up_key_listener()
+  comparison_controller.set_up_inputs()
