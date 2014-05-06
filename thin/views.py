@@ -65,6 +65,7 @@ def dictionary_add(request, id):
             form.save()
             messages.success(request, "Dictionary Added!")
             return redirect('project_detail', num=id)
+        messages.error(requst, "Dictionary was not created.")
     else:
         form = forms.DictionaryForm()
     breadcrumb_menu = [project]

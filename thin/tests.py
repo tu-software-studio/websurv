@@ -287,7 +287,7 @@ class VarietyTestCase(TestCase):
     def test_variety_delete_exists(self):
         response = self.client.post('/varieties/' + str(self.instance.id) + '/delete/')
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, 'http://testserver/varieties/')
+        self.assertRedirects(response, 'http://testserver/surveys/' + str(self.instance.id) + '/')
 
     def test_variety_detail_exists(self):
         response = self.client.get('/varieties/' + str(self.instance.id) + '/')
