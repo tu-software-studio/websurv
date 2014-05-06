@@ -31,18 +31,20 @@ $ ->
               alert "No input set. Click on an text box to set the input."
     set_up_inputs: ->
 #      console.log "Adding listeners to inputs..."
-      $("body").on "focusin", "input", (e) ->
+      $("body").on "focusin", "input:text", (e) ->
 #        console.log "setting input to: " + e.target.name
         ipa_controller.current_input = $ e.target
         finishIPA()
         showIPA()
-      $("body").on "focusout", "input", (e) ->
+      $("body").on "focusout", "input:text", (e) ->
         ipa_controller.current_input = null
         finishIPA()
         hideIPA()
 
-  ipa_controller.set_up_buttons()
-  ipa_controller.set_up_inputs()
+  console.log $("body").attr("no-ipa")
+  if not $("body").attr("no-ipa")
+    ipa_controller.set_up_buttons()
+    ipa_controller.set_up_inputs()
 
   $("#ipa-toggle").click (e) ->
     e.preventDefault()
