@@ -8,5 +8,6 @@ Here's to hoping github edits don't count as pushes.
 
 
 Maybe this'll work part 2...
-https://www.codeship.io/projects/873347f0-b77a-0131-67eb-5a685ad57897/status
+
+[[https://www.codeship.io/projects/873347f0-b77a-0131-67eb-5a685ad57897/status]]
 
