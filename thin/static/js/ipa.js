@@ -64,20 +64,23 @@
         return _results;
       },
       set_up_inputs: function() {
-        $("body").on("focusin", "input", function(e) {
+        $("body").on("focusin", "input:text", function(e) {
           ipa_controller.current_input = $(e.target);
           finishIPA();
           return showIPA();
         });
-        return $("body").on("focusout", "input", function(e) {
+        return $("body").on("focusout", "input:text", function(e) {
           ipa_controller.current_input = null;
           finishIPA();
           return hideIPA();
         });
       }
     };
-    ipa_controller.set_up_buttons();
-    ipa_controller.set_up_inputs();
+    console.log($("body").attr("no-ipa"));
+    if (!$("body").attr("no-ipa")) {
+      ipa_controller.set_up_buttons();
+      ipa_controller.set_up_inputs();
+    }
     return $("#ipa-toggle").click(function(e) {
       e.preventDefault();
       return toggleIPA();
