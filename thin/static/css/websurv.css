@@ -2249,7 +2249,8 @@ fieldset[disabled] .btn-success.active {
   color: #5cb85c;
   background-color: #ffffff;
 }
-.btn-info {
+.btn-info,
+div#ipa_buttons div.btn-toolbar button {
   color: #fff;
   background-color: #5bc0de;
   border-color: #46b8da;
@@ -5975,7 +5976,14 @@ ul.dash > li:before {
 /*
  * IPA Keyboard
  */
-div.btn-toolbar {
+div#ipa_buttons {
+  position: fixed;
+  z-index: 100;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+div#ipa_buttons div.btn-toolbar {
   display: inline-block;
 }
 
