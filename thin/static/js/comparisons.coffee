@@ -6,24 +6,6 @@ $ ->
     current_group: 1
     current_row: null
     align_form_counter: 0
-    loop_through_spans: ->
-      console.log("Grabbing all first letters...")
-      inputs = $ "div.trans-form"
-      spans = $ "span.current"
-      currentLetters = []
-      inputCounter = 1
-      spanCounter = 1
-      inputs[0].autofocus = true
-      for input in inputs
-        input = $(input)
-        currentLetters[inputCounter] = input.html()[0]
-        input.attr('id', inputCounter)
-        inputCounter++
-      for span in spans
-        span = $(span)
-        span.html(currentLetters[spanCounter])
-        span.parent().parent().attr('id', spanCounter)
-        spanCounter++
 
     set_up_key_listener: ->
       $("body").on "keydown", (e) ->
@@ -88,6 +70,17 @@ $ ->
           console.log "current_input_counter: #{comparison_controller.current_input_counter}"
           comparison_controller.update_current_cell()
 
+    loop_through_aligned_forms: ->
+      aligned_forms = $ "td.aligned-form"
+      for aligned_form in aligned_forms
+        aligned_form = $ aligned_form
+        element = $('<span>')
+        element.addClass("scratchpad")
+        element.html(aligned_form.html()[0])
+        console.log(element.html() + " " + element.attr('class'))
+        aligned_form.html(aligned_form.html()[1...])
+        aligned_form.prepend(element)
+
     update_current_cell: ->
       console.log "updating cell"
       inputValue = comparison_controller.current_input.html()
@@ -106,7 +99,7 @@ $ ->
         console.log "setting input to: " + e.target.id
         comparison_controller.current_input = $(e.target).first()
         comparison_controller.current_row = comparison_controller.current_input.attr('id')
-        $("table tr td").attr('style', 'background-color: #86C67C;')
+        #$("table tr td").attr('style', "background-color: #86C67C;")
         comparison_controller.current_input.blur ->
           comparison_controller.current_input_counter = 0
           comparison_controller.current_group = 1
@@ -114,7 +107,6 @@ $ ->
           comparison_controller.current_input.unbind('blur')
           comparison_controller.current_input = null
 
-
-  comparison_controller.loop_through_spans()
+  comparison_controller.loop_through_aligned_forms()
   comparison_controller.set_up_key_listener()
   comparison_controller.set_up_inputs()

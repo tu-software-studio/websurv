@@ -11,32 +11,6 @@
       current_group: 1,
       current_row: null,
       align_form_counter: 0,
-      loop_through_spans: function() {
-        var currentLetters, input, inputCounter, inputs, span, spanCounter, spans, _i, _j, _len, _len1, _results;
-        console.log("Grabbing all first letters...");
-        inputs = $("div.trans-form");
-        spans = $("span.current");
-        currentLetters = [];
-        inputCounter = 1;
-        spanCounter = 1;
-        inputs[0].autofocus = true;
-        for (_i = 0, _len = inputs.length; _i < _len; _i++) {
-          input = inputs[_i];
-          input = $(input);
-          currentLetters[inputCounter] = input.html()[0];
-          input.attr('id', inputCounter);
-          inputCounter++;
-        }
-        _results = [];
-        for (_j = 0, _len1 = spans.length; _j < _len1; _j++) {
-          span = spans[_j];
-          span = $(span);
-          span.html(currentLetters[spanCounter]);
-          span.parent().parent().attr('id', spanCounter);
-          _results.push(spanCounter++);
-        }
-        return _results;
-      },
       set_up_key_listener: function() {
         return $("body").on("keydown", function(e) {
           var element, inputValue, span, tableRow, td, _ref;
@@ -104,6 +78,22 @@
           }
         });
       },
+      loop_through_aligned_forms: function() {
+        var aligned_form, aligned_forms, element, _i, _len, _results;
+        aligned_forms = $("td.aligned-form");
+        _results = [];
+        for (_i = 0, _len = aligned_forms.length; _i < _len; _i++) {
+          aligned_form = aligned_forms[_i];
+          aligned_form = $(aligned_form);
+          element = $('<span>');
+          element.addClass("scratchpad");
+          element.html(aligned_form.html()[0]);
+          console.log(element.html() + " " + element.attr('class'));
+          aligned_form.html(aligned_form.html().slice(1));
+          _results.push(aligned_form.prepend(element));
+        }
+        return _results;
+      },
       update_current_cell: function() {
         var inputValue, tableRow;
         console.log("updating cell");
@@ -121,7 +111,6 @@
           console.log("setting input to: " + e.target.id);
           comparison_controller.current_input = $(e.target).first();
           comparison_controller.current_row = comparison_controller.current_input.attr('id');
-          $("table tr td").attr('style', 'background-color: #86C67C;');
           return comparison_controller.current_input.blur(function() {
             comparison_controller.current_input_counter = 0;
             comparison_controller.current_group = 1;
@@ -132,7 +121,7 @@
         });
       }
     };
-    comparison_controller.loop_through_spans();
+    comparison_controller.loop_through_aligned_forms();
     comparison_controller.set_up_key_listener();
     return comparison_controller.set_up_inputs();
   });

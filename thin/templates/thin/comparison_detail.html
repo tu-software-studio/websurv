@@ -11,8 +11,8 @@
         {% if comparison_entries %}
         <thead>
             <tr>
-                <th class="comp">Transcription</th>
-                <th class="comp">Current</th>
+                <th class="comp1">Transcription</th>
+                <th class="comp">1</th>
                 <th class="comp">Group</th>
                 <th class="comp">Exclude</th>
             </tr>
@@ -20,10 +20,10 @@
         {% endif %}
         {% for comparison_entry in comparison_entries %}
             <tr class="trans-form">
-              <td><div class="form-control trans-form">{{ comparison_entry.transcription.ipa }}</div></td>
-              <td><input style="width: inherit; display: inline-block;" class="form-control" id="group1" disabled="disabled"/><span class="label label-info current" id="{{ comparison_entry.id }}" style="display: inline-block;"></span></td>
-              <td><input class="form-control" size="1"></td>
-              <td align="center"><input type="checkbox"></td>
+              <td align="left" class="transcriptions"><div>{{ comparison_entry.transcription.ipa }}</div></td>
+              <td align="center" class="aligned-form">{{ comparison_entry.transcription.ipa }}</td>
+              <td class="grouping"><input class="form-control" size="1"></td>
+              <td align="center" class="exclude"><input type="checkbox"></td>
             </tr>
         {% empty %}
             <tr>

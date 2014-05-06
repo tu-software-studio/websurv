@@ -5986,3 +5986,28 @@ div#ipa_buttons {
 div#ipa_buttons div.btn-toolbar {
   display: inline-block;
 }
+
+th.comp1 {
+    text-align: left;
+}
+
+th.comp {
+    text-align: center;
+}
+
+td.transcriptions {
+    width: 5px;
+}
+
+td.grouping {
+    width: 5px;
+}
+
+td.exclude {
+    width: 5px;
+}
+
+span.scratchpad {
+    background-color: red;
+    font-weight: bold;
+}
