@@ -8,25 +8,25 @@
   var finishIPA, hideIPA, showIPA, toggleIPA;
 
   finishIPA = function() {
-    return $("#ipa_buttons").stop(true, true);
+    return $("#ipa-keyboard").stop(true, true);
   };
 
   showIPA = function() {
-    return $("#ipa_buttons").show("slide", {
+    return $("#ipa-keyboard").show("slide", {
       direction: "down",
       duration: 500
     });
   };
 
   hideIPA = function() {
-    return $("#ipa_buttons").hide("slide", {
+    return $("#ipa-keyboard").hide("slide", {
       direction: "down",
       duration: 500
     });
   };
 
   toggleIPA = function() {
-    return $("#ipa_buttons").toggle("slide", {
+    return $("#ipa-keyboard").toggle("slide", {
       direction: "down",
       duration: 500
     });
@@ -36,6 +36,7 @@
     var ipa_controller;
     ipa_controller = {
       current_input: null,
+      height: 325,
       set_up_buttons: function() {
         var button, button_div, button_divs, _i, _len, _results;
         button_divs = $("div.btn-toolbar");
@@ -49,7 +50,9 @@
             for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
               button = _ref[_j];
               button = $(button);
+              button.addClass("btn-info");
               _results1.push(button.click(function(e) {
+                console.log("input: " + ipa_controller.current_input);
                 if (ipa_controller.current_input != null) {
                   ipa_controller.current_input.val(ipa_controller.current_input.val() + $.trim(e.target.innerHTML).replace(/&nbsp;/g, ""));
                   return ipa_controller.current_input.focus();
@@ -64,21 +67,39 @@
         return _results;
       },
       set_up_inputs: function() {
-        $("body").on("focusin", "input:text:not([readonly])", function(e) {
-          ipa_controller.current_input = $(e.target);
-          finishIPA();
-          return showIPA();
+        return $("body").on("focusin", "input:text:not([readonly])", function(e) {
+          console.log("setting input to: " + e.target.name);
+          return ipa_controller.current_input = $(e.target);
         });
-        return $("body").on("focusout", "input:text", function(e) {
-          ipa_controller.current_input = null;
-          finishIPA();
-          return hideIPA();
+      },
+      set_up_toggler: function() {
+        $('#ipa-keyboard').css('height', '30px');
+        $('#ipa-keys').css('visibility', 'hidden');
+        return $('#ipa-toggler').click(function() {
+          if ($('#ipa-keys').css('visibility') === 'hidden') {
+            $('#ipa-keys').css('visibility', '');
+            return $('#ipa-keyboard').animate({
+              height: ipa_controller.height
+            }, 400, 'swing', function() {
+              $('#ipa-toggler span').removeClass('rotate-180');
+              return $('#ipa-toggler span').addClass('rotate-0');
+            });
+          } else {
+            ipa_controller.height = $('#ipa-keyboard').height();
+            return $('#ipa-keyboard').animate({
+              height: '30px'
+            }, 400, 'swing', function() {
+              $('#ipa-keys').css('visibility', 'hidden');
+              $('#ipa-toggler span').removeClass('rotate-0');
+              return $('#ipa-toggler span').addClass('rotate-180');
+            });
+          }
         });
       }
     };
-    console.log($("body").attr("no-ipa"));
     if (!$("body").attr("no-ipa")) {
       ipa_controller.set_up_buttons();
+      ipa_controller.set_up_toggler();
       ipa_controller.set_up_inputs();
     }
     return $("#ipa-toggle").click(function(e) {

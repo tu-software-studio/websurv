@@ -1,4 +1,5 @@
-@import (less) "bootstrap.min.css";
+@import (less) "bootstrap/bootstrap.less";
+@import "variables";
 
 html, body {
   height: 100%;
@@ -48,7 +49,7 @@ html, body {
  */
 
 footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
 }
@@ -129,16 +130,50 @@ ul.dash > li:before {
  * IPA Keyboard
  */
 
-div#ipa_buttons {
+div#ipa-keyboard {
+  pointer-events: none;
   position: fixed;
-  z-index: 100;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  div.btn-toolbar {
+  bottom: 36px;
+  width:100%;
+//  z-index: 1;
+  margin: 0 auto;
+  text-align: center;
+  div#ipa-buttons {
+    pointer-events: auto;
+    padding: 10px;
+    padding-top: 0px;
+    border-radius: 10px 10px 0 0;
+//    z-index: -1;
+    background-color: #222;
     display: inline-block;
-    button {
-      &:extend(.btn-info);
+    div.arrow {
+      color: white;
+      padding: 15px;
+      margin-left: -10px;
+      margin-right: -10px;
+      margin-bottom: 5px;
+      border-radius: 10px 10px 0 0;
+      cursor: pointer;
+      background-color: @brand-primary;
+      &:hover {
+        background-color: lighten(@brand-primary, 10%);
+      }
+    }
+    div.btn-toolbar {
+      display: inline-block;
     }
   }
+}
+
+.rotate-0, .rotate-90, .rotate-180 {
+  transform: rotate(0deg);
+  transition: transform 2s;
+}
+
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
 }
