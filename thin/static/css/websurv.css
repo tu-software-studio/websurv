@@ -5986,11 +5986,3 @@ div#ipa_buttons {
 div#ipa_buttons div.btn-toolbar {
   display: inline-block;
 }
-
-th.comp {
-    text-align: center;
-}
-
-span.current {
-    font-size: 20px;
-}
