@@ -7,7 +7,7 @@ from . import factories
 from backend.models import Comparison, Dictionary, Gloss, PartOfSpeech, Project, Survey, Variety
 
 class SessionsTestCase(TestCase):
-    def test_sessions_login_exists(self):
+    def test_sessons_login_exists(self):
         """ 
         Ensure login page exists. We'll assume it
         works, since it's django's stuff.
@@ -95,17 +95,17 @@ class DictionaryTestCase(TestCase):
 
     # TODO: I'm here.
     def test_dictionary_delete_exists(self):
-        response = self.client.post('/dictionaries/1/delete')
+        response = self.client.post('/dictionaries/' + str(self.instance.id) + '/delete')
         # Status code should be 301 since we want a redirect
         self.assertEqual(response.status_code, 301)
-        self.assertRedirects(response.status_code, 302,  'http://testserver/dictionaries/1/delete/')
+        self.assertRedirects(response, '/projects/' + str(self.instance.project.id))
         
     def test_dictionary_delete_removes_dictionary(self):
         """ Tests that the dictionary_delete view deletes a dicionary. """
-        num_dicts = self.instance.project.dictionaries.count()
+        num_dicts = len(self.instance.project.dictionaries.all())
         self.client.post('/dictionaries/' + str(self.instance.id) + '/delete/')
-        response = self.client.get('/dictionaries/')
-        self.assertEqual(len(response.context['dictionary_list']), num_dicts - 1)
+        response = self.client.get('/dictionaries/' + str(self.instance.project.id))
+        self.assertEqual(response.context['dictionaries'], num_dicts - 1)
 
     def test_dictionary_detail_exists(self):
         response = self.client.get('/dictionaries/' + str(self.instance.id) + '/')
@@ -121,8 +121,9 @@ class DictionaryTestCase(TestCase):
 
     def test_dictionary_index_contains_dictionary(self):
         factories.DictionaryFactory(project=self.instance.project)
-        response = self.client.get('/dictionaries/')
-        self.assertEqual(len(response.context['dictionary_list']), 2)
+        response = self.client.get('/dictionaries/' + str(self.instance.project.id))
+        print(response)
+        self.assertEqual(response.context['dictionaries'], 2)
 
 
 class GlossTestCase(TestCase):
@@ -181,7 +182,7 @@ class ProjectTestCase(TestCase):
 
     def test_project_detail(self):
         """ Test project detail properly displays project """
-        response = self.client.post('/projects/' + str(self.instance.id) + '/')
+        response = self.client.get('/projects/' + str(self.instance.id) + '/')
         self.assertEqual(response.status_code, 200)
 
         # Test response includes project.name
@@ -189,7 +190,7 @@ class ProjectTestCase(TestCase):
 
         # Test for edit link
         # TODO: find how to better test for a link.
-        self.assertContains(response, "href='/projects/" + str(self.instance.id) + "/edit/'")
+        self.assertContains(response, 'href="edit"')
 
         # If no dictionaries, tell the user
         self.assertContains(response, 'There are currently no dictionaries for this project.')
@@ -226,7 +227,7 @@ class ProjectTestCase(TestCase):
         self.instance.delete()
         response = self.client.get('/projects/')
         self.assertEqual(len(response.context['project_list']), 0)
-        self.assertContains(response.errors, 'There are currently no projects.')
+        self.assertContains(response, "There are no projects.")
 
         # Now add some projects and test for stuff
         num_projects = 15
@@ -246,7 +247,7 @@ class SurveyTestCase(TestCase):
         self.instance = factories.SurveyFactory()
 
     def test_survey_add_exists(self):
-        response = self.client.get('/surveys/add/1')
+        response = self.client.get('/surveys/add/' + str(self.instance.project.id))
         self.assertEqual(response.status_code, 200)
 
     def test_survey_delete_exists(self):
@@ -272,7 +273,7 @@ class TranscriptionTestCase(TestCase):
         self.instance = factories.TranscriptionFactory()
 
     def test_transcription_add_exists(self):
-        response = self.client.get('/transcriptions/add/')
+        response = self.client.get('/transcriptions/add/' + str(self.instance.variety.id))
         self.assertEqual(response.status_code, 200)
 
 class VarietyTestCase(TestCase):
