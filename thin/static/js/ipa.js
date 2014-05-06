@@ -64,7 +64,7 @@
         return _results;
       },
       set_up_inputs: function() {
-        $("body").on("focusin", "input:text", function(e) {
+        $("body").on("focusin", "input:text:not([readonly])", function(e) {
           ipa_controller.current_input = $(e.target);
           finishIPA();
           return showIPA();

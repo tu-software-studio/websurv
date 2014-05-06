@@ -31,7 +31,7 @@ $ ->
               alert "No input set. Click on an text box to set the input."
     set_up_inputs: ->
 #      console.log "Adding listeners to inputs..."
-      $("body").on "focusin", "input:text", (e) ->
+      $("body").on "focusin", "input:text:not([readonly])", (e) ->
 #        console.log "setting input to: " + e.target.name
         ipa_controller.current_input = $ e.target
         finishIPA()
