@@ -156,6 +156,8 @@ def project_detail(request, id):
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
+    if len(dictionaries<1):
+        messages.error(request, 'There are currently no dictionaries for this project.')
     return render(request, 'thin/project_detail.html',
                   {'project': project, 'dictionaries': dictionaries, 'surveys': surveys, 'breadcrumb_menu': breadcrumb_menu})
 

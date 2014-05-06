@@ -19,7 +19,7 @@ class SessionsTestCase(TestCase):
         """ Ensure logout exists and redirects to / """
         response = self.client.get('/logout/')
         self.assertEquals(response.status_code, 302)
-        self.assertRedirects(response, '/')
+        self.assertRedirects(response, '/projects/')
 
 
 class HomeTestCase(TestCase):
