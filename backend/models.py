@@ -142,7 +142,7 @@ class Transcription(models.Model):
 
 class Comparison(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     survey = models.ForeignKey(Survey, related_name='comparisons')
     created_at = models.DateTimeField(auto_now_add=True)
 
