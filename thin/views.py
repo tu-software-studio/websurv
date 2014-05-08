@@ -205,13 +205,21 @@ def variety_index(request):
 def variety_detail(request, id):
     try:
         variety = Variety.objects.get(pk=id)
+        surveyglosses = list(variety.survey.glosses.all())
         transcripts = Transcription.objects.filter(variety=variety)
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected variety.")
         return redirect('variety_index')
+    transcriptglosses=[]
+    surveyglosscopy=surveyglosses[:]
+    for transcript in transcripts:
+        transcriptglosses.append(transcript.gloss)
+    for gloss in surveyglosscopy:
+        if gloss in transcriptglosses:
+            surveyglosses.remove(gloss)
     breadcrumb_menu = [variety.survey.project, variety.survey, variety]
     return render(request, 'thin/variety_detail.html',
-                  {'variety': variety, 'transcripts': transcripts, 'breadcrumb_menu': breadcrumb_menu})
+                  {'variety': variety, 'transcripts': transcripts, 'surveyglosses' : surveyglosses, 'breadcrumb_menu': breadcrumb_menu})
 
 
 def variety_edit(request, id):
@@ -371,19 +379,21 @@ def transcription_edit(request, id):
     return render(request, 'thin/transcription_edit.html', {'form': form, 'transcription': transcription, 'breadcrumb_menu': breadcrumb_menu})
 
 
-#form = forms.VarietyForm(request.POST, instance=variety)
-
-
 def transcription_add(request, id):
     """
     Lists all of the glosses in a survey's variety that do
     not already have transcriptions entered into the database
     """
     variety = Variety.objects.get(pk=id)
-
-    gloss_list = variety.survey.glosses.all()
+    gloss_list = list(variety.survey.glosses.all())
+    transcription_list = variety.transcriptions.all()
+    for x in transcription_list: #only has glosses that don't have transcriptions in the gloss_list
+        if x.gloss in gloss_list:
+            gloss_list.remove(x.gloss)
+    if len(gloss_list)==0: #If all of glosses have transcriptions then you can't add any more
+        messages.error(request,"No transcriptions left to add in survey")
+        return redirect('variety_detail', id=id)
     formset = formset_factory(forms.TranscriptionForm, extra=len(gloss_list))
-    #ipdb.set_trace()
     if request.method == "POST":
         formset = formset(request.POST)
         if formset.is_valid():
@@ -398,3 +408,23 @@ def transcription_add(request, id):
         return redirect('variety_detail', id=id)
     breadcrumb_menu = [variety.survey.project, variety.survey, variety]
     return render(request, 'thin/transcription_add.html', {'formset': formset, 'id': id, 'gloss_list': gloss_list, 'breadcrumb_menu': breadcrumb_menu})
+
+def transcription_edit(request, id):
+    """
+    Lets a single transcription IPA to be editted
+    """
+    try:
+        transcription = Transcription.objects.get(pk=id)
+    except Transcription.DoesNotExist:
+        messages.error(request, "Can't find selected transcription.")
+        return redirect('transcription_index')
+    if request.method == 'POST':  # If the form has been submitted
+        form = forms.TranscriptionForm(request.POST, instance=transcription)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Transcription has been editted successfully!")
+            return redirect('variety_detail', id=transcription.variety.id)
+    else:
+        form = forms.TranscriptionForm(instance=transcription)
+    breadcrumb_menu = [transcription.variety.survey.project, transcription.variety.survey, transcription.variety, transcription]
+    return render(request, 'thin/transcription_edit.html', {'form': form, 'transcription': transcription, 'breadcrumb_menu': breadcrumb_menu})
