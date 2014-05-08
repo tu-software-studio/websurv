@@ -71,16 +71,25 @@ def dictionary_add(request, id):
     breadcrumb_menu = [project]
     return render(request, 'thin/dictionary_add.html', {'form': form, 'breadcrumb_menu': breadcrumb_menu})
 
+import ipdb 
+
+# def dictionary_delete(request, id):
+#     ipdb.set_trace()
+#     try:
+#         dictionary = Dictionary.objects.get(pk=id)
+#     except Dictionary.DoesNotExist:
+#         messages.error(request, "Can't find the selected dictionary")
+#         return redirect('dictionary_index')
+#     dictionary.delete()
+#     messages.success(request, "Dictionary has been deleted!")
+#     #return redirect('project_detail', id=dictionary.project.id)
+#     return redirect('project_index')
 
 def dictionary_delete(request, id):
-    try:
-        dictionary = Dictionary.objects.get(pk=id)
-    except Dictionary.DoesNotExist:
-        messages.error(request, "Can't find the selected dictionary")
-        return redirect('dictionary_index')
+    dictionary = Dictionary.objects.get(pk=id)
     dictionary.delete()
     messages.success(request, "Dictionary has been deleted!")
-    return redirect('project_detail', id=dictionary.project_id)
+    return redirect('project_detail',id=dictionary.project.id)
 
 
 def survey_index(request):
