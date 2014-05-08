@@ -14,7 +14,7 @@ class ProjectFactory(factory.django.DjangoModelFactory):
 class LanguageFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = models.Language
 
-    name = 'English'
+    name = factory.Sequence(lambda n: 'Test Language {0}'.format(n))
     iso_code = 'USA'
 
 
@@ -31,7 +31,7 @@ class SurveyFactory(factory.django.DjangoModelFactory):
 
     name = factory.Sequence(lambda n: 'Test Survey {0}'.format(n))
     full_title = factory.LazyAttribute(lambda a: 'Full Title For {0}'.format(a.name))
-    dictionary = factory.SubFactory(DictionaryFactory)
+    project = factory.SubFactory(ProjectFactory)
 
 
 class VarietyFactory(factory.django.DjangoModelFactory):
@@ -52,8 +52,7 @@ class ComparisonFactory(factory.django.DjangoModelFactory):
 class PartOfSpeechFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = models.PartOfSpeech
 
-    name = 'noun'
-
+    name = 'Noun'
 
 class GlossFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = models.Gloss
@@ -64,3 +63,11 @@ class GlossFactory(factory.django.DjangoModelFactory):
     dictionary = factory.SubFactory(DictionaryFactory)
     field_tip = factory.Sequence(lambda n: 'field tip {0}'.format(n))
     comment_tip = factory.Sequence(lambda n: 'comment tip {0}'.format(n))
+
+class TranscriptionFactory(factory.django.DjangoModelFactory):
+    FACTORY_FOR = models.Transcription
+
+    ipa = factory.Sequence(lambda n: 'ipa {0}'.format(n))
+    gloss = factory.SubFactory(GlossFactory)
+    variety = factory.SubFactory(VarietyFactory)
+    
