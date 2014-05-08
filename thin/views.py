@@ -65,13 +65,11 @@ def dictionary_add(request, id):
             form.save()
             messages.success(request, "Dictionary Added!")
             return redirect('dictionary_detail', id=form.instance.id)
-        messages.error(requst, "Dictionary was not created.")
+        messages.error(request, "Dictionary was not created.")
     else:
         form = forms.DictionaryForm()
     breadcrumb_menu = [project]
     return render(request, 'thin/dictionary_add.html', {'form': form, 'breadcrumb_menu': breadcrumb_menu})
-
-import ipdb 
 
 # def dictionary_delete(request, id):
 #     ipdb.set_trace()
