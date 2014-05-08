@@ -7,12 +7,12 @@
   <h3 class="panel-title">{{comparison.name}}</h3>
   <a href="{% url 'comparison_edit' comparison.id %}" class="btn btn-primary btn-xs pull-right"> Edit </a></li>
 </div>
-    <table class="table table-striped" style="cursor: pointer;">
+    <table class="table table-striped table-hover" style="cursor: pointer;">
         {% if comparison_entries %}
         <thead>
             <tr>
                 <th class="comp1">Transcription</th>
-                <th class="comp">1</th>
+                <th align="left">1</th>
                 <th class="comp">Group</th>
                 <th class="comp">Exclude</th>
             </tr>
@@ -21,7 +21,7 @@
         {% for comparison_entry in comparison_entries %}
             <tr class="trans-form">
               <td align="left" class="transcriptions"><div>{{ comparison_entry.transcription.ipa }}</div></td>
-              <td align="center" class="aligned-form">{{ comparison_entry.transcription.ipa }}</td>
+              <td align="left" class="aligned-form"></td>
               <td class="grouping"><input class="form-control" size="1"></td>
               <td align="center" class="exclude"><input type="checkbox"></td>
             </tr>

@@ -6008,6 +6008,7 @@ td.exclude {
 }
 
 span.scratchpad {
-    background-color: red;
+    font-size: 15px;
     font-weight: bold;
+    margin: 5px;
 }
