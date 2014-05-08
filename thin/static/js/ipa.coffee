@@ -24,7 +24,7 @@ $ ->
       for button_div in button_divs
         for button in $(button_div).find "button"
           button = $ button
-          button.addClass("btn-info")
+          button.addClass("btn-danger")
           button.click (e) ->
             console.log "input: #{ipa_controller.current_input}"
             if ipa_controller.current_input?
@@ -53,20 +53,17 @@ $ ->
       $('#ipa-toggler').click ->
         if $('#ipa-keys').css('visibility') == 'hidden'
           $('#ipa-keys').css('visibility', '')
+          $('#ipa-toggler span.caret').switchClass('rotate-180','rotate-0')
           $('#ipa-keyboard').animate({
             height: ipa_controller.height
-          }, 400, 'swing', ->
-            $('#ipa-toggler span').removeClass('rotate-180')
-            $('#ipa-toggler span').addClass('rotate-0')
-          )
+          })
         else
           ipa_controller.height = $('#ipa-keyboard').height()
+          $('#ipa-toggler span.caret').switchClass('rotate-0','rotate-180')
           $('#ipa-keyboard').animate({
             height: '30px'
           }, 400, 'swing', ->
             $('#ipa-keys').css('visibility', 'hidden')
-            $('#ipa-toggler span').removeClass('rotate-0')
-            $('#ipa-toggler span').addClass('rotate-180')
           )
 #        hideIPA()
   if not $("body").attr("no-ipa")

@@ -50,7 +50,7 @@
             for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
               button = _ref[_j];
               button = $(button);
-              button.addClass("btn-info");
+              button.addClass("btn-danger");
               _results1.push(button.click(function(e) {
                 console.log("input: " + ipa_controller.current_input);
                 if (ipa_controller.current_input != null) {
@@ -78,20 +78,17 @@
         return $('#ipa-toggler').click(function() {
           if ($('#ipa-keys').css('visibility') === 'hidden') {
             $('#ipa-keys').css('visibility', '');
+            $('#ipa-toggler span.caret').switchClass('rotate-180', 'rotate-0');
             return $('#ipa-keyboard').animate({
               height: ipa_controller.height
-            }, 400, 'swing', function() {
-              $('#ipa-toggler span').removeClass('rotate-180');
-              return $('#ipa-toggler span').addClass('rotate-0');
             });
           } else {
             ipa_controller.height = $('#ipa-keyboard').height();
+            $('#ipa-toggler span.caret').switchClass('rotate-0', 'rotate-180');
             return $('#ipa-keyboard').animate({
               height: '30px'
             }, 400, 'swing', function() {
-              $('#ipa-keys').css('visibility', 'hidden');
-              $('#ipa-toggler span').removeClass('rotate-0');
-              return $('#ipa-toggler span').addClass('rotate-180');
+              return $('#ipa-keys').css('visibility', 'hidden');
             });
           }
         });

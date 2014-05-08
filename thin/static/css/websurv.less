@@ -133,7 +133,7 @@ ul.dash > li:before {
 div#ipa-keyboard {
   pointer-events: none;
   position: fixed;
-  bottom: 36px;
+  bottom: 26px;
   width:100%;
 //  z-index: 1;
   margin: 0 auto;
@@ -148,7 +148,7 @@ div#ipa-keyboard {
     display: inline-block;
     div.arrow {
       color: white;
-      padding: 15px;
+      position: relative;
       margin-left: -10px;
       margin-right: -10px;
       margin-bottom: 5px;
@@ -158,6 +158,25 @@ div#ipa-keyboard {
       &:hover {
         background-color: lighten(@brand-primary, 10%);
       }
+      span.text {
+        padding: none;
+        margin-top: -5px;
+        font-size: .8em;
+      }
+      .caret {
+        position: absolute;
+        right: 10px;
+        top: 6px;
+        @size: 7px;
+        display: inline-block;
+        width: 0;
+        height: 0;
+        margin-left: -10px;
+        vertical-align: middle;
+        border-top: @size solid;
+        border-right: @size solid transparent;
+        border-left: @size solid transparent;
+      }
     }
     div.btn-toolbar {
       display: inline-block;
@@ -166,14 +185,23 @@ div#ipa-keyboard {
 }
 
 .rotate-0, .rotate-90, .rotate-180 {
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
   transform: rotate(0deg);
-  transition: transform 2s;
+  @speed: .5s;
+  -webkit-transition: transform @speed;
+  -moz-transition: transform @speed;
+  transition: transform @speed;
 }
 
 .rotate-90 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
 .rotate-180 {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
   transform: rotate(180deg);
 }
