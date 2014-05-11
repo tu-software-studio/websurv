@@ -1,259 +1,264 @@
 {% load static from staticfiles %}
 <script src="{% static 'js/ipa.js' %}"></script>
-<div id="ipa_buttons" style="text-align: center; display: none;">
+<div id="ipa-keyboard">
+<div id="ipa-buttons">
+  <div id="ipa-toggler" class="arrow"><span class="text">IPA Keyboard</span><span class="caret pull-right rotate-180"></span></div>
+  <div id="ipa-keys">
   <div class="btn-toolbar">
     <span class="btn-group btn-group-sm">
-      <button name="a script" type="button" title="open back unrounded vowel (Ctrl+A)" class="btn btn-default">ɑ</button>
-      <button name="ae ipa" type="button" title="near-open front unrounded vowel (Ctrl+AA)" class="btn btn-default">æ</button>
-      <button name="a upside" type="button" title="near-open central vowel (Ctrl+AAA)" class="btn btn-default">ɐ</button>
-      <button name="a script nasalized" type="button" title="nasalized open back unrounded vowel (Ctrl+AAAA)" class="btn btn-default">ɑ̃</button>
+      <button name="a script" type="button" title="open back unrounded vowel (Ctrl+A)" class="btn">ɑ</button>
+      <button name="ae ipa" type="button" title="near-open front unrounded vowel (Ctrl+AA)" class="btn">æ</button>
+      <button name="a upside" type="button" title="near-open central vowel (Ctrl+AAA)" class="btn">ɐ</button>
+      <button name="a script nasalized" type="button" title="nasalized open back unrounded vowel (Ctrl+AAAA)" class="btn">ɑ̃</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="beta" type="button" title="voiced bilabial fricative (Ctrl+B)" class="btn btn-default">β</button>
-      <button name="b hook" type="button" title="voiced bilabial implosive (Ctrl+BB)" class="btn btn-default">ɓ</button>
-      <button name="B small" type="button" title="bilabial trill (Ctrl+BBB)" class="btn btn-default">ʙ</button>
+      <button name="beta" type="button" title="voiced bilabial fricative (Ctrl+B)" class="btn">β</button>
+      <button name="b hook" type="button" title="voiced bilabial implosive (Ctrl+BB)" class="btn">ɓ</button>
+      <button name="B small" type="button" title="bilabial trill (Ctrl+BBB)" class="btn">ʙ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="c loop" type="button" title="voiceless alveo-palatal fricative (Ctrl+C)" class="btn btn-default">ɕ</button>
-      <button name="c cedil ipa" type="button" title="voiceless palatal fricative (Ctrl+CC)" class="btn btn-default">ç</button>
+      <button name="c loop" type="button" title="voiceless alveo-palatal fricative (Ctrl+C)" class="btn">ɕ</button>
+      <button name="c cedil ipa" type="button" title="voiceless palatal fricative (Ctrl+CC)" class="btn ">ç</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="eth ipa" type="button" title="voiced dental fricative (Ctrl+D)" class="btn btn-default">ð</button>
-      <button name="dzh" type="button" title="voiced postalveolar affricate (Ctrl+DD)" class="btn btn-default">d͡ʒ</button>
-      <button name="d hook low" type="button" title="voiced retroflex plosive (Ctrl+DDD)" class="btn btn-default">ɖ</button>
-      <button name="d hook high" type="button" title="voiced alveolar implosive (Ctrl+DDDD)" class="btn btn-default">ɗ</button>
+      <button name="eth ipa" type="button" title="voiced dental fricative (Ctrl+D)" class="btn">ð</button>
+      <button name="dzh" type="button" title="voiced postalveolar affricate (Ctrl+DD)" class="btn">d͡ʒ</button>
+      <button name="d hook low" type="button" title="voiced retroflex plosive (Ctrl+DDD)" class="btn">ɖ</button>
+      <button name="d hook high" type="button" title="voiced alveolar implosive (Ctrl+DDDD)" class="btn">ɗ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="schwa" type="button" title="mid-central vowel (Ctrl+E)" class="btn btn-default">ə</button>
-      <button name="schwa rhotic" type="button" title="rhotacized mid-central vowel (Ctrl+EE)" class="btn btn-default">ɚ</button>
-      <button name="schwa closed" type="button" title="close-mid central rounded vowel (Ctrl+EEE)" class="btn btn-default">ɵ</button>
-      <button name="schwa upside" type="button" title="close-mid central unrounded vowel (Ctrl+EEEE)" class="btn btn-default">ɘ</button>
+      <button name="schwa" type="button" title="mid-central vowel (Ctrl+E)" class="btn">ə</button>
+      <button name="schwa rhotic" type="button" title="rhotacized mid-central vowel (Ctrl+EE)" class="btn">ɚ</button>
+      <button name="schwa closed" type="button" title="close-mid central rounded vowel (Ctrl+EEE)" class="btn">ɵ</button>
+      <button name="schwa upside" type="button" title="close-mid central unrounded vowel (Ctrl+EEEE)" class="btn">ɘ</button>
     </span>
   </div><br/>
   <div class="btn-toolbar">
     <span class="btn-group btn-group-sm">
-      <button name="epsilon" type="button" title="open-mid front unrounded vowel (Ctrl+3)" class="btn btn-default">ɛ</button>
-      <button name="epsilon flipped" type="button" title="open-mid central unrounded vowel (Ctrl+33)" class="btn btn-default">ɜ</button>
-      <button name="epsilon flipped rhotic" type="button" title="rhotacized open-mid central unrounded vowel (Ctrl+333)" class="btn btn-default">ɝ</button>
-      <button name="epsilon nasalized" type="button" title="nasalized open-mid front unrounded vowel (Ctrl+3333)" class="btn btn-default">ɛ̃</button>
-      <button name="epsilon flipped closed" type="button" title="open-mid central rounded vowel (Ctrl+33333)" class="btn btn-default">ɞ</button>
+      <button name="epsilon" type="button" title="open-mid front unrounded vowel (Ctrl+3)" class="btn">ɛ</button>
+      <button name="epsilon flipped" type="button" title="open-mid central unrounded vowel (Ctrl+33)" class="btn">ɜ</button>
+      <button name="epsilon flipped rhotic" type="button" title="rhotacized open-mid central unrounded vowel (Ctrl+333)" class="btn">ɝ</button>
+      <button name="epsilon nasalized" type="button" title="nasalized open-mid front unrounded vowel (Ctrl+3333)" class="btn">ɛ̃</button>
+      <button name="epsilon flipped closed" type="button" title="open-mid central rounded vowel (Ctrl+33333)" class="btn">ɞ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="g hook" type="button" title="voiced velar implosive (Ctrl+G)" class="btn btn-default">ɠ</button>
-      <button name="G small" type="button" title="voiced uvular plosive (Ctrl+GG)" class="btn btn-default">ɢ</button>
-      <button name="G small hook" type="button" title="voiced uvular implosive (Ctrl+GGG)" class="btn btn-default">ʛ</button>
+      <button name="g hook" type="button" title="voiced velar implosive (Ctrl+G)" class="btn">ɠ</button>
+      <button name="G small" type="button" title="voiced uvular plosive (Ctrl+GG)" class="btn">ɢ</button>
+      <button name="G small hook" type="button" title="voiced uvular implosive (Ctrl+GGG)" class="btn">ʛ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="h upside" type="button" title="labial-palatal approximant (Ctrl+H)" class="btn btn-default">ɥ</button>
-      <button name="h hook" type="button" title="voiced glottal fricative (Ctrl+HH)" class="btn btn-default">ɦ</button>
-      <button name="h barred" type="button" title="voiceless pharyngeal fricative (Ctrl+HHH)" class="btn btn-default">ħ</button>
-      <button name="h low hook" type="button" title="Sje-sound (Ctrl+HHHH)" class="btn btn-default">ɧ</button>
-      <button name="H small" type="button" title="voiceless epiglottal fricative (Ctrl+HHHHH)" class="btn btn-default">ʜ</button>
+      <button name="h upside" type="button" title="labial-palatal approximant (Ctrl+H)" class="btn">ɥ</button>
+      <button name="h hook" type="button" title="voiced glottal fricative (Ctrl+HH)" class="btn">ɦ</button>
+      <button name="h barred" type="button" title="voiceless pharyngeal fricative (Ctrl+HHH)" class="btn">ħ</button>
+      <button name="h low hook" type="button" title="Sje-sound (Ctrl+HHHH)" class="btn">ɧ</button>
+      <button name="H small" type="button" title="voiceless epiglottal fricative (Ctrl+HHHHH)" class="btn">ʜ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="I small" type="button" title="near-close near-front unrounded vowel (Ctrl+I)" class="btn btn-default">ɪ</button>
-      <button name="schwi" type="button" title="near-close central unrounded vowel (Ctrl+II)" class="btn btn-default">ɪ̈</button>
-      <button name="i barred" type="button" title="close central unrounded vowel (Ctrl+III)" class="btn btn-default">ɨ</button>
+      <button name="I small" type="button" title="near-close near-front unrounded vowel (Ctrl+I)" class="btn">ɪ</button>
+      <button name="schwi" type="button" title="near-close central unrounded vowel (Ctrl+II)" class="btn">ɪ̈</button>
+      <button name="i barred" type="button" title="close central unrounded vowel (Ctrl+III)" class="btn">ɨ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="j loop" type="button" title="voiced palatal fricative (Ctrl+J)" class="btn btn-default">ʝ</button>
-      <button name="j barred" type="button" title="voiced palatal plosive (Ctrl+JJ)" class="btn btn-default">ɟ</button>
-      <button name="j mirrored" type="button" title="voiced palatal implosive (Ctrl+JJJ)" class="btn btn-default">ʄ</button>
-    </span>
-  </div><br/>
-  <div class="btn-toolbar">
-    <span class="btn-group btn-group-sm">
-      <button name="l wave" type="button" title="velarized alveolar lateral approximant (Ctrl+L)" class="btn btn-default">ɫ</button>
-      <button name="l loop" type="button" title="voiceless alveolar lateral fricative (Ctrl+LL)" class="btn btn-default">ɬ</button>
-      <button name="L small" type="button" title="velar lateral approximant (Ctrl+LLL)" class="btn btn-default">ʟ</button>
-      <button name="l long" type="button" title="retroflex lateral approximant (Ctrl+LLLL)" class="btn btn-default">ɭ</button>
-      <button name="lzh" type="button" title="voiced alveolar lateral fricative (Ctrl+LLLLL)" class="btn btn-default">ɮ</button>
-    </span>
-    <span class="btn-group btn-group-sm">
-      <button name="m hook" type="button" title="labiodental nasal (Ctrl+M)" class="btn btn-default">ɱ</button>
-    </span>
-    <span class="btn-group btn-group-sm">
-      <button name="ng" type="button" title="velar nasal (Ctrl+N)" class="btn btn-default">ŋ</button>
-      <button name="n hook left" type="button" title="palatal nasal (Ctrl+NN)" class="btn btn-default">ɲ</button>
-      <button name="N small" type="button" title="uvular nasal (Ctrl+NNN)" class="btn btn-default">ɴ</button>
-      <button name="n hook right" type="button" title="retroflex nasal (Ctrl+NNNN)" class="btn btn-default">ɳ</button>
-    </span>
-    <span class="btn-group btn-group-sm">
-      <button name="o open" type="button" title="open-mid back rounded vowel (Ctrl+O)" class="btn btn-default">ɔ</button>
-      <button name="oe ipa" type="button" title="open-mid front rounded vowel (Ctrl+OO)" class="btn btn-default">œ</button>
-      <button name="o stroke ipa" type="button" title="close-mid front rounded vowel (Ctrl+OOO)" class="btn btn-default">ø</button>
-      <button name="a script upside" type="button" title="open back rounded vowel (Ctrl+OOOO)" class="btn btn-default">ɒ</button>
-      <button name="o open nasalized" type="button" title="nasalized open-mid back rounded vowel (Ctrl+OOOOO)" class="btn btn-default">ɔ̃</button>
-      <button name="OE small" type="button" title="open front rounded vowel (Ctrl+OOOOOO)" class="btn btn-default">ɶ</button>
-    </span>
-    <span class="btn-group btn-group-sm">
-      <button name="phi" type="button" title="voiceless bilabial fricative (Ctrl+P)" class="btn btn-default">ɸ</button>
+      <button name="j loop" type="button" title="voiced palatal fricative (Ctrl+J)" class="btn">ʝ</button>
+      <button name="j barred" type="button" title="voiced palatal plosive (Ctrl+JJ)" class="btn">ɟ</button>
+      <button name="j mirrored" type="button" title="voiced palatal implosive (Ctrl+JJJ)" class="btn">ʄ</button>
     </span>
   </div><br/>
   <div class="btn-toolbar">
     <span class="btn-group btn-group-sm">
-      <button name="r tap" type="button" title="alveolar tap (Ctrl+R)" class="btn btn-default">ɾ</button>
-      <button name="R small upside" type="button" title="voiced uvular fricative (Ctrl+RR)" class="btn btn-default">ʁ</button>
-      <button name="r upside" type="button" title="alveolar approximant (Ctrl+RRR)" class="btn btn-default">ɹ</button>
-      <button name="r upside hook" type="button" title="retroflex approximant (Ctrl+RRRR)" class="btn btn-default">ɻ</button>
-      <button name="R small" type="button" title="uvular trill (Ctrl+RRRRR)" class="btn btn-default">ʀ</button>
-      <button name="r hook" type="button" title="retroflex flap (Ctrl+RRRRRR)" class="btn btn-default">ɽ</button>
-      <button name="r upside long" type="button" title="alveolar lateral flap (Ctrl+RRRRRRR)" class="btn btn-default">ɺ</button>
+      <button name="l wave" type="button" title="velarized alveolar lateral approximant (Ctrl+L)" class="btn">ɫ</button>
+      <button name="l loop" type="button" title="voiceless alveolar lateral fricative (Ctrl+LL)" class="btn">ɬ</button>
+      <button name="L small" type="button" title="velar lateral approximant (Ctrl+LLL)" class="btn">ʟ</button>
+      <button name="l long" type="button" title="retroflex lateral approximant (Ctrl+LLLL)" class="btn">ɭ</button>
+      <button name="lzh" type="button" title="voiced alveolar lateral fricative (Ctrl+LLLLL)" class="btn">ɮ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="sh" type="button" title="voiceless postalveolar fricative (Ctrl+S)" class="btn btn-default">ʃ</button>
-      <button name="s hook" type="button" title="voiceless retroflex fricative (Ctrl+SS)" class="btn btn-default">ʂ</button>
+      <button name="m hook" type="button" title="labiodental nasal (Ctrl+M)" class="btn">ɱ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="theta" type="button" title="voiceless dental fricative (Ctrl+T)" class="btn btn-default">θ</button>
-      <button name="tsh" type="button" title="voiceless postalveolar affricate (Ctrl+TT)" class="btn btn-default">t͡ʃ</button>
-      <button name="ts" type="button" title="voiceless alveolar affricate (Ctrl+TTT)" class="btn btn-default">t͡s</button>
-      <button name="t long" type="button" title="voiceless retroflex plosive (Ctrl+TTTT)" class="btn btn-default">ʈ</button>
+      <button name="ng" type="button" title="velar nasal (Ctrl+N)" class="btn">ŋ</button>
+      <button name="n hook left" type="button" title="palatal nasal (Ctrl+NN)" class="btn">ɲ</button>
+      <button name="N small" type="button" title="uvular nasal (Ctrl+NNN)" class="btn">ɴ</button>
+      <button name="n hook right" type="button" title="retroflex nasal (Ctrl+NNNN)" class="btn">ɳ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="u horseshoe" type="button" title="near-close near-back rounded vowel (Ctrl+U)" class="btn btn-default">ʊ</button>
-      <button name="schwu" type="button" title="near-close central rounded vowel (Ctrl+UU)" class="btn btn-default">ʊ̈</button>
-      <button name="u barred" type="button" title="close central rounded vowel (Ctrl+UUU)" class="btn btn-default">ʉ</button>
+      <button name="o open" type="button" title="open-mid back rounded vowel (Ctrl+O)" class="btn">ɔ</button>
+      <button name="oe ipa" type="button" title="open-mid front rounded vowel (Ctrl+OO)" class="btn">œ</button>
+      <button name="o stroke ipa" type="button" title="close-mid front rounded vowel (Ctrl+OOO)" class="btn">ø</button>
+      <button name="a script upside" type="button" title="open back rounded vowel (Ctrl+OOOO)" class="btn">ɒ</button>
+      <button name="o open nasalized" type="button" title="nasalized open-mid back rounded vowel (Ctrl+OOOOO)" class="btn">ɔ̃</button>
+      <button name="OE small" type="button" title="open front rounded vowel (Ctrl+OOOOOO)" class="btn">ɶ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="v upside" type="button" title="open-mid back unrounded vowel (Ctrl+V)" class="btn btn-default">ʌ</button>
-      <button name="v smooth" type="button" title="labiodental approximant (Ctrl+VV)" class="btn btn-default">ʋ</button>
-      <button name="v hook" type="button" title="labiodental flap (Ctrl+VVV)" class="btn btn-default">ⱱ</button>
+      <button name="phi" type="button" title="voiceless bilabial fricative (Ctrl+P)" class="btn">ɸ</button>
     </span>
   </div><br/>
   <div class="btn-toolbar">
     <span class="btn-group btn-group-sm">
-      <button name="w upside" type="button" title="voiceless labio-velar approximant (Ctrl+W)" class="btn btn-default">ʍ</button>
-      <button name="u extra bowl" type="button" title="close back unrounded vowel (Ctrl+WW)" class="btn btn-default">ɯ</button>
-      <button name="u extra bowl hook" type="button" title="velar approximant (Ctrl+WWW)" class="btn btn-default">ɰ</button>
+      <button name="r tap" type="button" title="alveolar tap (Ctrl+R)" class="btn">ɾ</button>
+      <button name="R small upside" type="button" title="voiced uvular fricative (Ctrl+RR)" class="btn">ʁ</button>
+      <button name="r upside" type="button" title="alveolar approximant (Ctrl+RRR)" class="btn">ɹ</button>
+      <button name="r upside hook" type="button" title="retroflex approximant (Ctrl+RRRR)" class="btn">ɻ</button>
+      <button name="R small" type="button" title="uvular trill (Ctrl+RRRRR)" class="btn">ʀ</button>
+      <button name="r hook" type="button" title="retroflex flap (Ctrl+RRRRRR)" class="btn">ɽ</button>
+      <button name="r upside long" type="button" title="alveolar lateral flap (Ctrl+RRRRRRR)" class="btn">ɺ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="chi" type="button" title="voiceless uvular fricative (Ctrl+X)" class="btn btn-default">χ</button>
+      <button name="sh" type="button" title="voiceless postalveolar fricative (Ctrl+S)" class="btn">ʃ</button>
+      <button name="s hook" type="button" title="voiceless retroflex fricative (Ctrl+SS)" class="btn">ʂ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="y upside" type="button" title="palatal lateral approximant (Ctrl+Y)" class="btn btn-default">ʎ</button>
-      <button name="gamma" type="button" title="voiced velar fricative (Ctrl+YY)" class="btn btn-default">ɣ</button>
-      <button name="Y small" type="button" title="near-close near-front rounded vowel (Ctrl+YYY)" class="btn btn-default">ʏ</button>
-      <button name="rams horns" type="button" title="close-mid back unrounded vowel (Ctrl+YYYY)" class="btn btn-default">ɤ</button>
+      <button name="theta" type="button" title="voiceless dental fricative (Ctrl+T)" class="btn">θ</button>
+      <button name="tsh" type="button" title="voiceless postalveolar affricate (Ctrl+TT)" class="btn">t͡ʃ</button>
+      <button name="ts" type="button" title="voiceless alveolar affricate (Ctrl+TTT)" class="btn">t͡s</button>
+      <button name="t long" type="button" title="voiceless retroflex plosive (Ctrl+TTTT)" class="btn">ʈ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="zh" type="button" title="voiced postalveolar fricative (Ctrl+Z)" class="btn btn-default">ʒ</button>
-      <button name="z hook" type="button" title="voiced retroflex fricative (Ctrl+ZZ)" class="btn btn-default">ʐ</button>
-      <button name="z loop" type="button" title="voiced alveolo-palatal fricative (Ctrl+ZZZ)" class="btn btn-default">ʑ</button>
+      <button name="u horseshoe" type="button" title="near-close near-back rounded vowel (Ctrl+U)" class="btn">ʊ</button>
+      <button name="schwu" type="button" title="near-close central rounded vowel (Ctrl+UU)" class="btn">ʊ̈</button>
+      <button name="u barred" type="button" title="close central rounded vowel (Ctrl+UUU)" class="btn">ʉ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="glottal stop" type="button" title="glottal stop (Ctrl+2)" class="btn btn-default">ʔ</button>
-      <button name="glottal stop flipped" type="button" title="voiced pharyngeal fricative (Ctrl+22)" class="btn btn-default">ʕ</button>
-      <button name="glottal stop flipped barred" type="button" title="voiced epiglottal fricative (Ctrl+222)" class="btn btn-default">ʢ</button>
-      <button name="glottal stop barred" type="button" title="epiglottal plosive (Ctrl+2222)" class="btn btn-default">ʡ</button>
-    </span>
-    <span class="btn-group btn-group-sm">
-      <button name="minor group" type="button" title="minor group (Ctrl+Q or Ctrl+/)" class="btn btn-default">|</button>
-      <button name="major group" type="button" title="major group (Ctrl+QQ or Ctrl+/)" class="btn btn-default">‖</button>
-      <button name="zero" type="button" title="zero (Ctrl+0)" class="btn btn-default">∅</button>
-    </span>
-  </div><br/>
-  <div class="btn-toolbar">
-    <span class="btn-group btn-group-sm">
-      <button name="primary stress" type="button" title="primary stress (Ctrl+1 / Ctrl+, [comma] / Hold Ctrl and press ' twice)" class="btn btn-default">ˈ</button>
-      <button name="secondary stress" type="button" title="secondary stress (Ctrl+11 / hold Ctrl and press , [comma] twice)" class="btn btn-default">ˌ</button>
-    </span>
-    <span class="btn-group btn-group-sm">
-      <button name="length mark" type="button" title="length mark (hold Ctrl and press . [period] or ; [semicolon])" class="btn btn-default">ː</button>
-      <button name="half length mark" type="button" title="half-long (hold Ctrl and press . [period] or ; [semicolon] twice)" class="btn btn-default">ˑ</button>
-      <button name="extra short" type="button" title="extra short (hold Ctrl and press . [period] or ; [semicolon] three times)" class="btn btn-default">&nbsp;̆</button>
-    </span>
-    <span class="btn-group btn-group-sm">
-      <button name="tie bar upper" type="button" title="tie bar (Ctrl+Space or Ctrl+Shift+U)" class="btn btn-default">&nbsp;͡</button>
-      <button name="tie bar lower" type="button" title="tie bar (Ctrl+Space+Space or Ctrl+Shift+UU)" class="btn btn-default">&nbsp;͜</button>
-      <button name="linking" type="button" title="linking (Ctrl+Space+Space+Space or Ctrl+Shift+UUU)" class="btn btn-default">‿</button>
-    </span>
-    <span class="btn-group btn-group-sm">
-      <button name="becomes" type="button" title="becomes (Ctrl+→→→)" class="btn btn-default">→</button>
-      <button name="centralized" type="button" title="centralized (Ctrl+Shift+.)" class="btn btn-default">&nbsp;̈</button>
-      <button name="nasalized" type="button" title="nasalized (Ctrl+Shift+S)" class="btn btn-default">&nbsp;̃</button>
-      <button name="voiceless" type="button" title="voiceless (Ctrl+Shift+O)" class="btn btn-default">&nbsp;̥</button>
-      <button name="voiceless high" type="button" title="voiceless (Ctrl+Shift+OO)" class="btn btn-default">&nbsp;̊</button>
-      <button name="voiced" type="button" title="voiced (Ctrl+Shift+V)" class="btn btn-default">&nbsp;̬</button>
-      <button name="syllabic" type="button" title="syllabic (Ctrl+Shift+I)" class="btn btn-default">&nbsp;̩</button>
-      <button name="non-syllabic" type="button" title="non-syllabic (Ctrl+Shift+C)" class="btn btn-default"> ̯</button>
-      <button name="schwa superscript" type="button" title="syllabic or schwa (Ctrl+Shift+E)" class="btn btn-default">ᵊ</button>
-      <button name="r superscript" type="button" title="optional r (Ctrl+Shift+R)" class="btn btn-default">ʳ</button>
-      <button name="rhotacized" type="button" title="rhotacized (Ctrl+Shift+RR)" class="btn btn-default">˞</button>
-      <button name="aspirated" type="button" title="aspirated (Ctrl+Shift+H)" class="btn btn-default">ʰ</button>
-      <button name="labialized" type="button" title="labialized (Ctrl+Shift+W)" class="btn btn-default">ʷ</button>
-      <button name="palatalized" type="button" title="palatalized (Ctrl+Shift+J)" class="btn btn-default">ʲ</button>
-      <button name="raised" type="button" title="raised (Ctrl+↑)" class="btn btn-default">&nbsp;̝</button>
-      <button name="lowered" type="button" title="lowered (Ctrl+↓)" class="btn btn-default">&nbsp;̞</button>
-      <button name="advanced" type="button" title="advanced (fronted) (Ctrl+←)" class="btn btn-default">&nbsp;̟</button>
-      <button name="retracted" type="button" title="retracted (backed) (Ctrl+→)" class="btn btn-default">&nbsp;̠</button>
+      <button name="v upside" type="button" title="open-mid back unrounded vowel (Ctrl+V)" class="btn">ʌ</button>
+      <button name="v smooth" type="button" title="labiodental approximant (Ctrl+VV)" class="btn">ʋ</button>
+      <button name="v hook" type="button" title="labiodental flap (Ctrl+VVV)" class="btn">ⱱ</button>
     </span>
   </div><br/>
   <div class="btn-toolbar">
     <span class="btn-group btn-group-sm">
-      <button name="extra high" type="button" title="extra high" class="btn btn-default">&nbsp;̋</button>
-      <button name="high" type="button" title="high" class="btn btn-default">&nbsp;́</button>
-      <button name="mid" type="button" title="mid" class="btn btn-default">&nbsp;̄</button>
-      <button name="low" type="button" title="low" class="btn btn-default">&nbsp;̀</button>
-      <button name="extra low" type="button" title="extra low" class="btn btn-default">&nbsp;̏</button>
-      <button name="rising" type="button" title="rising" class="btn btn-default">&nbsp;̌</button>
-      <button name="falling" type="button" title="falling" class="btn btn-default">&nbsp;̂</button>
-      <button name="high rising" type="button" title="high rising" class="btn btn-default">&nbsp;᷄</button>
-      <button name="low rising" type="button" title="low rising" class="btn btn-default">&nbsp;᷅</button>
-      <button name="rising-falling" type="button" title="rising-falling" class="btn btn-default">&nbsp;᷈</button>
+      <button name="w upside" type="button" title="voiceless labio-velar approximant (Ctrl+W)" class="btn">ʍ</button>
+      <button name="u extra bowl" type="button" title="close back unrounded vowel (Ctrl+WW)" class="btn">ɯ</button>
+      <button name="u extra bowl hook" type="button" title="velar approximant (Ctrl+WWW)" class="btn">ɰ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="ejective" type="button" title="ejective (hold Ctrl and press , [comma] four times)" class="btn btn-default">ʼ</button>
-      <button name="dental" type="button" title="dental (Ctrl+Shift+D)" class="btn btn-default">&nbsp;̪</button>
-      <button name="apical" type="button" title="apical (Ctrl+Shift+DD)" class="btn btn-default">&nbsp;̺</button>
-      <button name="more rounded" type="button" title="more rounded (hold Ctrl+Shift and press ,)" class="btn btn-default">&nbsp;̹</button>
-      <button name="less rounded" type="button" title="less rounded (hold Ctrl+Shift and press , twice)" class="btn btn-default">&nbsp;̜</button>
-      <button name="mid-centralized" type="button" title="mid-centralized (Ctrl+Shift+X)" class="btn btn-default">&nbsp;̽</button>
-      <button name="breathy voiced" type="button" title="breathy voiced (Ctrl+Shift+..)" class="btn btn-default">&nbsp;̤</button>
-      <button name="creaky voiced" type="button" title="creaky voiced (Ctrl+Shift+SSS)" class="btn btn-default">&nbsp;̰</button>
-      <button name="linguolabial" type="button" title="linguolabial (Ctrl+Shift+M)" class="btn btn-default">&nbsp;̼</button>
-      <button name="velarized" type="button" title="velarized (Ctrl+Shift+Y)" class="btn btn-default">ˠ</button>
-      <button name="pharyngealized" type="button" title="pharyngealized (Ctrl+Shift+2)" class="btn btn-default">ˤ</button>
-      <button name="velarized or pharyngealized" type="button" title="velarized or pharyngealized (Ctrl+Shift+SS)" class="btn btn-default">&nbsp;̴</button>
-      <button name="nasal release" type="button" title="nasal release (Ctrl+Shift+N)" class="btn btn-default">ⁿ</button>
-      <button name="lateral release" type="button" title="lateral release (Ctrl+Shift+L)" class="btn btn-default">ˡ</button>
-      <button name="breathy-voice aspirated" type="button" title="breathy-voice aspirated (Ctrl+Shift+HH)" class="btn btn-default">ʱ</button>
-      <button name="advanced tongue root" type="button" title="advanced tongue root (Ctrl+←←)" class="btn btn-default">&nbsp;̘</button>
-      <button name="retracted tongue root" type="button" title="retracted tongue root (Ctrl+→→)" class="btn btn-default">&nbsp;̙</button>
-      <button name="laminal" type="button" title="laminal (Ctrl+Shift+OOO)" class="btn btn-default">&nbsp;̻</button>
-      <button name="not audibly released" type="button" title="not audibly released (Ctrl+Shift+7)" class="btn btn-default">&nbsp;̚</button>
+      <button name="chi" type="button" title="voiceless uvular fricative (Ctrl+X)" class="btn">χ</button>
+    </span>
+    <span class="btn-group btn-group-sm">
+      <button name="y upside" type="button" title="palatal lateral approximant (Ctrl+Y)" class="btn">ʎ</button>
+      <button name="gamma" type="button" title="voiced velar fricative (Ctrl+YY)" class="btn">ɣ</button>
+      <button name="Y small" type="button" title="near-close near-front rounded vowel (Ctrl+YYY)" class="btn">ʏ</button>
+      <button name="rams horns" type="button" title="close-mid back unrounded vowel (Ctrl+YYYY)" class="btn">ɤ</button>
+    </span>
+    <span class="btn-group btn-group-sm">
+      <button name="zh" type="button" title="voiced postalveolar fricative (Ctrl+Z)" class="btn">ʒ</button>
+      <button name="z hook" type="button" title="voiced retroflex fricative (Ctrl+ZZ)" class="btn">ʐ</button>
+      <button name="z loop" type="button" title="voiced alveolo-palatal fricative (Ctrl+ZZZ)" class="btn">ʑ</button>
+    </span>
+    <span class="btn-group btn-group-sm">
+      <button name="glottal stop" type="button" title="glottal stop (Ctrl+2)" class="btn">ʔ</button>
+      <button name="glottal stop flipped" type="button" title="voiced pharyngeal fricative (Ctrl+22)" class="btn">ʕ</button>
+      <button name="glottal stop flipped barred" type="button" title="voiced epiglottal fricative (Ctrl+222)" class="btn">ʢ</button>
+      <button name="glottal stop barred" type="button" title="epiglottal plosive (Ctrl+2222)" class="btn">ʡ</button>
+    </span>
+    <span class="btn-group btn-group-sm">
+      <button name="minor group" type="button" title="minor group (Ctrl+Q or Ctrl+/)" class="btn">|</button>
+      <button name="major group" type="button" title="major group (Ctrl+QQ or Ctrl+/)" class="btn">‖</button>
+      <button name="zero" type="button" title="zero (Ctrl+0)" class="btn">∅</button>
     </span>
   </div><br/>
   <div class="btn-toolbar">
     <span class="btn-group btn-group-sm">
-      <button name="extra high alt" type="button" title="extra high" class="btn btn-default">˥</button>
-      <button name="high alt" type="button" title="high" class="btn btn-default">˦</button>
-      <button name="mid alt" type="button" title="mid" class="btn btn-default">˧</button>
-      <button name="low alt" type="button" title="low" class="btn btn-default">˨</button>
-      <button name="extra low alt" type="button" title="extra low" class="btn btn-default">˩</button>
-      <button name="rising alt" type="button" title="rising" class="btn btn-default">˩˥</button>
-      <button name="falling alt" type="button" title="falling" class="btn btn-default">˥˩</button>
-      <button name="high rising alt" type="button" title="high rising" class="btn btn-default">˦˥</button>
-      <button name="low rising alt" type="button" title="low rising" class="btn btn-default">˩˨</button>
-      <button name="rising-falling alt" type="button" title="rising-falling" class="btn btn-default">˧˦˧</button>
-      <button name="downstep" type="button" title="downstep" class="btn btn-default">↓</button>
-      <button name="upstep" type="button" title="upstep" class="btn btn-default">↑</button>
-      <button name="global rise" type="button" title="global rise" class="btn btn-default">↗</button>
-      <button name="global fall" type="button" title="global fall" class="btn btn-default">↘</button>
+      <button name="primary stress" type="button" title="primary stress (Ctrl+1 / Ctrl+, [comma] / Hold Ctrl and press ' twice)" class="btn">ˈ</button>
+      <button name="secondary stress" type="button" title="secondary stress (Ctrl+11 / hold Ctrl and press , [comma] twice)" class="btn">ˌ</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="bilabial click" type="button" title="bilabial click (Ctrl+K)" class="btn btn-default">ʘ</button>
-      <button name="dental click" type="button" title="dental click (Ctrl+KK)" class="btn btn-default">ǀ</button>
-      <button name="retroflex click" type="button" title="retroflex click (Ctrl+KKK)" class="btn btn-default">ǃ</button>
-      <button name="palatoalveolar click" type="button" title="palatoalveolar click (Ctrl+KKKK)" class="btn btn-default">ǂ</button>
-      <button name="alveolar lateral click" type="button" title="alveolar lateral click (Ctrl+KKKKK)" class="btn btn-default">ǁ</button>
+      <button name="length mark" type="button" title="length mark (hold Ctrl and press . [period] or ; [semicolon])" class="btn">ː</button>
+      <button name="half length mark" type="button" title="half-long (hold Ctrl and press . [period] or ; [semicolon] twice)" class="btn">ˑ</button>
+      <button name="extra short" type="button" title="extra short (hold Ctrl and press . [period] or ; [semicolon] three times)" class="btn">&nbsp;̆</button>
     </span>
     <span class="btn-group btn-group-sm">
-      <button name="apostrophe" type="button" title="apostrophe (Ctrl+' / Ctrl+4)" class="btn btn-default">’</button>
-      <button name="high inverted quote" title="English-style opening quote (Ctrl+Shift+' / Ctrl+5)" type="button" class="btn btn-default">“</button>
-      <button name="high quote" title="English-style closing quote (hold Ctrl+Shift, press ' twice / Ctrl+55)" type="button" class="btn btn-default">”</button>
-      <button name="endash" title="Ctrl+Alt+- / Ctrl+6" type="button" class="btn btn-default">–</button>
-      <button name="emdash" title="Hold Ctrl+Alt, press - twice / Ctrl+66" type="button" class="btn btn-default">—</button>
+      <button name="tie bar upper" type="button" title="tie bar (Ctrl+Space or Ctrl+Shift+U)" class="btn">&nbsp;͡</button>
+      <button name="tie bar lower" type="button" title="tie bar (Ctrl+Space+Space or Ctrl+Shift+UU)" class="btn">&nbsp;͜</button>
+      <button name="linking" type="button" title="linking (Ctrl+Space+Space+Space or Ctrl+Shift+UUU)" class="btn">‿</button>
+    </span>
+    <span class="btn-group btn-group-sm">
+      <button name="becomes" type="button" title="becomes (Ctrl+→→→)" class="btn">→</button>
+      <button name="centralized" type="button" title="centralized (Ctrl+Shift+.)" class="btn">&nbsp;̈</button>
+      <button name="nasalized" type="button" title="nasalized (Ctrl+Shift+S)" class="btn">&nbsp;̃</button>
+      <button name="voiceless" type="button" title="voiceless (Ctrl+Shift+O)" class="btn">&nbsp;̥</button>
+      <button name="voiceless high" type="button" title="voiceless (Ctrl+Shift+OO)" class="btn">&nbsp;̊</button>
+      <button name="voiced" type="button" title="voiced (Ctrl+Shift+V)" class="btn">&nbsp;̬</button>
+      <button name="syllabic" type="button" title="syllabic (Ctrl+Shift+I)" class="btn">&nbsp;̩</button>
+      <button name="non-syllabic" type="button" title="non-syllabic (Ctrl+Shift+C)" class="btn"> ̯</button>
+      <button name="schwa superscript" type="button" title="syllabic or schwa (Ctrl+Shift+E)" class="btn">ᵊ</button>
+      <button name="r superscript" type="button" title="optional r (Ctrl+Shift+R)" class="btn">ʳ</button>
+      <button name="rhotacized" type="button" title="rhotacized (Ctrl+Shift+RR)" class="btn">˞</button>
+      <button name="aspirated" type="button" title="aspirated (Ctrl+Shift+H)" class="btn">ʰ</button>
+      <button name="labialized" type="button" title="labialized (Ctrl+Shift+W)" class="btn">ʷ</button>
+      <button name="palatalized" type="button" title="palatalized (Ctrl+Shift+J)" class="btn">ʲ</button>
+      <button name="raised" type="button" title="raised (Ctrl+↑)" class="btn">&nbsp;̝</button>
+      <button name="lowered" type="button" title="lowered (Ctrl+↓)" class="btn">&nbsp;̞</button>
+      <button name="advanced" type="button" title="advanced (fronted) (Ctrl+←)" class="btn">&nbsp;̟</button>
+      <button name="retracted" type="button" title="retracted (backed) (Ctrl+→)" class="btn">&nbsp;̠</button>
+    </span>
+  </div><br/>
+  <div class="btn-toolbar">
+    <span class="btn-group btn-group-sm">
+      <button name="extra high" type="button" title="extra high" class="btn">&nbsp;̋</button>
+      <button name="high" type="button" title="high" class="btn">&nbsp;́</button>
+      <button name="mid" type="button" title="mid" class="btn">&nbsp;̄</button>
+      <button name="low" type="button" title="low" class="btn">&nbsp;̀</button>
+      <button name="extra low" type="button" title="extra low" class="btn">&nbsp;̏</button>
+      <button name="rising" type="button" title="rising" class="btn">&nbsp;̌</button>
+      <button name="falling" type="button" title="falling" class="btn">&nbsp;̂</button>
+      <button name="high rising" type="button" title="high rising" class="btn">&nbsp;᷄</button>
+      <button name="low rising" type="button" title="low rising" class="btn">&nbsp;᷅</button>
+      <button name="rising-falling" type="button" title="rising-falling" class="btn">&nbsp;᷈</button>
+    </span>
+    <span class="btn-group btn-group-sm">
+      <button name="ejective" type="button" title="ejective (hold Ctrl and press , [comma] four times)" class="btn">ʼ</button>
+      <button name="dental" type="button" title="dental (Ctrl+Shift+D)" class="btn">&nbsp;̪</button>
+      <button name="apical" type="button" title="apical (Ctrl+Shift+DD)" class="btn">&nbsp;̺</button>
+      <button name="more rounded" type="button" title="more rounded (hold Ctrl+Shift and press ,)" class="btn">&nbsp;̹</button>
+      <button name="less rounded" type="button" title="less rounded (hold Ctrl+Shift and press , twice)" class="btn">&nbsp;̜</button>
+      <button name="mid-centralized" type="button" title="mid-centralized (Ctrl+Shift+X)" class="btn">&nbsp;̽</button>
+      <button name="breathy voiced" type="button" title="breathy voiced (Ctrl+Shift+..)" class="btn">&nbsp;̤</button>
+      <button name="creaky voiced" type="button" title="creaky voiced (Ctrl+Shift+SSS)" class="btn">&nbsp;̰</button>
+      <button name="linguolabial" type="button" title="linguolabial (Ctrl+Shift+M)" class="btn">&nbsp;̼</button>
+      <button name="velarized" type="button" title="velarized (Ctrl+Shift+Y)" class="btn">ˠ</button>
+      <button name="pharyngealized" type="button" title="pharyngealized (Ctrl+Shift+2)" class="btn">ˤ</button>
+      <button name="velarized or pharyngealized" type="button" title="velarized or pharyngealized (Ctrl+Shift+SS)" class="btn">&nbsp;̴</button>
+      <button name="nasal release" type="button" title="nasal release (Ctrl+Shift+N)" class="btn">ⁿ</button>
+      <button name="lateral release" type="button" title="lateral release (Ctrl+Shift+L)" class="btn">ˡ</button>
+      <button name="breathy-voice aspirated" type="button" title="breathy-voice aspirated (Ctrl+Shift+HH)" class="btn">ʱ</button>
+      <button name="advanced tongue root" type="button" title="advanced tongue root (Ctrl+←←)" class="btn">&nbsp;̘</button>
+      <button name="retracted tongue root" type="button" title="retracted tongue root (Ctrl+→→)" class="btn">&nbsp;̙</button>
+      <button name="laminal" type="button" title="laminal (Ctrl+Shift+OOO)" class="btn">&nbsp;̻</button>
+      <button name="not audibly released" type="button" title="not audibly released (Ctrl+Shift+7)" class="btn">&nbsp;̚</button>
+    </span>
+  </div><br/>
+  <div class="btn-toolbar">
+    <span class="btn-group btn-group-sm">
+      <button name="extra high alt" type="button" title="extra high" class="btn">˥</button>
+      <button name="high alt" type="button" title="high" class="btn">˦</button>
+      <button name="mid alt" type="button" title="mid" class="btn">˧</button>
+      <button name="low alt" type="button" title="low" class="btn">˨</button>
+      <button name="extra low alt" type="button" title="extra low" class="btn">˩</button>
+      <button name="rising alt" type="button" title="rising" class="btn">˩˥</button>
+      <button name="falling alt" type="button" title="falling" class="btn">˥˩</button>
+      <button name="high rising alt" type="button" title="high rising" class="btn">˦˥</button>
+      <button name="low rising alt" type="button" title="low rising" class="btn">˩˨</button>
+      <button name="rising-falling alt" type="button" title="rising-falling" class="btn">˧˦˧</button>
+      <button name="downstep" type="button" title="downstep" class="btn">↓</button>
+      <button name="upstep" type="button" title="upstep" class="btn">↑</button>
+      <button name="global rise" type="button" title="global rise" class="btn">↗</button>
+      <button name="global fall" type="button" title="global fall" class="btn">↘</button>
+    </span>
+    <span class="btn-group btn-group-sm">
+      <button name="bilabial click" type="button" title="bilabial click (Ctrl+K)" class="btn">ʘ</button>
+      <button name="dental click" type="button" title="dental click (Ctrl+KK)" class="btn">ǀ</button>
+      <button name="retroflex click" type="button" title="retroflex click (Ctrl+KKK)" class="btn">ǃ</button>
+      <button name="palatoalveolar click" type="button" title="palatoalveolar click (Ctrl+KKKK)" class="btn">ǂ</button>
+      <button name="alveolar lateral click" type="button" title="alveolar lateral click (Ctrl+KKKKK)" class="btn">ǁ</button>
+    </span>
+    <span class="btn-group btn-group-sm">
+      <button name="apostrophe" type="button" title="apostrophe (Ctrl+' / Ctrl+4)" class="btn">’</button>
+      <button name="high inverted quote" title="English-style opening quote (Ctrl+Shift+' / Ctrl+5)" type="button" class="btn">“</button>
+      <button name="high quote" title="English-style closing quote (hold Ctrl+Shift, press ' twice / Ctrl+55)" type="button" class="btn">”</button>
+      <button name="endash" title="Ctrl+Alt+- / Ctrl+6" type="button" class="btn">–</button>
+      <button name="emdash" title="Hold Ctrl+Alt, press - twice / Ctrl+66" type="button" class="btn">—</button>
     </span>
   </div>
+  </div>
+</div>
 </div>
