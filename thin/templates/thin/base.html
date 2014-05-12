@@ -4,13 +4,15 @@
 <head>
   <title>Websurv</title>
 {#  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>#}
+{#  <link rel="stylesheet" href="{{ STATIC_URL }}css/custom.css"/>#}
   <link rel="stylesheet" href="{{ STATIC_URL }}css/websurv.css"/>
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 </head>
 
-<body>
+<body {% block ipa-toggle %}{% endblock %}>
 
 {% url 'home' as home_path %}
 <div id="everything">
@@ -24,7 +26,7 @@
           <span class="icon-bar"></span>
         </button>
 {#        <a class="navbar-brand" href="{{ home_path }}"><img class="navbar-logo" src="http://placehold.it/80x50&text=Logo"/></a>#}
-        <a class="navbar-brand" href="{{ home_path }}">WebSurv</a>
+        <a class="navbar-brand" href="{{ home_path }}">WebSurv<small> v{% get_app_version %}</small></a>
       </div>
       <div class="collapse navbar-collapse" id="bs-navbar-collapse">
         <ul class="nav navbar-nav">
@@ -93,8 +95,8 @@
     {% block content %}
     {% endblock %}
   </div>
+  {% include "thin/ipa_input.html" %}
   <footer>
-    {% include "thin/ipa_input.html" %}
     <div class="footer">
       <div class="container text-muted">
         <ul class="pull-left breadcrumb breadcrumb-bar">
@@ -103,7 +105,7 @@
           <li><a href="#">Help</a></li>
         </ul>
         <ul class="pull-right breadcrumb breadcrumb-bar">
-          <li><a id="ipa-toggle" href="#">Click to toggle IPA Keyboard</a></li>
+{#          <li><a id="ipa-toggle" href="#">Click to toggle IPA Keyboard</a></li>#}
           <li><span class="copyright">Software Studio </span></li>
         </ul>
       </div>
