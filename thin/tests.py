@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from . import factories
 from backend.models import Comparison, Dictionary, Gloss, PartOfSpeech, Project, Survey, Variety
 
+
 class SessionsTestCase(TestCase):
     def test_sessons_login_exists(self):
         """ 
@@ -68,7 +69,6 @@ class ComparisonTestCase(TestCase):
 
 
 class DictionaryTestCase(TestCase):
-
 
     def setUp(self):
         """ Set up for DictionaryTestCase test cases """
