@@ -4,10 +4,12 @@
 <head>
   <title>Websurv</title>
 {#  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>#}
+{#  <link rel="stylesheet" href="{{ STATIC_URL }}css/custom.css"/>#}
   <link rel="stylesheet" href="{{ STATIC_URL }}css/websurv.css"/>
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 </head>
 
 <body {% block ipa-toggle %}{% endblock %}>
@@ -24,7 +26,7 @@
           <span class="icon-bar"></span>
         </button>
 {#        <a class="navbar-brand" href="{{ home_path }}"><img class="navbar-logo" src="http://placehold.it/80x50&text=Logo"/></a>#}
-        <a class="navbar-brand" href="{{ home_path }}">WebSurv</a>
+        <a class="navbar-brand" href="{{ home_path }}">WebSurv<small> v{% get_app_version %}</small></a>
       </div>
       <div class="collapse navbar-collapse" id="bs-navbar-collapse">
         <ul class="nav navbar-nav">
