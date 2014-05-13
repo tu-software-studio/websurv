@@ -46,7 +46,7 @@ class AdminTestCase(TestCase):
         Tests that the page exists. We'll assume everything 
         on it is correct since it's django's stuff.
         """
-        response = self.client.get('/admin/')
+        response = self.client.get('/admin/') #TODO - is there a way to give the admin pages a name?
         self.assertEqual(response.status_code, 200)
 
 
@@ -78,10 +78,6 @@ class DictionaryTestCase(TestCase):
         """ Ensure a GET request works on /dictionaries/add/ """
         response = self.client.get(reverse('dictionary_add',kwargs = { 'id' : self.instance.project.id }))
         self.assertEqual(response.status_code, 200)
-        """
-        response = self.client.post('/dictionaries/add/' + str(self.instance.project_id) + '/')
-        self.assertEqual(response.status_code, 200)
-        """
 
     def test_dictionary_add(self):
         response = self.client.post(reverse('dictionary_add',kwargs = { 'id' : self.instance.project.id }),
@@ -160,7 +156,7 @@ class ProjectTestCase(TestCase):
 
     def test_project_add(self):
         """ Test that project add creates project """
-        response = self.client.post('/projects/add/', {'name': 'new_project'}) #TODO couldnt figure out the reverse search for this one
+        response = self.client.post(reverse('project_add'), {'name' : 'new_project' })
         try:
             new_instance = Project.objects.get(name='new_project')
         except Project.DoesNotExist:
@@ -210,7 +206,7 @@ class ProjectTestCase(TestCase):
 
     def test_project_edit(self):
         """ Test project edit actually edits the project """
-        self.client.post('/projects/' + str(self.instance.id) + '/edit/', {'name' : 'new_name'}) #TODO - need to figure this one out too
+        self.client.post(reverse('project_edit', kwargs = { 'id' : self.instance.id }), {'name' : 'new_name'})
         try:
             project = Project.objects.filter(name='new_name')
         except Project.DoesNotExist:
@@ -281,7 +277,7 @@ class VarietyTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_variety_delete_exists(self):
-        response = self.client.post('/varieties/' + str(self.instance.id) + '/delete/') # TODO - HOW DO I DO?!?!?!?!?
+        response = self.client.post(reverse('variety_delete', kwargs = { 'id' : self.instance.id }))
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('survey_detail', kwargs = { 'id' : self.instance.id } ))
 
