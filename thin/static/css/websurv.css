@@ -1333,7 +1333,7 @@ kbd {
 }
 pre {
   display: block;
-  padding: 9px;
+  padding: 9.5px;
   margin: 0 0 10px;
   font-size: 13px;
   line-height: 1.42857143;
@@ -6221,32 +6221,6 @@ div#ipa-keyboard div#ipa-buttons div.arrow .caret {
 div#ipa-keyboard div#ipa-buttons div.btn-toolbar {
   display: inline-block;
 }
-
-th.comp1 {
-    text-align: left;
-}
-
-th.comp {
-    text-align: center;
-}
-
-td.transcriptions {
-    width: 5px;
-}
-
-td.grouping {
-    width: 5px;
-}
-
-td.exclude {
-    width: 5px;
-}
-
-span.scratchpad {
-    font-size: 15px;
-    font-weight: bold;
-    margin: 5px;
-
 .rotate-0,
 .rotate-90,
 .rotate-180 {

@@ -1,7 +1,7 @@
 {% extends "thin/base.html" %}
 
 {% block content %}
-<script src="{{ STATIC_URL }}js/comparisons.js"></script>
+{#<script src="{{ STATIC_URL }}js/comparisons.js"></script>#}
 <div class="panel panel-default">
 <div class="panel-heading">
   <h3 class="panel-title">{{comparison.name}}</h3>
@@ -21,7 +21,13 @@
         {% for comparison_entry in comparison_entries %}
             <tr class="trans-form">
               <td align="left" class="transcriptions"><div>{{ comparison_entry.transcription.ipa }}</div></td>
-              <td align="left" class="aligned-form"></td>
+              <td align="left" class="aligned-form form-inline">
+              <ul class="list-inline">
+                {% for letter in comparison_entry.transcription.ipa %}
+                  <li><label>{{ letter }}<input class="form-control" style="width: 50px;" type="number" min="1" value="1"/></label></li>
+                {% endfor %}
+              </ul>
+              </td>
               <td class="grouping"><input class="form-control" size="1"></td>
               <td align="center" class="exclude"><input type="checkbox"></td>
             </tr>
