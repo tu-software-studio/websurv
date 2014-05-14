@@ -13,7 +13,7 @@ from thin import forms
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from backend.serializers import GlossSerializer
+from backend.serializers import GlossSerializer, ComparisonEntrySerializer
 
 
 def home(request):
@@ -306,15 +306,32 @@ def comparison_index(request):
     return redirect('home')
 
 
+@api_view(['GET','POST'])
 def comparison_detail(request, id):
     try:
         comparison = Comparison.objects.get(pk=id)
     except Comparison.DoesNotExist:
         messages.error(request, "Can't find selected comparison.")
         return redirect('survey_detail', id)
-    breadcrumb_menu = [comparison.survey.project, comparison.survey, comparison]
-    context = {'comparison': comparison, 'comparison_entries': comparison.entries.all(), "breadcrumb_menu": breadcrumb_menu}
-    return render(request, 'thin/comparison_detail.html', context )
+    if request.method == "GET":
+        breadcrumb_menu = [comparison.survey.project, comparison.survey, comparison]
+        context = {'comparison': comparison, 'comparison_entries': comparison.entries.all(), "breadcrumb_menu": breadcrumb_menu}
+        return render(request, 'thin/comparison_detail.html', context )
+    elif request.method == "POST":
+        data = request.DATA
+        print(data)
+        
+        serializer = ComparisonEntrySerializer(data=data)
+        print(serializer.data)
+        if serializer.is_valid():
+            serializer.object.comparison = Comparison.objects.get(pk=id)
+            serializer.object.transcription = Transcription.objects.get(pk=request.DATA['trans_id'])
+            print(serializer)
+            #serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print("NOOOO", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 def comparison_edit(request, id):
