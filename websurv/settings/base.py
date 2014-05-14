@@ -31,6 +31,7 @@ INSTALLED_APPS = (
     'thin',
     'bootstrapform',
     'south',
+    'turbolinks',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -40,6 +41,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'turbolinks.middleware.TurbolinksMiddleware',
 )
 
 ROOT_URLCONF = 'websurv.urls'
