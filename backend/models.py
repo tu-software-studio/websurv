@@ -142,7 +142,7 @@ class Transcription(models.Model):
 
 class Comparison(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     survey = models.ForeignKey(Survey, related_name='comparisons')
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -152,17 +152,27 @@ class Comparison(models.Model):
     def get_absolute_url(self):
         return reverse('comparison_detail', args=[str(self.id)])
 
+    def create_entries(self):
+        varieties = Variety.objects.filter(survey=self.survey)
+        for variety in varieties:
+            transcriptions = Transcription.objects.filter(variety=variety)
+            for transcription in transcriptions:
+                comparison_entry = ComparisonEntry(comparison=self, transcription=transcription, aligned_form=("1,"*len(transcription.ipa))[:-1])
+                comparison_entry.save()
+
 
 class ComparisonEntry(models.Model):
     aligned_form = models.CharField(max_length=100)
-    exclude = models.BooleanField()
+    group = models.CharField(max_length=1, blank=True, null=True)
+    exclude = models.BooleanField(default=False)
     comparison = models.ForeignKey(Comparison, related_name='entries')
     transcription = models.ForeignKey(Transcription, related_name='comparison_entries')
 
     class Meta:
-        verbose_name_plural = 'Comaparison Entries'
+        verbose_name_plural = 'Comparison Entries'
 
     def __unicode__(self):
-        return self.aligned_form
+        return self.transcription.ipa
 
-
+    def aligned_form_as_list(self):
+        return self.aligned_form.split(',')

@@ -10,6 +10,7 @@
     {% blink_to gloss_add_path "Add New Glosses" "btn-primary btn-xs pull-right" %}
   </div>
   <table class="table table-striped" id='table'>
+    {% if glosses %}
     <thead>
     <tr>
       <th>Primary</th>
@@ -20,6 +21,7 @@
       <th></th>
     </tr>
     </thead>
+    {% endif %}
     <tbody>
     {% for gloss in glosses %}
       <tr>
@@ -31,6 +33,11 @@
         {% url 'gloss_edit' gloss.id as gloss_edit_path %}
         <td>{% link_to gloss_edit_path "Edit" "pull-right" %}</td>
       </tr>
+    {% empty %}
+    <tr>
+        <td>Currently no glosses in this dictionary.</td>
+        <td></td>
+    </tr>
     {% endfor %}
     </tbody>
   </table>

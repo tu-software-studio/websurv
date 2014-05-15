@@ -62,8 +62,8 @@ class ComparisonAdmin(admin.ModelAdmin):
 
 
 class ComparisonEntryAdmin(admin.ModelAdmin):
-    list_display = ('aligned_form', 'exclude', 'comparison', 'transcription')
-    search_fields = ('aligned_form', 'exclude', 'comparison', 'transcription')
+    list_display = ('aligned_form', 'exclude', 'group', 'comparison', 'transcription')
+    search_fields = ('aligned_form', 'exclude', 'group', 'comparison', 'transcription')
 
 
 admin.site.register(Project, ProjectAdmin)

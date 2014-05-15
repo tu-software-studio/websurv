@@ -6,14 +6,14 @@ from django.http import HttpResponse
 
 import json
 
-from backend.models import Comparison, Dictionary, Project, Survey, Variety, Transcription, Gloss
+from backend.models import Comparison, ComparisonEntry, Dictionary, Project, Survey, Variety, Transcription, Gloss
 
 from thin import forms
 
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from backend.serializers import GlossSerializer
+from backend.serializers import GlossSerializer, ComparisonEntrySerializer
 
 
 def home(request):
@@ -98,13 +98,25 @@ def survey_detail(request, id):
     try:
         survey = Survey.objects.get(id=id)
         varieties = Variety.objects.filter(survey=survey)
+        comparisons = Comparison.objects.filter(survey=survey)
     except Survey.DoesNotExist:
         messages.error(request, "Can't find selected survey.")
         return redirect('survey_index')
     breadcrumb_menu = [survey.project, survey]
-    context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu}
+    context = {'survey': survey, 'varieties': varieties, 'comparisons': comparisons, 'breadcrumb_menu': breadcrumb_menu}
     return render(request, 'thin/survey_detail.html', context)
-
+#
+# try:
+#         survey = Survey.objects.get(id=id)
+#         varieties = Variety.objects.filter(survey=survey)
+#         comparisons = Comparison.objects.filter(survey=survey)
+#         project = survey.project
+#         breadcrumb_menu = [project, survey]
+#     except Survey.DoesNotExist:
+#         messages.error(request, "Can't find selected survey.")
+#         return redirect('survey_index')
+#     context = {'survey': survey, 'varieties': varieties, 'breadcrumb_menu': breadcrumb_menu, "comparisons": comparisons}
+#     return render(request, 'thin/survey_detail.html', context)
 
 def survey_edit(request, id):
     survey = Survey.objects.get(id=id)
@@ -273,26 +285,112 @@ def variety_delete(request, id):
     return redirect('survey_detail', variety.survey_id)
 
 
+def comparison_add(request, id):
+    survey = Survey.objects.get(pk=id)
+    if request.method == "POST":
+        form = forms.ComparisonForm(request.POST)
+        if form.is_valid():
+            form.instance.survey = survey
+            form.save()
+            form.instance.create_entries()
+            messages.success(request, "Comparison Created!")
+            return redirect('comparison_detail', form.instance.id)
+    else:
+        form = forms.ComparisonForm()
+    breadcrumb_menu = [survey.project, survey]
+    return render(request, "thin/comparison_add.html", {'form': form, 'breadcrumb_menu': breadcrumb_menu})
+
+
+
 def comparison_index(request):
     return redirect('home')
 
-
+@api_view(['GET','POST'])
 def comparison_detail(request, id):
+    def create_aligned_form(params):
+        try:
+            # print "in function", params
+            letters = [(key,params[key]) for key in params.keys() if key[:7] == 'letter-']
+            letters = sorted(letters, key=lambda item: (item[1], int(item[0][7:])))
+            # print letters
+            aligned_form = ''
+            current_group = 1
+            # print "entering loop", letters
+            for letter in letters:
+                # print letter
+                if int(letter[1][0]) != current_group:
+                    # print "next group"
+                    current_group = int(letter[1][0])
+                    aligned_form = aligned_form[:-1] + ','
+                # print "appending letter"
+                aligned_form += letter[0][7:]+'|'
+            # print "returning"
+            aligned_form = aligned_form[:-1]
+            return aligned_form
+        except Exception as e:
+            print "Exception!"
+            print e
+    def create_aligned_form2(params):
+        try:
+            letters = [(key,params[key]) for key in params.keys() if key[:7] == 'letter-']
+            letters = sorted(letters, key=lambda item: int(item[0][7:]))
+            aligned_form = ''
+            for letter in letters:
+                aligned_form += letter[1][0] + ','
+            return aligned_form[:-1]
+        except Exception as e:
+            print "Exception!"
+            print e
     try:
         comparison = Comparison.objects.get(pk=id)
     except Comparison.DoesNotExist:
         messages.error(request, "Can't find selected comparison.")
-        return redirect('comparison_index')
-    return render(request, 'thin/comparison_detail.html', {'comparison': comparison})
+        return redirect('survey_detail', id)
+    if request.method == "GET":
+        breadcrumb_menu = [comparison.survey.project, comparison.survey, comparison]
+        context = {'comparison': comparison, 'comparison_entries': comparison.entries.all(), "breadcrumb_menu": breadcrumb_menu}
+        return render(request, 'thin/comparison_detail.html', context )
+    elif request.method == "POST":
+        data = dict(request.DATA.iterlists())
+        data['group'] = str(data['group'][0])
+        data['aligned_form'] = create_aligned_form2(data)
+
+        comparison_entry = ComparisonEntry.objects.get(transcription_id=data['trans_id'][0])
+
+        serializer = ComparisonEntrySerializer(comparison_entry, data=data)
+        if serializer.is_valid():
+            serializer.object.comparison = Comparison.objects.get(pk=id)
+            serializer.object.transcription = Transcription.objects.get(pk=request.DATA['trans_id'])
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print "NOOOO", serializer.errors
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 def comparison_edit(request, id):
     try:
         comparison = Comparison.objects.get(pk=id)
     except Comparison.DoesNotExist:
-        messages.error(request, "Can't find the selected comparison.")
+        messages.error(request, "Couldn't find the selected Comparison.")
         return redirect('comparison_index')
-    return render(request, 'thin/comparison_edit.html', {'comparison': comparison})
+    if request.method == "POST":
+        form = forms.ComparisonForm(request.POST, instance=comparison)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Comparison has been updated!")
+            return redirect('comparison_detail', id=comparison.id)
+    else:
+        form = forms.ComparisonForm(instance=comparison)
+    breadcrumb_menu = [comparison.survey.project, comparison.survey, comparison]
+    return render(request, 'thin/comparison_edit.html', {'form': form, 'comparison': comparison, 'breadcrumb_menu': breadcrumb_menu})
+
+
+def comparison_delete(request, id):
+    comparison = Comparison.objects.get(id=id)
+    comparison.delete()
+    messages.success(request, "Comparison has been deleted!")
+    return redirect('survey_detail', id=comparison.survey_id)
 
 
 def gloss_index(request):

@@ -2,6 +2,24 @@
 
 {% block content %}
 
-<p>This is comparison_edit.html.</p>
+{% load bootstrap %}
+
+<div class='row'>
+
+  <form method="POST" action="{% url 'comparison_delete' comparison.id %} " class="pull-right">
+    {% csrf_token %}
+    <input type="submit" value="Delete" class="btn btn-danger"/>
+  </form>
+
+  <div class="col-md-4">
+
+    <form method="POST" action="">
+      {% csrf_token %}
+      {{ form|bootstrap }}
+      <input type="submit" value="Save Changes" class="btn btn-primary"/>
+    </form>
+
+  </div>
+</div>
 
 {% endblock %}
