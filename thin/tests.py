@@ -197,33 +197,6 @@ class ProjectTestCase(TestCase):
             self.assertContains(response, "<a href='/projects/" + str(project.id) + "/")
             self.assertContains(response, "<a href='/projects/" + str(project.id) + "/edit/")
 
-
-class SurveyTestCase(TestCase):
-    def setUp(self):
-        self.instance = factories.SurveyFactory.create()
-
-    def test_survey_add_exists(self):
-        response = self.client.get(reverse('survey_add', kwargs = { 'id' : self.instance.project.id } ))
-        self.assertEqual(response.status_code, 200)
-
-    def test_survey_delete_exists(self):
-        response = self.client.post(reverse('survey_delete', kwargs = { 'id' : self.instance.id } ))
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('project_detail', kwargs = { 'id' : self.instance.project.id } ))
-
-    def test_survey_detail_exists(self):
-        response = self.client.get(reverse('survey_detail', kwargs = { 'id' : self.instance.id } ))
-        self.assertEqual(response.status_code, 200)
-
-    def test_survey_edit_exists(self):
-        response = self.client.get(reverse('survey_edit', kwargs = { 'id' : self.instance.id } ))
-        self.assertEqual(response.status_code, 200)
-        
-    def test_survey_index_exists(self):
-        response = self.client.get(reverse('survey_index'))
-        self.assertEqual(response.status_code, 302)
-
-
 class TranscriptionTestCase(TestCase):
     def setUp(self):
         self.instance = factories.TranscriptionFactory.create()
@@ -340,20 +313,107 @@ class DictionaryTestCase(TestCase):
             self.assertContains(response, str(gloss.primary))
             self.assertContains(response, reverse('gloss_edit', kwargs = { 'id' : gloss.id }))
 
-    # def test_dictionary_edit(self): #TODO - I cant get it to change the name
-    #     """ Test project edit link exists for GET request """
-    #     response = self.client.get(reverse('dictionary_detail', kwargs = { 'id' : self.instance.id } ))
-    #     self.assertEqual(response.status_code, 200)
+    def test_dictionary_edit(self):
+        """ Test project edit link exists for GET request """
+        response = self.client.get(reverse('dictionary_detail', kwargs = { 'id' : self.instance.id } ))
+        self.assertEqual(response.status_code, 200)
 
-    #     """ Test project edit actually edits the project """
-    #     self.client.post(reverse('dictionary_edit', kwargs = { 'id' : self.instance.id }), {'name' : 'new_name', 
-    #                                                                                         'language' : 'Test Language 8', 
-    #                                                                                         'project' : self.instance.project })
-    #     try:
-    #         dictionary = Dictionary.objects.filter(name='new_name')
-    #     except Dictionary.DoesNotExist:
-    #         self.fail("Dictionary edit should change dictionary name.")
-    #     print(Dictionary.objects.all()[0].language)
-    #     self.assertEqual(dictionary[0].name, 'new_name')
+        """ Test project edit actually edits the project """
+        self.client.post(reverse('dictionary_edit', kwargs = { 'id' : self.instance.id }), {'name' : 'new_name', 
+                                                                                             'language': factories.LanguageFactory.create().id,
+                                                                                            'project' : self.instance.project })
+        try:
+            dictionary = Dictionary.objects.filter(name='new_name')
+        except Dictionary.DoesNotExist:
+            self.fail("Dictionary edit should change dictionary name.")
+        self.assertEqual(dictionary[0].name, 'new_name')
+
+class SurveyTestCase(TestCase):
+    def setUp(self):
+        self.instance = factories.SurveyFactory.create()
+
+    def test_survey_add_exists(self):
+        response = self.client.get(reverse('survey_add', kwargs = { 'id' : self.instance.project.id } ))
+        self.assertEqual(response.status_code, 200)
+               
+    def test_survey_add(self):
+        response = self.client.post(reverse('survey_add', kwargs = { 'id' : self.instance.project.id }),
+                                    {'name': 'new_survey',
+                                     'full_title': 'hello',
+                                     'dictionaries' : factories.DictionaryFactory(project=self.instance.project).id
+                                     })
+        try:
+            new_instance = Survey.objects.get(name='new_survey')
+        except Survey.DoesNotExist:
+            self.fail("Survey was not created.")
+        self.assertEqual(new_instance.name, 'new_survey')
+        self.assertRedirects(response, reverse('survey_detail', kwargs = { 'id' : new_instance.id }))
+
+    def test_survey_delete_exists(self):
+        response = self.client.post(reverse('survey_delete', kwargs = { 'id' : self.instance.id } ))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('project_detail', kwargs = { 'id' : self.instance.project.id } ))
+
+    def test_survey_delete_works(self):
+        """ test that the survey delete really deletes a survey """
+        response = self.client.post(reverse('survey_delete', kwargs = { 'id' : self.instance.id } ))
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Dictionary.objects.filter(id=self.instance.id).exists())
+
+    def test_survey_detail_exists(self):
+        response = self.client.get(reverse('survey_detail', kwargs = { 'id' : self.instance.id } ))
+        self.assertEqual(response.status_code, 200)
+
+    def test_survey_detail(self):
+        # Test Survey Detail properly displays itself
+        response = self.client.get(reverse('survey_detail', kwargs = { 'id' : self.instance.id } ))
+        self.assertEqual(response.status_code, 200)
 
 
+        # Test response includes survey.name
+        self.assertContains(response, self.instance.name)
+
+        # Test for having the survey's project
+        self.assertContains(response, self.instance.project.name)
+
+        # Test for edit link
+        # TODO: find how to better test for a link.
+        self.assertContains(response, 'href="edit"')
+
+        # Test that varieties show up
+        for i in range(15):
+            factories.VarietyFactory.create(survey = self.instance)
+
+        response = self.client.get(reverse('survey_detail', kwargs = { 'id' : self.instance.id } ))
+        varieties = Variety.objects.filter(survey=self.instance)
+        for variety in varieties:
+            self.assertContains(response, variety.name)
+            self.assertContains(response, reverse('variety_detail', kwargs = { 'id' : variety.id } ))
+
+        # Test for variety_add link
+        self.assertContains(response, reverse('variety_add', kwargs = { 'id' : self.instance.id }))
+
+    def test_survey_edit_exists(self):
+        response = self.client.get(reverse('survey_edit', kwargs = { 'id' : self.instance.id } ))
+        self.assertEqual(response.status_code, 200)
+        
+    def test_survey_index_exists(self):
+        response = self.client.get(reverse('survey_index'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_survey_edit(self): #TODO - I cant get it to change the name
+        """ Test project edit link exists for GET request """
+        response = self.client.get(reverse('survey_detail', kwargs = { 'id' : self.instance.id } ))
+        self.assertEqual(response.status_code, 200)
+    
+        # Test project edit actually edits the project
+        response = self.client.post(reverse('survey_edit', kwargs = { 'id' : self.instance.project.id }),
+                                    {'name': 'new_name',
+                                     'full_title': 'hello',
+                                     'dictionaries' : factories.DictionaryFactory(project=self.instance.project).id
+                                     })
+        try:
+            survey = Survey.objects.filter(name='new_name', full_title='hello')
+        except Survey.DoesNotExist:
+            self.fail("Survey edit should change survey name.")
+        self.assertEqual(survey[0].name, 'new_name')
