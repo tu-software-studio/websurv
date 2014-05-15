@@ -19,10 +19,8 @@ from backend.serializers import GlossSerializer
 def home(request):
     """Render the main home page."""
     breadcrumb_menu = []
-    context = {'breadcrumb_menu': breadcrumb_menu}
-
+    context = {'breadcrumb_menu': breadcrumb_menu }
     return render(request, 'thin/base.html', context)
-
 
 def dictionary_index(request):
     return redirect('home')
@@ -50,7 +48,7 @@ def dictionary_edit(request, id):
         form = forms.DictionaryForm(request.POST, instance=dictionary)
         if form.is_valid():
             form.save()
-            messages.success(request, "Dictionary has been editted successfully!")
+            messages.success(request, "Dictionary has been edited successfully!")
             return redirect('dictionary_detail', id=dictionary.id)
     else:
         form = forms.DictionaryForm(instance=dictionary)
@@ -66,22 +64,30 @@ def dictionary_add(request, id):
             form.instance.project = project
             form.save()
             messages.success(request, "Dictionary Added!")
-            return redirect('project_detail', num=id)
+            return redirect('dictionary_detail', id=form.instance.id)
+        messages.error(request, "Dictionary was not created.")
     else:
         form = forms.DictionaryForm()
     breadcrumb_menu = [project]
     return render(request, 'thin/dictionary_add.html', {'form': form, 'breadcrumb_menu': breadcrumb_menu})
 
+# def dictionary_delete(request, id):
+#     ipdb.set_trace()
+#     try:
+#         dictionary = Dictionary.objects.get(pk=id)
+#     except Dictionary.DoesNotExist:
+#         messages.error(request, "Can't find the selected dictionary")
+#         return redirect('dictionary_index')
+#     dictionary.delete()
+#     messages.success(request, "Dictionary has been deleted!")
+#     #return redirect('project_detail', id=dictionary.project.id)
+#     return redirect('project_index')
 
 def dictionary_delete(request, id):
-    try:
-        dictionary = Dictionary.objects.get(pk=id)
-    except Dictionary.DoesNotExist:
-        messages.error(request, "Can't find the selected dictionary")
-        return redirect('dictionary_index')
+    dictionary = Dictionary.objects.get(pk=id)
     dictionary.delete()
     messages.success(request, "Dictionary has been deleted!")
-    return redirect('project_detail', id=dictionary.project_id)
+    return redirect('project_detail',id=dictionary.project.id)
 
 
 def survey_index(request):
@@ -145,6 +151,8 @@ def survey_delete(request, id):
 
 def project_index(request):
     projects = Project.objects.all()
+    if len(projects)<1:
+        messages.error(request, "There are no projects.")
     return render(request, 'thin/project_index.html', {'project_list': projects})
 
 
@@ -157,6 +165,8 @@ def project_detail(request, id):
     except Project.DoesNotExist:
         messages.error(request, "Can't find selected project.")
         return redirect('project_index')
+    if len(dictionaries)<1:
+        messages.error(request, 'There are currently no dictionaries for this project.')
     return render(request, 'thin/project_detail.html',
                   {'project': project, 'dictionaries': dictionaries, 'surveys': surveys, 'breadcrumb_menu': breadcrumb_menu})
 
@@ -183,9 +193,10 @@ def project_add(request):
     if request.method == 'POST':  # If the form has been submitted
         form = forms.ProjectForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_project = form.save()
             messages.success(request, "Project Added!")
-            return redirect('project_index')
+            #return redirect('project_index')
+            return redirect('project_detail', id=new_project.id)
     else:
         form = forms.ProjectForm()
     return render(request, 'thin/project_add.html', {'form': form})
