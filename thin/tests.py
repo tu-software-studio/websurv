@@ -66,58 +66,6 @@ class ComparisonTestCase(TestCase):
         response = self.client.get(reverse('comparison_edit', kwargs = { 'id' : self.instance.id }))
         self.assertEqual(response.status_code, 200)
 
-
-class DictionaryTestCase(TestCase):
-
-
-    def setUp(self):
-        """ Set up for DictionaryTestCase test cases """
-        self.instance = factories.DictionaryFactory.create()
-
-    def test_dictionary_add_exists(self):
-        """ Ensure a GET request works on /dictionaries/add/ """
-        response = self.client.get(reverse('dictionary_add',kwargs = { 'id' : self.instance.project.id }))
-        self.assertEqual(response.status_code, 200)
-
-    def test_dictionary_add(self):
-        response = self.client.post(reverse('dictionary_add',kwargs = { 'id' : self.instance.project.id }),
-                                    {'name': 'new_dictionary',
-                                     'language': factories.LanguageFactory.create().id
-                                     }
-        )
-        try:
-            new_instance = Dictionary.objects.get(name='new_dictionary')
-        except Dictionary.DoesNotExist:
-            self.fail("Dictionary was not created.")
-        self.assertEqual(new_instance.name, 'new_dictionary')
-        self.assertRedirects(response, reverse('dictionary_detail', kwargs = { 'id' : new_instance.id }))
-
-    # TODO: I'm here.
-    def test_dictionary_delete_exists(self):
-        response = self.client.post(reverse('dictionary_delete', kwargs = { 'id' : self.instance.id }))
-        # Status code should be 301 since we want a redirect
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('project_detail', kwargs = { 'id' : self.instance.project.id }))
-        
-    def test_dictionary_delete_removes_dictionary(self):
-        pass
-
-    def test_dictionary_detail_exists(self):
-        response = self.client.get(reverse('dictionary_detail', kwargs = { 'id' : self.instance.id }))
-        self.assertEqual(response.status_code, 200)
-
-    def test_dictionary_edit_exists(self):
-        response = self.client.get(reverse('dictionary_edit', kwargs = { 'id' : self.instance.id }))
-        self.assertEqual(response.status_code, 200)
-
-    def test_dictionary_index_exists(self):
-        response = self.client.get(reverse('dictionary_index'))
-        self.assertEqual(response.status_code, 302)
-
-    def test_dictionary_index_contains_dictionary(self):
-        pass
-
-
 class GlossTestCase(TestCase):
     def setUp(self):
         self.instance = factories.GlossFactory.create()
@@ -198,6 +146,22 @@ class ProjectTestCase(TestCase):
 
         # Test for dictionary/add link
         self.assertContains(response, "<a href='/dictionaries/add/" + str(self.instance.id)+ "/")
+
+        # Test for Surveys
+        for i in range(15):
+            factories.SurveyFactory.create(project=self.instance)
+        surveys = Survey.objects.filter(project=self.instance)
+
+        response = self.client.get(reverse('project_detail', kwargs = { 'id' : self.instance.id } ))
+        for survey in surveys:
+            self.assertContains(response, survey.name)
+            self.assertContains(response, reverse('survey_detail', kwargs = { 'id' : survey.id } ))
+
+        # Test that add new survey link is there
+        self.assertContains(response, reverse('survey_add',kwargs = { 'id' : self.instance.id } ))
+
+        # Test that add new dictionary link is there
+        self.assertContains(response, reverse('dictionary_add',kwargs = { 'id' : self.instance.id } ))
 
     def test_project_edit_exist(self):
         """ Test project edit link exists for GET request """
@@ -292,4 +256,104 @@ class VarietyTestCase(TestCase):
     def test_variety_index_exists(self):
         response = self.client.get(reverse('variety_index'))
         self.assertEqual(response.status_code, 302)
+
+class DictionaryTestCase(TestCase):
+    def setUp(self):
+        """ Set up for DictionaryTestCase test cases """
+        self.instance = factories.DictionaryFactory.create()
+
+    def test_Dictionary_add_exists(self):
+        """ Test that a GET request works on /project/add/ """
+        response = self.client.get(reverse('dictionary_add', kwargs = { 'id' : self.instance.project.id }))
+        self.assertEqual(response.status_code, 200)
+
+    def test_dictionary_add(self):
+        response = self.client.post(reverse('dictionary_add',kwargs = { 'id' : self.instance.project.id }),
+                                    {'name': 'new_dictionary',
+                                     'language': factories.LanguageFactory.create().id
+                                     })
+        try:
+            new_instance = Dictionary.objects.get(name='new_dictionary')
+        except Dictionary.DoesNotExist:
+            self.fail("Dictionary was not created.")
+        self.assertEqual(new_instance.name, 'new_dictionary')
+        self.assertRedirects(response, reverse('dictionary_detail', kwargs = { 'id' : new_instance.id }))
+
+    def test_dictionary_delete_exists(self):
+        response = self.client.post(reverse('dictionary_delete', kwargs = { 'id' : self.instance.id }))
+        # Status code should be 301 since we want a redirect
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('project_detail', kwargs = { 'id' : self.instance.project.id }))
+
+    def test_dictionary_edit_exists(self):
+        response = self.client.get(reverse('dictionary_edit', kwargs = { 'id' : self.instance.id }))
+        self.assertEqual(response.status_code, 200)
+
+    def test_dictionary_index_exists(self):
+        response = self.client.get(reverse('dictionary_index'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_dictionary_delete_works(self):
+        """ Test that the dictionary delete removes dictionary """
+        response = self.client.post(reverse('dictionary_delete', kwargs = { 'id' : self.instance.id } ))
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Dictionary.objects.filter(id=self.instance.id).exists())
+
+
+    def test_dictionary_detail(self):
+        """ Test dictionary detail properly displays dictionary """
+        response = self.client.get(reverse('dictionary_detail',kwargs = { 'id' : self.instance.id } ))
+        self.assertEqual(response.status_code, 200)
+
+        # Test response includes dictionary.name
+        self.assertContains(response, self.instance.name)
+
+        # Test for having the dictionary's project
+        self.assertContains(response, self.instance.project.name)
+
+        # Test for edit link
+        # TODO: find how to better test for a link.
+        self.assertContains(response, 'href="edit"')
+
+        # If no surveys, tell the user
+        #self.assertContains(response, 'There are currently no dictionaries for this project.')
+
+        # Test that all dictionaries in the project show up
+        for i in range(15): # Use high number because we're just searching for the number in the html
+            factories.GlossFactory.create(dictionary=self.instance)
+
+        glosses = Gloss.objects.filter(dictionary=self.instance)
+        response = self.client.get(reverse('dictionary_detail', kwargs = { 'id' : self.instance.id } ))
+        for gloss in glosses:
+            self.assertContains(response, gloss.id)
+
+        # Test for gloss_add link
+        self.assertContains(response, reverse('gloss_add', kwargs = { 'id' : self.instance.id }))
+
+        # Test that glosses are shown
+        num_glosses = 15
+        for i in range(num_glosses):
+            factories.GlossFactory.create(dictionary=self.instance)
+
+        response = self.client.get(reverse('dictionary_detail', kwargs = { 'id' : self.instance.id} ))
+        for gloss in Gloss.objects.all():
+            self.assertContains(response, str(gloss.primary))
+            self.assertContains(response, reverse('gloss_edit', kwargs = { 'id' : gloss.id }))
+
+    # def test_dictionary_edit(self): #TODO - I cant get it to change the name
+    #     """ Test project edit link exists for GET request """
+    #     response = self.client.get(reverse('dictionary_detail', kwargs = { 'id' : self.instance.id } ))
+    #     self.assertEqual(response.status_code, 200)
+
+    #     """ Test project edit actually edits the project """
+    #     self.client.post(reverse('dictionary_edit', kwargs = { 'id' : self.instance.id }), {'name' : 'new_name', 
+    #                                                                                         'language' : 'Test Language 8', 
+    #                                                                                         'project' : self.instance.project })
+    #     try:
+    #         dictionary = Dictionary.objects.filter(name='new_name')
+    #     except Dictionary.DoesNotExist:
+    #         self.fail("Dictionary edit should change dictionary name.")
+    #     print(Dictionary.objects.all()[0].language)
+    #     self.assertEqual(dictionary[0].name, 'new_name')
+
 

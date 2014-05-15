@@ -43,7 +43,7 @@ def dictionary_edit(request, id):
         dictionary = Dictionary.objects.get(pk=id)
     except Dictionary.DoesNotExist:
         messages.error(request, "Can't find selected Dictionary.")
-        return redirect('dictionary_index')
+        return redirect('project_index')
     if request.method == 'POST':  # If the form has been submitted
         form = forms.DictionaryForm(request.POST, instance=dictionary)
         if form.is_valid():
