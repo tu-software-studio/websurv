@@ -330,6 +330,17 @@ def comparison_detail(request, id):
         except Exception as e:
             print "Exception!"
             print e
+    def create_aligned_form2(params):
+        try:
+            letters = [(key,params[key]) for key in params.keys() if key[:7] == 'letter-']
+            letters = sorted(letters, key=lambda item: int(item[0][7:]))
+            aligned_form = ''
+            for letter in letters:
+                aligned_form += letter[1][0] + ','
+            return aligned_form[:-1]
+        except Exception as e:
+            print "Exception!"
+            print e
     try:
         comparison = Comparison.objects.get(pk=id)
     except Comparison.DoesNotExist:
@@ -342,7 +353,7 @@ def comparison_detail(request, id):
     elif request.method == "POST":
         data = dict(request.DATA.iterlists())
         data['group'] = str(data['group'][0])
-        data['aligned_form'] = create_aligned_form(data)
+        data['aligned_form'] = create_aligned_form2(data)
 
         comparison_entry = ComparisonEntry.objects.get(transcription_id=data['trans_id'][0])
 

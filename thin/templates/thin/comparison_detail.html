@@ -1,6 +1,7 @@
 {% extends "thin/base.html" %}
 
 {% block content %}
+  {% load multifor %}
   {#<script src="{{ STATIC_URL }}js/comparisons.js"></script>#}
   <script src="{{ STATIC_URL }}js/comparisons-simple.js"></script>
   <div class="panel panel-default">
@@ -27,9 +28,15 @@
           </td>
           <td align="left" class="aligned-form form-inline">
             <ul class="list-inline">
-              {% for letter in comparison_entry.transcription.ipa %}
-                <li><label>{{ letter }}<input name="letter-{{ forloop.counter0 }}" class="form-control" style="width: 60px;" type="number" min="1" value="1"/></label></li>
-              {% endfor %}
+              {% if comparison_entry.aligned_form_as_list.0 and comparison_entry.aligned_form_as_list.0.strip %}
+                {% for letter in comparison_entry.transcription.ipa; group in comparison_entry.aligned_form_as_list %}
+                  <li><label>{{ letter }}<input name="letter-{{ forloop.counter0 }}" class="form-control" style="width: 60px;" type="number" min="1" value="{{ group }}"/></label></li>
+                {% endfor %}
+              {% else %}
+                {% for letter in comparison_entry.transcription.ipa %}
+                  <li><label>{{ letter }}<input name="letter-{{ forloop.counter0 }}" class="form-control" style="width: 60px;" type="number" min="1" value="1"/></label></li>
+                {% endfor %}
+              {% endif %}
             </ul>
           </td>
           <td class="grouping"><input name="group" class="form-control" size="1"></td>

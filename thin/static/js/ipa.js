@@ -98,6 +98,8 @@
       ipa_controller.set_up_buttons();
       ipa_controller.set_up_toggler();
       ipa_controller.set_up_inputs();
+    } else {
+      $('#ipa-keyboard').hide();
     }
     return $("#ipa-toggle").click(function(e) {
       e.preventDefault();

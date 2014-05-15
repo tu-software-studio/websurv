@@ -157,7 +157,7 @@ class Comparison(models.Model):
         for variety in varieties:
             transcriptions = Transcription.objects.filter(variety=variety)
             for transcription in transcriptions:
-                comparison_entry = ComparisonEntry(comparison=self, transcription=transcription)
+                comparison_entry = ComparisonEntry(comparison=self, transcription=transcription, aligned_form=("1,"*len(transcription.ipa))[:-1])
                 comparison_entry.save()
 
 
@@ -174,4 +174,5 @@ class ComparisonEntry(models.Model):
     def __unicode__(self):
         return self.transcription.ipa
 
-
+    def aligned_form_as_list(self):
+        return self.aligned_form.split(',')
