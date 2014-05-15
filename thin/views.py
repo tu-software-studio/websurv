@@ -305,9 +305,31 @@ def comparison_add(request, id):
 def comparison_index(request):
     return redirect('home')
 
-
 @api_view(['GET','POST'])
 def comparison_detail(request, id):
+    def create_aligned_form(params):
+        try:
+            # print "in function", params
+            letters = [(key,params[key]) for key in params.keys() if key[:7] == 'letter-']
+            letters = sorted(letters, key=lambda item: (item[1], int(item[0][7:])))
+            # print letters
+            aligned_form = ''
+            current_group = 1
+            # print "entering loop", letters
+            for letter in letters:
+                # print letter
+                if int(letter[1][0]) != current_group:
+                    # print "next group"
+                    current_group = int(letter[1][0])
+                    aligned_form = aligned_form[:-1] + ','
+                # print "appending letter"
+                aligned_form += letter[0][7:]+'|'
+            # print "returning"
+            aligned_form = aligned_form[:-1]
+            return aligned_form
+        except Exception as e:
+            print "Exception!"
+            print e
     try:
         comparison = Comparison.objects.get(pk=id)
     except Comparison.DoesNotExist:
@@ -318,19 +340,20 @@ def comparison_detail(request, id):
         context = {'comparison': comparison, 'comparison_entries': comparison.entries.all(), "breadcrumb_menu": breadcrumb_menu}
         return render(request, 'thin/comparison_detail.html', context )
     elif request.method == "POST":
-        data = request.DATA
-        print(data)
-        
-        serializer = ComparisonEntrySerializer(data=data)
-        print(serializer.data)
+        data = dict(request.DATA.iterlists())
+        data['group'] = str(data['group'][0])
+        data['aligned_form'] = create_aligned_form(data)
+
+        comparison_entry = ComparisonEntry.objects.get(transcription_id=data['trans_id'][0])
+
+        serializer = ComparisonEntrySerializer(comparison_entry, data=data)
         if serializer.is_valid():
             serializer.object.comparison = Comparison.objects.get(pk=id)
             serializer.object.transcription = Transcription.objects.get(pk=request.DATA['trans_id'])
-            print(serializer)
-            #serializer.save()
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            print("NOOOO", serializer.errors)
+            print "NOOOO", serializer.errors
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

@@ -28,7 +28,7 @@
           <td align="left" class="aligned-form form-inline">
             <ul class="list-inline">
               {% for letter in comparison_entry.transcription.ipa %}
-                <li><label>{{ letter }}<input name="{{ forloop.counter0 }}" class="form-control" style="width: 60px;" type="number" min="1" value="1"/></label></li>
+                <li><label>{{ letter }}<input name="letter-{{ forloop.counter0 }}" class="form-control" style="width: 60px;" type="number" min="1" value="1"/></label></li>
               {% endfor %}
             </ul>
           </td>
