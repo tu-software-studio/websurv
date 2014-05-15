@@ -281,7 +281,7 @@ class DictionaryTestCase(TestCase):
 
     def test_dictionary_delete_exists(self):
         response = self.client.post(reverse('dictionary_delete', kwargs = { 'id' : self.instance.id }))
-        # Status code should be 301 since we want a redirect
+        # Status code should be 302 since we want a redirect
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('project_detail', kwargs = { 'id' : self.instance.project.id }))
 
