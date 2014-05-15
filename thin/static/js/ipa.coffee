@@ -70,7 +70,9 @@ $ ->
     ipa_controller.set_up_buttons()
     ipa_controller.set_up_toggler()
     ipa_controller.set_up_inputs()
+  else
+    $('#ipa-keyboard').hide()
 
-  $("#ipa-toggle").click (e) ->
-    e.preventDefault()
-    toggleIPA()
+#  $("#ipa-toggle").click (e) ->
+#    e.preventDefault()
+#    toggleIPA()

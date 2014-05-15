@@ -97,12 +97,10 @@
     if (!$("body").attr("no-ipa")) {
       ipa_controller.set_up_buttons();
       ipa_controller.set_up_toggler();
-      ipa_controller.set_up_inputs();
+      return ipa_controller.set_up_inputs();
+    } else {
+      return $('#ipa-keyboard').hide();
     }
-    return $("#ipa-toggle").click(function(e) {
-      e.preventDefault();
-      return toggleIPA();
-    });
   });
 
 }).call(this);
