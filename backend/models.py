@@ -163,7 +163,7 @@ class Comparison(models.Model):
 
 class ComparisonEntry(models.Model):
     aligned_form = models.CharField(max_length=100)
-    group = models.CharField(max_length=1, blank=True, null=True)
+    group = models.CharField(max_length=1, blank=True, null=True, default="")
     exclude = models.BooleanField(default=False)
     comparison = models.ForeignKey(Comparison, related_name='entries')
     transcription = models.ForeignKey(Transcription, related_name='comparison_entries')

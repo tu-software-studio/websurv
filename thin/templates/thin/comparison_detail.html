@@ -39,8 +39,8 @@
               {% endif %}
             </ul>
           </td>
-          <td class="grouping"><input name="group" class="form-control" size="1"></td>
-          <td align="center" class="exclude"><input name="exclude" type="checkbox"></td>
+          <td class="grouping"><input name="group" class="form-control" size="1" value="{{ comparison_entry.group }}"></td>
+          <td align="center" class="exclude"><input name="exclude" type="checkbox" {% if comparison_entry.exclude %}checked="checked"{% endif %}></td>
           <td><button type="submit" class="btn btn-primary">Save</button></td>
         </tr>
       {% empty %}
