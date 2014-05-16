@@ -28,10 +28,27 @@
       return save_entry(row.attr('id'), inputs);
     });
     $("tr input").change(function(e) {
-      var button;
+      var $num, button, input, li, num, prev, _i, _len, _ref;
       button = $(e.target).parents('tr').find('button');
       button.text("Save");
-      return button.removeAttr('disabled');
+      button.removeAttr('disabled');
+      input = $(e.target);
+      li = input.parent().parent();
+      if (parseInt(li.next().find("label input").val()) < parseInt(input.val())) {
+        _ref = li.nextAll();
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          num = _ref[_i];
+          $num = $(num).find("label input");
+          if ($num.val() === input.val()) {
+            break;
+          }
+          $num.val(+$num.val() + 1);
+        }
+      }
+      prev = li.prev().find("label input");
+      if (parseInt(prev.val()) > parseInt(input.val())) {
+        return input.val(prev.val());
+      }
     });
     return csrftoken = $.cookie('csrftoken');
   });

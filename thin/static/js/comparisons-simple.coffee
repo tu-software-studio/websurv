@@ -1,18 +1,7 @@
+# From Django Docs
 csrfSafeMethod = (method) ->
     # these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method))
-#sameOrigin = (url) ->
-#    # test that a given url is a same-origin URL
-#    # url could be relative or scheme relative or absolute
-#    host = document.location.host; # host + port
-#    protocol = document.location.protocol;
-#    sr_origin = '//' + host;
-#    origin = protocol + sr_origin;
-#    # Allow absolute or scheme relative URLs to same origin
-#    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
-#        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-#        #or any other URL that isn't scheme relative or absolute i.e relative.
-#        !(/^(\/\/|http:|https:).*/.test(url))
 clicked_button = null
 $ ->
   $.ajaxSetup({
@@ -25,16 +14,33 @@ $ ->
         xhr.setRequestHeader("X-CSRFToken", csrftoken)
   })
   $("button[type='submit']").click (e) ->
+    # Change button to Saving... and disable it
     clicked_button = $(e.target)
     clicked_button.attr('disabled', 'disabled')
     clicked_button.text("Saving...")
+
+    # Send AJAX request to save
     row = clicked_button.parent().parent()
     inputs = row.find('input')
     save_entry(row.attr('id'), inputs)
   $("tr input").change (e) ->
+    # Change button back to Save and enable it
     button = $(e.target).parents('tr').find('button')
     button.text("Save")
     button.removeAttr('disabled')
+
+    # Increment necesarry ones after
+    input = $(e.target)
+    li = input.parent().parent()
+    if parseInt(li.next().find("label input").val()) < parseInt(input.val())
+      for num in li.nextAll()
+        $num = $(num).find("label input")
+        if $num.val() == input.val()
+          break
+        $num.val(+$num.val()+1)
+    prev = li.prev().find("label input")
+    if parseInt(prev.val()) > parseInt(input.val())
+      input.val(prev.val())
   csrftoken = $.cookie('csrftoken')
 
 save_entry = (trans_id, inputs) ->
