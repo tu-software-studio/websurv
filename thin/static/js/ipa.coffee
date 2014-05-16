@@ -33,23 +33,10 @@ $ ->
             else
               alert "No input set. Click on an text box to set the input."
     set_up_inputs: ->
-#      console.log "Adding listeners to inputs..."
       $("body").on "focusin", "input:text:not([readonly])", (e) ->
         console.log "setting input to: " + e.target.name
         ipa_controller.current_input = $ e.target
-#        finishIPA()
-#        showIPA()
-#      $("body").on "focusout", "input:text", (e) ->
-#        ipa_controller.current_input = null
-#        finishIPA()
-#        hideIPA()
-#      $("body").click (e) ->
-#        if e.target == $("body")
-#          ipa_controller.current_input = null
-#          console.log "setting to null"
     set_up_toggler: ->
-      $('#ipa-keyboard').css('height', '30px')
-      $('#ipa-keys').css('visibility', 'hidden')
       $('#ipa-toggler').click ->
         if $('#ipa-keys').css('visibility') == 'hidden'
           $('#ipa-keys').css('visibility', '')
