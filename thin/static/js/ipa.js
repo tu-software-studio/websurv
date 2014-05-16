@@ -73,8 +73,6 @@
         });
       },
       set_up_toggler: function() {
-        $('#ipa-keyboard').css('height', '30px');
-        $('#ipa-keys').css('visibility', 'hidden');
         return $('#ipa-toggler').click(function() {
           if ($('#ipa-keys').css('visibility') === 'hidden') {
             $('#ipa-keys').css('visibility', '');
